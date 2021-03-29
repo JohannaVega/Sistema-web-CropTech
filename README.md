@@ -1,1 +1,1 @@
-# Sistema-de-informaci-n-web-CropTech
+# Sistema-web-Croptech
