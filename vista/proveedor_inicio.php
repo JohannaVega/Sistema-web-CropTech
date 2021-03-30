@@ -132,13 +132,13 @@ if($_SESSION['usuario']){
                         <p class="lead">Telefono 2: <?php echo $resul[$i]['telefono_2']?> </p>
                         <p class="lead">E-mail: <?php echo $resul[$i]['correo']?> </p>
                         <br>
-                        <div class="pd-4">
-                        <a href="http://localhost/proyecto_grado/croptech/vista/proveedor_editP.php" class="btn btn-secondary">EDITAR CLAVE</a>
-                        <a href="http://localhost/proyecto_grado/croptech/vista/proveedor_editD.php" class="btn btn-success">EDITAR DATOS</a>
-                        </div>
                         <?php
                         }
                         ?>
+                        <div class="pd-4">
+                            <a href="http://localhost/proyecto_grado/croptech/vista/proveedor_editP.php" class="btn btn-secondary">EDITAR CLAVE</a>
+                            <a href="http://localhost/proyecto_grado/croptech/vista/proveedor_editD.php" class="btn btn-success">EDITAR DATOS</a>
+                        </div>
                          
                     </div>
                 

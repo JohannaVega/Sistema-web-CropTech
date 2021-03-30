@@ -22,7 +22,7 @@ if(isset($_POST['user']) && isset($_POST['pass'])){
 
     if($tipo_user==1){
         //redireccionamos a la pagina de inicio del cultivador
-        header("Location: http://localhost/proyecto_grado/croptech/vista/user_inicio.php?id=$iddef");
+        header("Location: http://localhost/proyecto_grado/croptech/vista/user_inicio.php?id");
     }else
     if($tipo_user==2){
         //redireccionamos a la pagina de inicio del proveedor
@@ -91,6 +91,32 @@ if(isset($_POST['Registro']) && $_POST['Registro']=='CREAR_UP' ){
         $contra2,$ask,$answer,$estado,$rol);
     
         header("Location: http://localhost/proyecto_grado/croptech/login/sing-up_p.php?iderror=$resul");
+     }
+}
+
+//----------------------REGISTRO DE USUARIO ADMINISTRADOR ---------------------------//
+if(isset($_POST['Registro']) && $_POST['Registro']=='CREAR_UA' ){
+
+    if(isset($_POST['nombre']) && isset($_POST['apellido']) && isset($_POST['sexo']) && isset($_POST['correo'])
+    && isset($_POST['telefono']) && isset($_POST['contra']) && isset($_POST['contra2']) 
+    && isset($_POST['ask']) && isset($_POST['answer']) && isset($_POST['estado']) && isset($_POST['rol']) ){
+        $obj=new facade();
+        $nombre = $_POST['nombre'];
+        $apellido = $_POST['apellido'];
+        $sexo = $_POST['sexo'];
+        $correo = $_POST['correo'];
+        $telefono = $_POST['telefono'];
+        $telefono2 = $_POST['telefono2'];
+        $contra = $_POST['contra'];
+        $contra2 = $_POST['contra2'];
+        $ask = $_POST['ask'];
+        $answer = $_POST['answer'];
+        $estado = $_POST['estado'];
+        $rol = $_POST['rol'];
+        $resul=$obj->validarRegistroUser($nombre,$apellido,$sexo,$correo,$telefono,$telefono2,$contra,
+        $contra2,$ask,$answer,$estado,$rol);
+    
+        header("Location: http://localhost/proyecto_grado/croptech/login/sing-up_a.php?iderror=$resul");
      }
 }
     

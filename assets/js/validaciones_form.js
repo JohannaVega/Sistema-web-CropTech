@@ -7,7 +7,7 @@
  var expespacio= /^\s+$/;//valida espacios en blanco
  var expCorreo=/\w+@\w+\.+[a-z]/;
  var exptext=/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/g;//valida solo txt
- var exptextsin_= /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+[a-zA-ZÀ-ÿ\u00f1\u00d1][a-zA-ZÀ-ÿ\u00f1\u00d1]+$/;
+ var exptextsin_= /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+[a-zA-ZÀ-ÿ\u00f1\u00d1][a-zA-ZÀ-ÿ\u00f1\u00d1]+$/;//valida txt sin espacios
 
 function validarEditC() {
     var fecha, hora;
@@ -48,7 +48,7 @@ function validarEditC() {
      expespacio.test(correo.value) || expespacio.test(telefono.value) || expespacio.test(telefono2.value)
      || expespacio.test(contra.value) ||  expespacio.test(contra2.value) || expespacio.test(ask.value) ||
       expespacio.test(answer.value)){
-      alert("Datos no validos (Solo ingreso espacios)");
+      alert("Datos no validos (No se permiten espacios en blanco)");
       return false;
     }
   
@@ -90,7 +90,7 @@ function validarEditC() {
       return false;
     }
     if(expespacio.test(nombre_cultivo.value) || expespacio.test(fecha_registro.value)){
-      alert("Datos no validos (Solo ingreso espacios)");
+      alert("Datos no validos (No se permiten espacios en blanco)");
       return false;
     }
     if((!/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/g.test(nombre_cultivo)

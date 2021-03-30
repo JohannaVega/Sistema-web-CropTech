@@ -20,7 +20,7 @@
         crossorigin="anonymous">
 </head>
 <body> 
-    <div class="conteiner_todo">
+
         <!--NAVBAR-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
@@ -45,9 +45,9 @@
             <!--FIN NAVBAR-->
 
             <!--CONTENIDO-->
-            <div class="container-md pb-4 pt-4 ">
-                    <div class="m-1 row justify-content-md-center">
-                        <div class="col-auto p-5 text-center bg-light border border-success">
+            <div class="container-lg pb-4 pt-4 ">
+                    <div class="m-1 row ">
+                        <div class="col-auto p-5 bg-light border border-success">
                             <div class="jumbotron">
                                 <div id= "contenedor-name">
                                     <h1 id="name" class="text-black " >Inicia sesión</h1>
@@ -68,10 +68,10 @@
                                             <input type="password" id="pass" class="form-control" name="pass" required>
                                         </div>
                                     </div>
-                                    <div class="p-2">
+                                    <div class="text-center p-2">
                                         <button type="submit" class="btn btn-outline-success btn-lg">Iniciar sesión</button>
                                     </div>
-                                    <div class="p-2">
+                                    <div class="text-center p-2">
                                     <a href="vista/recuperar.php"> <button type="button"
                                     class="btn btn-outline-dark">¿Olvido su contraseña?</button></a>
                                     </div>
@@ -88,7 +88,7 @@
                                         <br>
                                         <h3>¿Aún no tienes una cuenta?</h3>
                                         <p>Registrate para que puedas iniciar a administrar tu huerto</p>
-                                        <button onclick="location='../login/asignar-rol.php'" 
+                                        <button class="btn btn-outline-light" onclick="location='../login/asignar-rol.php'" 
                                         id="btn_registrarse">Registrarse</button>
                                     </div>
                                 </div>
@@ -99,7 +99,7 @@
             </div> 
             <!--FIN CONTENIDO-->
             <?php  require "../footer.php"; ?>
-    </div> 
+ 
     <script src="../assets/js/validaciones_form.js"></script>
 
     <!--COMPLEMENTOS BOOTSTRAP-->

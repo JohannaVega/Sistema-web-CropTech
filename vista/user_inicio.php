@@ -82,7 +82,7 @@ if($_SESSION['usuario']){
 
          <!--menu cultivos-->
          <div id="cultivos">
-            <div class="container-md p-5">
+            <div class="container-lg pb-4 pt-4">
                 <div class="row pt-5">
                     <h3 class="text-center pb-5 pt-5 h1">¡Comienza a administrar tu huerta!</h3>
             </div>

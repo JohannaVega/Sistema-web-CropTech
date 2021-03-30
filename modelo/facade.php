@@ -129,7 +129,7 @@ public function insertarUser($nombre,$apellido,$sexo,$correo,$telefono,$telefono
     return $resul;
   }
 
-   //funcion que valida el estado del insert:  cultivador
+   //funcion que valida el estado del insert: información de usuarios
    public function validarRegistroUser($nombre,$apellido,$sexo,$correo,$telefono,
    $telefono2,$contra,$contra2,$ask,$answer,$estado,$rol){
     $feedback="";

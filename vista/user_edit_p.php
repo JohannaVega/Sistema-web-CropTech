@@ -42,7 +42,7 @@ if($_SESSION['usuario']){
         <li class="nav-item"><a class="nav-link " 
         href="http://localhost/proyecto_grado/croptech/vista/user_perfil.php">Perfil</a></li>
         <li class="nav-item"><a class="nav-link" 
-        href="http://localhost/proyecto_grado/croptech/vista/cultivo-historial.php" >Mis cultivos</a></li>
+        href="#" >Mis cultivos</a></li>
       </ul>
 
       <form class="d-flex form-inline my-2 my-lg-0  navbar-right" >
@@ -63,7 +63,9 @@ if($_SESSION['usuario']){
         $resul=$fac->readOneFullById($_SESSION["usuario"]);
         $id=$_SESSION["usuario"];
     ?>
-
+    <br>
+ <!--SECCIÓN CONTENIDO-->
+ <div class="container-lg pb-4 pt-4">
     <div class="m-1 row justify-content-center">
       <div class="col-auto p-5 text-center bg-light border border-success"> 
         <div class="jumbotron">
@@ -100,6 +102,8 @@ if($_SESSION['usuario']){
            
       </div>
     </div>
+  </div>
+<!--FIN SECCIÓN CONTENIDO-->
 
         <hr>
         <div class="p-3" id="separator-ribbon">

@@ -26,8 +26,7 @@ if($_SESSION['usuario']){
     crossorigin="anonymous">
 </head>
 <body>
-    <!--CONTENEDOR TODO-->
-    <div class="conteiner_todo">
+
         <!--NAVBAR-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
@@ -66,6 +65,8 @@ if($_SESSION['usuario']){
             $resul=$fac->readOneFullById($_SESSION["usuario"]);
             $id=$_SESSION["usuario"];
         ?>
+    <!--CONTENEDOR TODO-->
+    <div class="container-lg pb-4 pt-4">
         <!--CONTEINER FORMULARIO-->
         <div class="m-1 row justify-content-center">
             <div class="col-auto p-5 text-center bg-light border border-success"> 

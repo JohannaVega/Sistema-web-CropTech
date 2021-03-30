@@ -65,7 +65,7 @@ if($_SESSION['usuario']){
     ?>
     <br>
     <!--SECCIÓN CONTENIDO-->
-    <div class="container-md pb-4 pt-4 ">
+    <div class="container-lg pb-4 pt-4">
         <div class="m-1 row justify-content-md-center">
             <div class="col-auto p-5 text-center bg-light border border-success">
                 <div class="jumbotron">

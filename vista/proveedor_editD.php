@@ -26,8 +26,7 @@ if($_SESSION['usuario']){
     crossorigin="anonymous">
 </head>
 <body>
-    <!--CONTENEDOR TODO-->
-    <div class="conteiner_todo">
+   
         <!--NAVBAR-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
@@ -66,7 +65,8 @@ if($_SESSION['usuario']){
             $resul=$fac->readOneFullById($_SESSION["usuario"]);
             $id=$_SESSION["usuario"];
         ?>
-
+    <!--CONTENEDOR TODO-->
+    <div class="container-lg pb-4 pt-4">
         <!--CONTEINER FORMULARIO-->
         <div class="m-1 row justify-content-center">
             <div class="col-auto p-5 text-center bg-light border border-success"> 
@@ -74,7 +74,6 @@ if($_SESSION['usuario']){
                     <h4 class="display-5 text-success text-shadow h1">Editar datos personales</h4>
                     <hr>
                     <form action="../controlador/validar_updates.php" method="POST">
-                    <form action="../controlador/validar_updates.php" method="post">
                         <div class="form-row row justify-content-center p-2">
                             <div class="form-group col-md-12">
                                 <input type="text" id="nombres" value='<?php echo $resul[0]['nombre'];?>'name="nombres"

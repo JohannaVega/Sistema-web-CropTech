@@ -20,7 +20,6 @@
         crossorigin="anonymous">
 </head>
 <body>
-    <div class="conteiner_todo">
         <!--NAVBAR-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
@@ -51,7 +50,7 @@
             ?>
 
             <!--CONTENIDO-->
-            <div class="container-md pb-4 pt-4 ">
+            <div class="container-lg pb-4 pt-4 ">
                     <div class="m-1 row ">
                         <div class="col-auto p-5 bg-light border border-success">
                             <div class="jumbotron">
@@ -272,7 +271,7 @@
                                         <br>
                                         <h3>¿Ya tienes una cuenta?</h3>
                                         <p>Inicia sesión para acceder a tu perfil de usuario</p>
-                                        <button id="btn_iniciar-sesion" 
+                                        <button id="btn_iniciar-sesion"  class="btn btn-outline-light"
                                         onclick="location='../login/sing-in.php'" >Iniciar sesión</button>
                                     </div>
                                 </div>
@@ -283,7 +282,7 @@
             </div> 
             <!--FIN CONTENIDO-->
             <?php  require "../footer.php"; ?>
-    </div> 
+
        <script src="../assets/js/validaciones_form.js"></script>
         <!--COMPLEMENTOS BOOTSTRAP-->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" 
