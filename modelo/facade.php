@@ -253,7 +253,7 @@ public function validarCorreoUnico($mail,$id){//correo
 return $direccionador1;
 }
 
-//FUNCION Que verifica si un telefono ya ha sido registrado
+//FUNCION Que verifica si un telefono ya ha sido registrado  
 public function verificarTelefono_unico($telefono,$id){
     $direccionador1=0;
     $resul2=$this->obj_user->readAll_Menosid($id);
@@ -265,6 +265,17 @@ public function verificarTelefono_unico($telefono,$id){
        }
    
 return $direccionador1;
+}
+
+//Funcion que llama invoca a un metodo de la clase proveedorDAO para insertar tienda ok
+public function insert_tienda($idu,$name,$apellido,$name_shop,$address,$descripcion){
+    $feedback='';
+    if($resul=$this->obj_proveedor->insert($idu,$name,$apellido,$name_shop,$address,$descripcion) == true){
+        $feedback='ok';
+    }else{
+       $feedback='bad';
+    }
+    return $feedback;
 }
   /*
     //Metodo que actualiza la contraseña del administrador
@@ -286,20 +297,8 @@ return $direccionador1;
     return $feedback;
   }
   */
-  //Metodo que permite leer la información de todos los usuarios
-  public function readAllUsuarioFull(){
-    $resul=$this->obj_user->readall();
-    return $resul;
-    }
-  //Metodo que permite eliminar un usuario (cuando se elima un usuario
-  //se elimina toda la info del mismo). Esta es una tarea del admon
-  public function deleteFullUser($id){  
-        
-    if($this->obj_user->delete($id) == true){
-        return true;
-    }
-        return false;  
-    }
+  
+
    //Metodo que permite agregar un cultivo, retorna ok cuando
    //se realizó el insert exitosamente
    public function addcultivo($idu, $cnombre, $fecha_registro){
@@ -311,26 +310,9 @@ return $direccionador1;
     }
     return $feedback;
    }
-   //Metodo permite leer los cultivos registrados por el user
-   public function read_cultivos($idu){
-    $resul=$this->obj_cultivo->read_cultivos_user($idu);
-    return $resul;
-   }
-   //Metodo permite validar si el usuario tiene cultivos registrados
-  
-   public function read_cultivosbyUser($idu){
-    $exist='no';
-    $resul=$this->obj_cultivo->read_all();
 
-    for($i=0;$i<count($resul);$i++){
-        if(($resul[$i]['id_usuario']) == ($idu)){
-            $exist='si';//el user tiene cultivos 
-        }
-    }
-    return $exist;
-   }
 
-   public function read_roles(){
+   public function read_roles(){ //ok
        $resul=$this->obj_user->read_roles();
        return $resul;
    }

@@ -149,7 +149,7 @@ if($_SESSION['usuario']){
                       <h1 id="name" class="text-center text-white text-shadow">CropTech - Profile</h1>
                       <hr>
                       <br>
-                      <h3 align="center" class="pt-5">Hola, <?php echo $name; ?></h3>
+                      <h3  class="pt-5">Hola, <?php echo $name; ?></h3>
                       <p >En esta sección puedes visualizar y editar tus datos de usuario.</p>
                     <div>
                 </div>

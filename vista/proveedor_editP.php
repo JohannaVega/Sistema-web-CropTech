@@ -40,10 +40,10 @@ if($_SESSION['usuario']){
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link active " aria-current="page" 
+                        <li class="nav-item"><a class="nav-link " aria-current="page" 
                         href="http://localhost/proyecto_grado/croptech/vista/proveedor_inicio.php">Inicio</a> </li>
                         <li class="nav-item"><a class="nav-link " aria-current="page" 
-                        href="http://localhost/proyecto_grado/croptech/vista/proveedor_registar.php">Registrar tienda</a> </li>
+                        href="http://localhost/proyecto_grado/croptech/vista/proveedor_registrar.php">Registrar tienda</a> </li>
                         <li class="nav-item"><a class="nav-link " aria-current="page" 
                         href="#">Tus tiendas</a> </li>
                     </ul>
@@ -120,6 +120,7 @@ if($_SESSION['usuario']){
         <?php  require "../footer.php"; ?>
 
     <!--COMPLEMENTOS BOOTSTRAP-->
+        <script src="../assets/js/validaciones_form.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" 
             integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" 
             crossorigin="anonymous">

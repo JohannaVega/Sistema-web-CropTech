@@ -25,7 +25,7 @@ if($_SESSION['usuario']){
         crossorigin="anonymous">
 </head>
 <body>
-    <div class="conteiner_todo">
+    
         <!--NAVBAR-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
@@ -42,7 +42,7 @@ if($_SESSION['usuario']){
                         <li class="nav-item"><a class="nav-link active " aria-current="page" 
                         href="http://localhost/proyecto_grado/croptech/vista/proveedor_inicio.php">Inicio</a> </li>
                         <li class="nav-item"><a class="nav-link " aria-current="page" 
-                        href="http://localhost/proyecto_grado/croptech/vista/proveedor_registar.php">Registrar tienda</a> </li>
+                        href="http://localhost/proyecto_grado/croptech/vista/proveedor_registrar.php">Registrar tienda</a> </li>
                         <li class="nav-item"><a class="nav-link " aria-current="page" 
                         href="#">Tus tiendas</a> </li>
                     </ul>
@@ -64,6 +64,7 @@ if($_SESSION['usuario']){
         ?>
 
         <br>
+
         <!--CONTEINER CONTENIDO-->
         <div class="container-md pb-4 pt-4">
             <div class="m-1 row justify-content-center">
@@ -86,7 +87,7 @@ if($_SESSION['usuario']){
                         ?>
                         <hr>
                         <br>
-                        <div align="center" id="error">
+                        <div id="error">
                             <?php
                             if(isset($_GET['iderror'])){
                             if($_GET['iderror'] == 'ok1'){
@@ -161,8 +162,7 @@ if($_SESSION['usuario']){
         <!--FIN CONTEINER CONTENIDO-->
 
         </div>
-    </div>
-    <!--FIN CONTEINER TODO-->
+
     <hr>
         <!--CONTEINER SEPARADOR RIBBON-->
         <div class="p-3" id="separator-ribbon">

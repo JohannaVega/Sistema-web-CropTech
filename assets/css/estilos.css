@@ -50,6 +50,38 @@ main{
     /*background-image: url(../imagenes/cropTech.jpg);*/
     background-color: rgb(76, 119, 33, 0.5);
 }
+/*seleccionamos los div de la caja trasera*/
+.caja_trasera div{
+    margin: 100px 20px;
+    color: aliceblue;
+}
+.caja_trasera div p{
+    margin-top: 30px;
+}
+
+.caja_trasera-shop{
+    padding: 10px 20px;
+    height: 100%;
+    text-align: center;
+    justify-content: center;
+    /* Genera una transparencia en el fondo del contenedor*/
+    backdrop-filter: blur(10px); 
+    background-image: url(../img/store.png);opacity:0.8;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    /*background-color: rgb(76, 119, 33, 0.5);*/
+}
+/*seleccionamos los div de la caja trasera*/
+.caja_trasera-shop div{
+    margin: 100px 20px;
+    color: rgb(0, 0, 0);
+}
+.caja_trasera-shop div p{
+    margin-top: 30px;
+}
+
 .caja_quienes{
     padding: 10px 20px;
     height: 100%;
@@ -70,14 +102,6 @@ main{
     /* Genera una transparencia en el fondo del contenedor*/
     backdrop-filter: blur(10px); 
     background-color: rgb(76, 119, 33, 0.7);
-}
-/*seleccionamos los div de la caja trasera*/
-.caja_trasera div{
-    margin: 100px 20px;
-    color: aliceblue;
-}
-.caja_trasera div p{
-    margin-top: 30px;
 }
 
 /*.caja_trasera div button{

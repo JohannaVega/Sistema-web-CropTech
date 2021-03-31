@@ -9,6 +9,7 @@
  var exptext=/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/g;//valida solo txt
  var exptextsin_= /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+[a-zA-ZÀ-ÿ\u00f1\u00d1][a-zA-ZÀ-ÿ\u00f1\u00d1]+$/;//valida txt sin espacios
 
+
 function validarEditC() {
     var fecha, hora;
     fecha = document.getElementById("fecha").value;
@@ -102,6 +103,32 @@ function validarEditC() {
       alert("Formato de fecha invalido");
       return false;
     }
+   }
+   //Validan los campos de input cuando se registra una tienda 
+   function validarinsertT(){
+    var name_shop,address,descripcion;
+    name_shop = document.getElementById("name_shop").value;
+    address = document.getElementById("address").value;
+    descripcion = document.getElementById("descripcion").value;
+
+    if(name_shop===""|| descripcion==="" || address===""){
+      alert("Por favor rellene todos campos son obligatorios ");
+      return false; 
+    }
+    if(expespacio.test(name_shop.value) || expespacio.test(descripcion.value) || expespacio.test(address.value)){
+      alert("Datos no validos (No se permiten espacios en blanco)");
+      return false;
+    }
+
+    if((!/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/g.test(name_shop)
+     || name_shop.length>100)){
+      alert("Nombre del establecimiento invalido");
+      return false;
+     }
+     if(expnum.test(descripcion) || expnum.test(name_shop)){
+      alert("No se permite ingresar solo numeros en los");
+      return false;
+     }
    }
    //Se validan los campos de input cuando se edita un usuario
   //validarEditP

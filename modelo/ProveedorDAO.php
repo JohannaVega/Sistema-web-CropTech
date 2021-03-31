@@ -20,6 +20,16 @@ class ProveedorDAO extends Conectar{
         }
         return $this->proveedores;
     }
+    //Insertamos proveedor
+    public function insert($idu,$name,$apellido,$name_shop,$address,$descripcion){
+
+        $sql="insert into proveedor(nombre,apellido,direccion,nombre_establecimiento,descripcion,id_usuario)
+        values('$name','$apellido','$address','$name_shop','$descripcion','$idu')";
+
+        $resul=mysqli_query($this->con(),$sql);
+
+         return $resul;
+    }
 
 }
 
