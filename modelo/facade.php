@@ -124,50 +124,71 @@ public function verificarIdUser($id){//el id del usuario es su # de tel debido a
 return $direccionador1;
 }
 //INSERTANDO USUARIOS    //ok
-public function insertarUser($nombre,$apellido,$sexo,$correo,$telefono,$telefono2,$contra,$askf,$answer,$estado,$rol){
-    $resul=$this->obj_user->insert($nombre,$apellido,$sexo,$correo,$telefono,$telefono2,$contra,$askf,$answer,$estado,$rol);
+public function insertarUser($nombre,$apellido,$sexo,$correo,$tipo_telefono,$telefono,$tipo_telefono2,
+                            $telefono2,$contra,$askf,$answer,$estado,$rol){
+    $resul=$this->obj_user->insert($nombre,$apellido,$sexo,$correo,$tipo_telefono,$telefono,
+        $tipo_telefono2,$telefono2,$contra,$askf,$answer,$estado,$rol);
     return $resul;
   }
 
+  public function insertarUser2($nombre,$apellido,$sexo,$correo,$tipo_telefono,$telefono,
+                               $contra,$askf,$answer,$estado,$rol){
+    $resul=$this->obj_user->insert2($nombre,$apellido,$sexo,$correo,$tipo_telefono,$telefono,
+        $contra,$askf,$answer,$estado,$rol);
+    return $resul;
+    }
+
    //funcion que valida el estado del insert: información de usuarios
-   public function validarRegistroUser($nombre,$apellido,$sexo,$correo,$telefono,
-   $telefono2,$contra,$contra2,$ask,$answer,$estado,$rol){
+   public function validarRegistroUser($nombre,$apellido,$sexo,$correo,$tipo_telefono,$telefono,
+    $tipo_telefono2,$telefono2,$contra,$contra2,$ask,$answer,$estado,$rol){
     $feedback="";
     if($contra == $contra2){
         if($this->validarPass($contra) == ' '){
-            if($ask != '0'){
-                if($ask==1)
-                   $askf="Nombre de su primer mascota";
-                if($ask==2)
-                   $askf="Direccion de su primer lugar de residencia";
-                if($ask==3)
-                   $askf="Nombre mejor amigo de la infancia";
-                if($ask==4)
-                   $askf="Nombre de su localidad de residencia";
-                if($ask==5)
-                   $askf="Color de su camisa favorita";
-                   if($sexo != '0' ){
-            if($this->validarCorreo($correo) == 0){//verifica correo no exista para registrarlo
-                        if($this->verificarIdUser($telefono)==0){//si redirecciona un 0 es porq no existe el tel en la bd
-                            if($this->insertarUser($nombre,$apellido,$sexo,$correo,$telefono,$telefono2,
-                            $contra,$askf,$answer,$estado,$rol) == true){
-                              $feedback='ok';
+            if($tipo_telefono != '0' && $tipo_telefono<=2){
+                        if($ask != '0'){
+                            if($ask==1)
+                            $askf="Nombre de su primer mascota";
+                            if($ask==2)
+                            $askf="Direccion de su primer lugar de residencia";
+                            if($ask==3)
+                            $askf="Nombre mejor amigo de la infancia";
+                            if($ask==4)
+                            $askf="Nombre de su localidad de residencia";
+                            if($ask==5)
+                            $askf="Color de su camisa favorita";
+                            if($sexo != '0' ){
+                        if($this->validarCorreo($correo) == 0){//verifica correo no exista para registrarlo
+                                    if($this->verificarIdUser($telefono)==0){//si redirecciona un 0 es porq no existe el tel en la bd
+                                        if(!empty($telefono2)){//si telefono 2 no esta vacio,seguimos proceso de insertar all datos
+                                           // if($tipo_telefono2 != '0' && $tipo_telefono2<=2){
+                                                if($this->insertarUser($nombre,$apellido,$sexo,$correo,$tipo_telefono,$telefono,
+                                                    $tipo_telefono2,$telefono2,$contra,$askf,$answer,$estado,$rol) == true){
+                                                    $feedback='ok';
+                                                }else{
+                                                    $feedback='1';//error en el insert
+                                                }
+
+
+                                            }else{
+                                                $feedback='8';//No selecciono tipo de telefono no. 2
+                                            }
+                                        //}
+
+                                    }else{
+                                        $feedback='2';//telefono1 ya existe en la bd
+                                    }
+                                }else{
+                                    $feedback='3';//correo existe
+                                }
                             }else{
-                                $feedback='1';//error en el insert
+                                $feedback='4';//No selecciono sexo
+
                             }
                         }else{
-                            $feedback='2';//id_usuario ya existe en la bd
-                        }
-                    }else{
-                        $feedback='3';//correo existe
-                    }
-                }else{
-                    $feedback='4';//No selecciono sexo
-
-                }
+                            $feedback='5';//No selecciono pregunta
+                        } 
             }else{
-                $feedback='5';//No selecciono pregunta
-
+                $feedback='7';//No selecciono tipo de telefono no. 1
             }
         }else{
             $feedback=$this->validarPass($contra);//contraseña no valida
@@ -188,6 +209,11 @@ public function insertarUser($nombre,$apellido,$sexo,$correo,$telefono,$telefono
   public function readUserById($id){   //ok
     $resul3=$this->obj_user->readOneById($id);
     return $resul3;
+  }
+ 
+  public function read_tipos_tel(){
+      $result = $this->obj_user->read_tipo_telefono();
+      return $result;
   }
 
    //FUNCIÓN QUE ACTUALIZA LA CONTRASEÑA DEL USER POR MEDIO DEL ID   ok
@@ -212,26 +238,41 @@ public function insertarUser($nombre,$apellido,$sexo,$correo,$telefono,$telefono
   }
  //Función que valida que el correo ingresado para actualizar el email    ok
  //y demás datos no exista ya en la BD
-  public function correoUnico($id,$nombre,$apellido,$email,$telefono1,$telefono2){
+  public function correoUnico($id,$nombre,$apellido,$email){
       $feedback="";
     if($this->validarCorreoUnico($email,$id) == 0){//verifica correo no exista para registrarlo
-        if($this->verificarTelefono_unico($telefono1,$id)==0){//si redirecciona un 0 es porq no existe el tel en la bd
-           if($this->updateDatosUsser($id,$nombre,$apellido,$email,$telefono1,$telefono2)==true){
+           if($this->updateDatosUsser($id,$nombre,$apellido,$email)==true){
             $feedback='hecho';
            }else{
             $feedback='fail';
            }
-        }else{
-            $feedback='telefono';//el telefono ya existe
-        }
      }else{
         $feedback='email';//correo existe
      }
      return $feedback;
   }
+
+  public function correoUnico5($id,$nombre,$apellido,$email){
+    $feedback="";
+  if($this->validarCorreoUnico($email,$id) == 0){//verifica correo no exista para registrarlo
+      if($this->verificarTelefono_unico($telefono1,$id)==0){//si redirecciona un 0 es porq no existe el tel en la bd
+         if($this->updateDatosUsser($id,$nombre,$apellido,$email,$telefono1,$telefono2)==true){
+          $feedback='hecho';
+         }else{
+          $feedback='fail';
+         }
+      }else{
+          $feedback='telefono';//el telefono ya existe
+      }
+   }else{
+      $feedback='email';//correo existe
+   }
+   return $feedback;
+}
+
  //Metodo que permite llegar al obj user para actualizar los datos del usuario   ok
-  public function updateDatosUsser($id,$nombre,$apellido,$email,$telefono1,$telefono2){
-    $resul=$this->obj_user->updateUser($id,$nombre,$apellido,$email,$telefono1,$telefono2);
+  public function updateDatosUsser($id,$nombre,$apellido,$email){
+    $resul=$this->obj_user->updateUser($id,$nombre,$apellido,$email);
     return $resul;
     }
  //Metodo que permite leer la información del usuario administrador

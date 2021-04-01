@@ -74,17 +74,32 @@ if($_SESSION['usuario']){
                         height="200px" width="200px">
                         <br>
 
-                        <?php for($i=0;$i<count($resul);$i++){?> 
+                        <?php for($i=0;$i<1;$i++){?> 
                         <p class="lead">Nombres: <?php echo $name=$resul[$i]['nombre']?> </p>
                         <p class="lead">Apellidos: <?php echo $resul[$i]['apellido']?> </p>
                         <p class="lead">Sexo: <?php echo $resul[$i]['sexo']?> </p>
-                        <p class="lead">Telefono 1: <?php echo $resul[$i]['telefono_usuario']?> </p>
-                        <p class="lead">Telefono 2: <?php echo $resul[$i]['telefono_2']?> </p>
                         <p class="lead">E-mail: <?php echo $resul[$i]['correo']?> </p>
-                        <br>
                         <?php
                         }
                         ?>
+                        <hr>
+                        <br>
+                        <?php for($i=0;$i<count($resul);$i++){?>
+                            <label class="pb-2"> Teléfono<?php echo $i+1 ?>:</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="telefono<?php echo $i+1 ?>"
+                                name="telefono<?php echo $i+1 ?>"
+                                value='<?php echo $resul[$i]['telefono_usuario'];?>'
+                                aria-label="Número de telefono">
+                                <button class="btn btn-outline-success p-2" type="button">Editar</button>
+                            </div>
+                        <?php
+                        }
+                        ?>
+                        <br>
+                        <a href="#" class="text-shadow">Añadir teléfono</a>
+                        <br>
+                        
                         <div class="pd-4">
                             <a href="http://localhost/proyecto_grado/croptech/vista/admon_editP.php" class="btn btn-secondary">EDITAR CLAVE</a>
                             <a href="http://localhost/proyecto_grado/croptech/vista/admon_editD.php" class="btn btn-success">EDITAR DATOS</a>

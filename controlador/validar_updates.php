@@ -27,15 +27,15 @@ if(isset($_POST['user_edit']) && $_POST['user_edit']=='EDITARP'){//OK
     //a editar DATOS DE USARIO CULTIVADOR, si cumple con el valor, se procede a intanciar 
     //al facade para comunicarnos con el DAO permitiendonos actualizar los datos
 if(isset($_POST['user_edit']) && $_POST['user_edit']=='EDITAR1' ){//OK
-    if(isset($_POST['nombres']) &&  isset($_POST['apellidos']) && isset($_POST['sexo']) &&
-    isset($_POST['telefono1']) && isset($_POST['telefono2']) && isset($_POST['correo']) ){
+    if(isset($_POST['nombres']) &&  isset($_POST['apellidos']) && isset($_POST['sexo'])
+     && isset($_POST['correo'])){
        $obj=new facade();
-       $resul=$obj->correoUnico($_POST['idu'],$_POST['nombres'],$_POST['apellidos'],
-       $_POST['correo'],$_POST['telefono1'],$_POST['telefono2']);
+    
+        $resul=$obj->correoUnico($_POST['idu'],$_POST['nombres'],$_POST['apellidos'],
+        $_POST['correo']);
+      
       if($resul=="hecho"){
        header("Location: http://localhost/proyecto_grado/croptech/vista/user_perfil.php?iderror=ok");
-      }if($resul=="telefono"){
-        header("Location: http://localhost/proyecto_grado/croptech/vista/user_perfil.php?iderror=tel");
       }if($resul=="email"){
         header("Location: http://localhost/proyecto_grado/croptech/vista/user_perfil.php?iderror=em");
       }if($resul=="fail"){
@@ -46,12 +46,12 @@ if(isset($_POST['user_edit']) && $_POST['user_edit']=='EDITAR1' ){//OK
       /*Recibimos los datos enviados por el metodo POST 
       PARA EDITAR LOS DATOS DEL USUARIO PROVEEDOR */
    if(isset($_POST['user_edit']) && $_POST['user_edit']=='EDITARD' ){//OK
-    if(isset($_POST['nombres']) &&  isset($_POST['apellidos']) && isset($_POST['sexo']) &&
-    isset($_POST['telefono1']) && isset($_POST['telefono2']) && isset($_POST['correo']) ){
+    if(isset($_POST['nombres']) &&  isset($_POST['apellidos']) && isset($_POST['sexo']) 
+    && isset($_POST['correo']) ){
 
        $obj=new facade();
        $resul=$obj->correoUnico($_POST['idu'],$_POST['nombres'],$_POST['apellidos'],
-       $_POST['correo'],$_POST['telefono1'],$_POST['telefono2']);
+       $_POST['correo']);
       if($resul=="hecho"){
        header("Location: http://localhost/proyecto_grado/croptech/vista/proveedor_inicio.php?iderror=ok");
       }if($resul=="telefono"){
@@ -68,11 +68,11 @@ if(isset($_POST['user_edit']) && $_POST['user_edit']=='EDITAR1' ){//OK
       PARA EDITAR LOS DATOS DEL USUARIO ADMINISTRADOR */
     if(isset($_POST['Sadmon']) && $_POST['Sadmon']=='EDITARD' ){//OK
       if(isset($_POST['nombres']) &&  isset($_POST['apellidos']) && isset($_POST['sexo']) &&
-      isset($_POST['telefono1']) && isset($_POST['telefono2']) && isset($_POST['correo']) ){
+      isset($_POST['correo']) ){
     
         $obj=new facade();
         $resul=$obj->correoUnico($_POST['idu'],$_POST['nombres'],$_POST['apellidos'],
-        $_POST['correo'],$_POST['telefono1'],$_POST['telefono2']);
+        $_POST['correo']);
         if($resul=="hecho"){
            header("Location: http://localhost/proyecto_grado/croptech/vista/admon_inicio.php?iderror=ok");
         }if($resul=="telefono"){

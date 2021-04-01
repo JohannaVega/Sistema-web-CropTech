@@ -45,8 +45,8 @@
             <!--FIN NAVBAR-->
             <?php 
              require '../modelo/facade.php';
-             $obj_facade = new facade();
-             $roles = $obj_facade->read_roles();  
+             $obj_facade1 = new facade();
+             $roles = $obj_facade1->read_roles();  
             ?>
 
             <!--CONTENIDO-->
@@ -61,24 +61,24 @@
                                  <!--SECCIÓN FORMULARIO-->
                                 <form action="../controlador/validarlogin.php" method="post">
 
-                                    <div class="form-row row justify-content-center p-2">
-                                        <div class="form-group col-md-12">
+                                <div class="form-row row justify-content-center p-2">
+                                        <div class="form-group col-md-8">
                                             <label>Nombres:</label>
                                             <input type="text" class="form-control"  name="nombre" aria-label="Nombres" 
                                             id="pnombre" required>
                                         </div>
                                     </div>
                                     <div class="form-row row justify-content-center p-2">
-                                        <div class="form-group col-md-12">
+                                        <div class="form-group col-md-8">
                                             <label>Apellidos:</label>
                                             <input type="text" class="form-control" name="apellido" aria-label="Apellidos" 
                                             id="sapellido" required>
                                         </div>
                                     </div>
                                     <div class="form-row row justify-content-center p-2">
-                                        <div class="form-group col-md-12">
+                                        <div class="form-group col-md-8">
                                         <label>Sexo:</label>
-                                        <select class="form-select form-select-lg mb-1" id="sexo" name="sexo" required>
+                                        <select class="form-select mb-1" id="sexo" name="sexo" required>
                                             <option value="0">Selecciona una opción</option>
                                             <option value="Masculino">Masculino</option>
                                             <option value="Femenino">Femenino</option>
@@ -86,28 +86,51 @@
                                         </div>
                                     </div>
                                     <div class="form-row row justify-content-center p-2">
-                                        <div class="form-group col-md-12">
+                                        <div class="form-group col-md-8">
                                             <label>Correo Electronico:</label>
                                             <input type="text" class="form-control"  name="correo" aria-label="Correo Electronico" 
                                             id="correo" required>
                                         </div>
                                     </div>
-                                    <div class="form-row row justify-content-center p-2">
-                                        <div class="form-group col-md-12">
+                                    <div class="form-row row justify-content-around p-2 pt-3">
+                                        <div class="form-group col-md-8">
+                                            <label>Tipo de telefono no. 1:</label>
+                                            <select class="form-select" id="tipo_telefono" name="tipo_telefono" required>
+                                            <option value="0">Selecciona una opción</option>
+                                            <option value="1">Teléfono fijo</option>
+                                            <option value="2">Teléfono movil</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row row justify-content-around p-2 pt-3">
+                                        <div class="form-group col-md-8">
                                             <label>Telefono no. 1:</label>
-                                            <input type="number" class="form-control" name="telefono"
-                                            aria-label="Telefono" min="3000000000" max="3999999999" id="telefono" required>
+                                            <input type="tel" class="form-control" name="telefono"
+                                            aria-label="Telefono" min="1000000" max="3999999999" id="telefono" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-row row justify-content-around p-2 pt-3">
+                                        <div class="form-group col-md-8">
+                                            <label>Tipo de telefono no.  2:</label>
+                                            <select class="form-select " id="tipo_telefono2" name="tipo_telefono2" >
+                                            <option value="0">Selecciona una opción</option>
+                                            <option value="1">Teléfono fijo</option>
+                                            <option value="2">Teléfono movil</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row row justify-content-center p-2 pt-3 pb-3">
+                                        <div class="form-group col-md-8">
+                                            <label>Telefono no.  2:</label>
+                                            <input type="tel" class="form-control" name="telefono2"
+                                            aria-label="Telefono" min="1000000" max="3999999999" id="telefono2" >
+                                            <div id="passwordHelpBlock" class="form-text">
+                                                Este campo es opcional.
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-row row justify-content-center p-2">
-                                        <div class="form-group col-md-12">
-                                            <label>Telefono no. 2:</label>
-                                            <input type="number" class="form-control" name="telefono2"
-                                            aria-label="Telefono" min="3000000000" max="3999999999" id="telefono2" >
-                                        </div>
-                                    </div>
-                                    <div class="form-row row justify-content-center p-2">
-                                        <div class="form-group col-md-12">
+                                        <div class="form-group col-md-8">
                                             <label>Contraseña:</label>
                                             <input type="password" class="form-control"  name="contra"
                                             aria-label="Contraseña" id="pass1" required>
@@ -118,7 +141,7 @@
                                     </div>
 
                                     <div class="form-row row justify-content-center p-2">
-                                        <div class="form-group col-md-12">
+                                        <div class="form-group col-md-8">
                                             <label>Valida tu contraseña:</label>
                                             <input type="password" class="form-control"  name="contra2"
                                             aria-label="Contraseña" id="pass2" required>
@@ -126,9 +149,9 @@
                                     </div>
 
                                     <div class="form-row row justify-content-center p-2">
-                                        <div class="form-group col-md-12">
+                                        <div class="form-group col-md-8">
                                             <label>Pregunta de seguridad:</label>
-                                            <select class="form-select form-select-lg mb-1" id="ask" name="ask" required>
+                                            <select class="form-select form-select mb-1" id="ask" name="ask" required>
                                                 <option value="0">Seleccione una opción</option>
                                                 <option value="1">Nombre se su primer mascota</option>
                                                 <option value="2">Direccion de su primer lugar de residencia</option>
@@ -140,7 +163,7 @@
                                     </div>
 
                                     <div class="form-row row justify-content-center p-2">
-                                        <div class="form-group col-md-12">
+                                        <div class="form-group col-md-8">
                                             <label>Respuesta:</label>
                                             <input type="password" class="form-control" id="answer" name="answer" 
                                             aria-label="Respuesta" required>
@@ -221,7 +244,7 @@
                                                 <script>
                                                 alert("No selecciono sexo, vuelva a llenar el formualrio"); 
                                                 </script>
-                                                <p align="center" style="color:red;" >No selecciono sexo, vuelva a llenar el formualrio</p>
+                                                <p style="color:red;" >No selecciono sexo, vuelva a llenar el formualrio</p>
                                                 <?php
                                             }
                                             if($_GET['iderror'] == '4'){
@@ -229,7 +252,7 @@
                                                 <script>
                                                 alert("No selecciono pregunta, vuelva a llenar el formualrio"); 
                                                 </script>
-                                                <p align="center" style="color:red;" >No selecciono pregunta, vuelva a llenar el formualrio</p>
+                                                <p  style="color:red;" >No selecciono pregunta, vuelva a llenar el formualrio</p>
                                                 <?php
                                             }
                                             if($_GET['iderror'] == '5'){

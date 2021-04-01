@@ -55,6 +55,17 @@ class UserDAO extends Conectar{
         return $this->usuarios;
     }
 
+    //Leemos los tipos de telefonos de la BD    ok
+    public function read_tipo_telefono(){
+        $sql = "select * from tipo_telefono";
+        $resul=mysqli_query($this->con(),$sql);
+        while($row=mysqli_fetch_assoc($resul)){
+            $this->usuarios[]=$row;
+        }
+        return $this->usuarios;
+
+    }
+
     //Leemos todos los datos de sesion de todos los usuarios
     // menos el indicado mediante su id             ok
     public function readAll_Menosid($id){
@@ -83,11 +94,10 @@ class UserDAO extends Conectar{
 
 }
     //Insertamos Usuario    ok
-    public function insert($nombre,$apellido,$sexo,$correo,$telefono,$telefono2,
-    $contra,$ask,$answer,$estado,$rol){ //create
+    public function insert($nombre,$apellido,$sexo,$correo,$tipo_telefono,$telefono,$tipo_telefono2,
+                    $telefono2,$contra,$askf,$answer,$estado,$rol){ //create
         
-        $resul3=false;
-
+        $resul4=false;
         //Insertamos los datos del usuario correspondientes a los datos personales
         $sql1="insert into usuario(nombre,apellido,sexo,estado,id_rol_usuario)
         values('$nombre','$apellido','$sexo','$estado','$rol')";
@@ -95,7 +105,6 @@ class UserDAO extends Conectar{
 
         //Validamos que la inserción se haya realizado correctamente
         if($resul1){
-
             //Buscamos el id de la inserción recien realizada
             //para poder insertar los demás datos ingresados por el usuario
             //En las tablas correspondientes
@@ -103,29 +112,42 @@ class UserDAO extends Conectar{
             if ($row = mysqli_fetch_row($rs)) {
             $id = trim($row[0]);
             }
+            if(empty($telefono2)){
+                 //insertamos los telefonos ingresados por el usuario en especifico
+                $sql2="insert into no_telefonos_usuario(id_usuario,telefono_usuario,id_tipo_telefono)
+                values('$id','$telefono','$tipo_telefono')";
 
-            //insertamos los telefonos ingresados por el usuario en especifico
-            $sql2="insert into no_telefonos_usuario(id_usuario,telefono_usuario,telefono_2)
-            values('$id','$telefono','$telefono2')";
+                $resul2=mysqli_query($this->con(),$sql2);
+            }else{
+                $sql2="insert into no_telefonos_usuario(id_usuario,telefono_usuario,id_tipo_telefono)
+                values('$id','$telefono','$tipo_telefono')";
 
-            $resul2=mysqli_query($this->con(),$sql2);
+                $resul2=mysqli_query($this->con(),$sql2);
 
-            if($resul2){
+                if($resul2){
+                    $sql3="insert into no_telefonos_usuario(id_usuario,telefono_usuario,id_tipo_telefono)
+                    values('$id','$telefono2','$tipo_telefono2')";
+
+                    $resul3=mysqli_query($this->con(),$sql3);
+
+                }
+            }
+           
+            if($resul3){
 
                 //insertamos los datos de sesión ingresados por el usuario
-                $sql3="insert into login_usuario(correo,clave,pregunta,respuesta,id_usuario)
-                values('$correo','$contra','$ask','$answer','$id')";
+                $sql4="insert into login_usuario(correo,clave,pregunta,respuesta,id_usuario)
+                values('$correo','$contra','$askf','$answer','$id')";
 
-                $resul3=mysqli_query($this->con(),$sql3);
+                $resul4=mysqli_query($this->con(),$sql4);
             }
-
         }
-
-        return $resul3;
+        return $resul4;
     }
 
+
     //Leemmos la informacion del usuario por medio del id de usuario reistrado en la BD   ok
-    public function readOneFullById($id){
+    public function readOneFullById($id){ 
         $sql="select * from usuario u
         INNER JOIN login_usuario l on u.id_usuario = l.id_usuario
         INNER JOIN no_telefonos_usuario n on u.id_usuario = n.id_usuario
@@ -145,9 +167,9 @@ class UserDAO extends Conectar{
     }
 
     //Actualizamos datos de usuario
-    public function updateUser($id,$nombre,$apellido,$email,$telefono1,$telefono2){//update
+    public function updateUser($id,$nombre,$apellido,$email){//update
 
-        $resul3=false;
+        $resul2=false;
 
         $sql1="update usuario set nombre='$nombre',apellido='$apellido'
                where id_usuario=$id";
@@ -159,17 +181,9 @@ class UserDAO extends Conectar{
 
             $resul2=mysqli_query($this->con(),$sql2);
 
-            if($resul2){
-                $sql3="update no_telefonos_usuario set telefono_usuario='$telefono1',
-                        telefono_2='$telefono2' where id_usuario=$id";
-
-                $resul3=mysqli_query($this->con(),$sql3);
-
-            }
-
         }
 
-        return $resul3;
+        return $resul2;
     } 
     //Metodo que permite ver los datos personales de los usuarios
     //junto con los cultivos registrados

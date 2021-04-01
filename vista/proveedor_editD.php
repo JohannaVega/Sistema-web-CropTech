@@ -97,20 +97,6 @@ if($_SESSION['usuario']){
 
                         <div class="form-row row justify-content-center p-2">
                             <div class="form-group col-md-12">
-                                <input type="number" id="telefono" class="form-control" value='<?php echo $resul[0]['telefono_usuario'];?>' 
-                                name="telefono1" min="3000000000" max="3999999999" placeholder="Telefono 1" required>
-                            </div>
-                        </div>
-
-                        <div class="form-row row justify-content-center p-2">
-                            <div class="form-group col-md-12">
-                                <input type="number" id="telefono" class="form-control" value='<?php echo $resul[0]['telefono_2'];?>' 
-                                name="telefono2"  min="3000000000" max="3999999999" placeholder="Telefono 2" required>
-                            </div>
-                        </div>
-
-                        <div class="form-row row justify-content-center p-2">
-                            <div class="form-group col-md-12">
                                 <input type="text" id="correo" class="form-control" value='<?php echo $resul[0]['correo'];?>' 
                                 name="correo" placeholder="Correo" required>
                             </div>

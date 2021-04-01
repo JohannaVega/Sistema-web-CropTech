@@ -39,21 +39,24 @@ if(isset($_POST['user']) && isset($_POST['pass'])){
         </script>"; 
     }
 }
-//Validamos que mediante el metodo post se haya enviado una peticion cuyo valor sea CREAR_U
+//Validamos que mediante el metodo post hayan sido enviados los datos del input cuyo valor sea CREAR_U
 //para luego validar los valores ingresados por el usuario en el formulario de registro
 //y hacer una instancia del obj facade para acceder al metodo que valida el registro
-//----------------------REGISTRO DE USUARIO ---------------------------//
+//----------------------REGISTRO DE USUARIO CULTIVADOR---------------------------//
 if(isset($_POST['Registro']) && $_POST['Registro']=='CREAR_U' ){
 
 if(isset($_POST['nombre']) && isset($_POST['apellido']) && isset($_POST['sexo']) && isset($_POST['correo'])
-&& isset($_POST['telefono']) && isset($_POST['contra']) && isset($_POST['contra2']) 
-&& isset($_POST['ask']) && isset($_POST['answer']) && isset($_POST['estado']) && isset($_POST['rol']) ){
+ &&  isset($_POST['tipo_telefono']) && isset($_POST['telefono']) &&  isset($_POST['tipo_telefono2']) && isset($_POST['telefono2'])
+ && isset($_POST['contra']) && isset($_POST['contra2']) && isset($_POST['ask']) && isset($_POST['answer']) 
+ && isset($_POST['estado']) && isset($_POST['rol']) ){
     $obj=new facade();
     $nombre = $_POST['nombre'];
     $apellido = $_POST['apellido'];
     $sexo = $_POST['sexo'];
     $correo = $_POST['correo'];
+    $tipo_telefono = $_POST['tipo_telefono'];
     $telefono = $_POST['telefono'];
+    $tipo_telefono2 = $_POST['tipo_telefono2'];
     $telefono2 = $_POST['telefono2'];
     $contra = $_POST['contra'];
     $contra2 = $_POST['contra2'];
@@ -61,10 +64,17 @@ if(isset($_POST['nombre']) && isset($_POST['apellido']) && isset($_POST['sexo'])
     $answer = $_POST['answer'];
     $estado = $_POST['estado'];
     $rol = $_POST['rol'];
-    $resul=$obj->validarRegistroUser($nombre,$apellido,$sexo,$correo,$telefono,$telefono2,$contra,
-    $contra2,$ask,$answer,$estado,$rol);
+    $resul=$obj->validarRegistroUser($nombre,$apellido,$sexo,$correo,$tipo_telefono,$telefono,
+        $tipo_telefono2,$telefono2,$contra,$contra2,$ask,$answer,$estado,$rol);
 
-    header("Location: http://localhost/proyecto_grado/croptech/login/sing-up.php?iderror=$resul");
+    if($rol==0){
+        header("Location: http://localhost/proyecto_grado/croptech/login/sing-up.php?iderror=$resul");
+    }else if($rol==1){
+        header("Location: http://localhost/proyecto_grado/croptech/login/sing-up_p.php?iderror=$resul");
+    }else if($rol==2){
+        header("Location: http://localhost/proyecto_grado/croptech/login/sing-up_a.php?iderror=$resul");
+    }
+    
  }
 }
 

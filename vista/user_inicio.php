@@ -45,7 +45,7 @@ if($_SESSION['usuario']){
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Inicio</a> </li>
         <li class="nav-item"><a class="nav-link" 
-        href="http://localhost/proyecto_grado/croptech/vista/user_perfil.php">Perfil</a></li>
+        href="http://localhost/proyecto_grado/croptech/vista/user_perfil.php?idU=<?php echo $_SESSION['usuario']; ?>">Perfil</a></li>
         <li class="nav-item"><a class="nav-link" href="#" >Acerca de nosotros</a></li>
       </ul>
 

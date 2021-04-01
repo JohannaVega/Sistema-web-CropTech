@@ -10,7 +10,7 @@ if($_SESSION['usuario']){
     <title>Perfil - croptech</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
     </style>
 
     <style>
@@ -60,7 +60,7 @@ if($_SESSION['usuario']){
       $id=$_SESSION['usuario']; //la varible int es un entero
       require '../modelo/facade.php';
       $fac=new facade();
-      $resul=$fac-> readOneFullById($id);
+      $resul=$fac-> readOneFullById($_SESSION['usuario']);
       $idaux=0;
     ?>
     <br>
@@ -105,11 +105,6 @@ if($_SESSION['usuario']){
                                     <p  style="color:green;" >Registro actualizado correctamente</p>
                                     <?php
                                     }   
-                        if($_GET['iderror'] == 'tel'){
-                                      ?>
-                                      <p  style="color:red;" >Telefono ingresado al actualizar datos ya existe</p>
-                                      <?php
-                                      } 
                         if($_GET['iderror'] == 'em'){
                                       ?>
                                       <p  style="color:red;" >Correo ingresado al actualizar datos ya existe</p>
@@ -125,21 +120,36 @@ if($_SESSION['usuario']){
 
                     <h3 >Datos Personales:</h3>
                     <br>
-                    <?php for($i=0;$i<count($resul);$i++){?> 
-                      <p class="lead">Nombres: <?php echo $name=$resul[$i]['nombre']?> </p>
-                      <p class="lead">Apellidos: <?php echo $resul[$i]['apellido']?> </p>
-                      <p class="lead">Sexo: <?php echo $resul[$i]['sexo']?> </p>
-                      <p class="lead">Telefono 1: <?php echo $resul[$i]['telefono_usuario']?> </p>
-                      <p class="lead">Telefono 2: <?php echo $resul[$i]['telefono_2']?> </p>
-                      <p class="lead">E-mail: <?php echo $resul[$i]['correo']?> </p>
+                    <?php for($i=0;$i<1;$i++){?> 
+                        <p class="lead">Nombres: <?php echo $name=$resul[$i]['nombre']?> </p>
+                        <p class="lead">Apellidos: <?php echo $resul[$i]['apellido']?> </p>
+                        <p class="lead">Sexo: <?php echo $resul[$i]['sexo']?> </p>
+                        <p class="lead">E-mail: <?php echo $resul[$i]['correo']?> </p>
+                        <?php
+                        }
+                        ?>
+                        <hr>
+                        <br>
+                        <?php for($i=0;$i<count($resul);$i++){?>
+                            <label class="pb-2"> Teléfono<?php echo $i+1 ?>:</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="telefono<?php echo $i+1 ?>"
+                                name="telefono<?php echo $i+1 ?>"
+                                value='<?php echo $resul[$i]['telefono_usuario'];?>'
+                                aria-label="Número de telefono">
+                                <button class="btn btn-outline-success p-2" type="button">Editar</button>
+                            </div>
+                        <?php
+                        }
+                        ?>
+                        <br>
+                        <a href="#" class="text-shadow">Añadir teléfono</a>
+                        <br>
                     <br>
                     <div class="pd-4">
                         <a href="http://localhost/proyecto_grado/croptech/vista/user_edit_p.php" class="btn btn-secondary">EDITAR CLAVE</a>
                         <a href="http://localhost/proyecto_grado/croptech/vista/user_edit_e.php" class="btn btn-success">EDITAR DATOS</a>
                     </div>
-                    <?php
-                    }
-                    ?>
                 </div>
             </div>
             <!--SECCIÓN CAJA TRASERA-->

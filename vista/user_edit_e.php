@@ -11,7 +11,7 @@ require '../modelo/facade.php';?>
     <title>Editar datos de usuario - CropTech</title>
     <link  rel="preconnect" href="https://fonts.gstatic.com">
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
     </style>
     
     <style>
@@ -91,20 +91,6 @@ require '../modelo/facade.php';?>
                          class="form-control" placeholder="Sexo" readonly>
                       </div> 
                     </div>  
-
-                    <div class="form-row row justify-content-center p-2">
-                        <div class="form-group col-md-12">
-                            <input type="number" id="telefono" class="form-control" value='<?php echo $resul[0]['telefono_usuario'];?>' 
-                            name="telefono1" min="3000000000" max="3999999999" placeholder="Telefono 1" required>
-                        </div>
-                    </div>
-
-                    <div class="form-row row justify-content-center p-2">
-                        <div class="form-group col-md-12">
-                            <input type="number" id="telefono" class="form-control" value='<?php echo $resul[0]['telefono_2'];?>' 
-                            name="telefono2"  min="3000000000" max="3999999999" placeholder="Telefono 2" required>
-                        </div>
-                    </div>
 
                     <div class="form-row row justify-content-center p-2">
                         <div class="form-group col-md-12">
