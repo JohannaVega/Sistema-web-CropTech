@@ -45,15 +45,41 @@ class UserDAO extends Conectar{
     }
 
     //Leemos los telefonos de sesión de los usuarios    ok
-    public function readall_telefonos(){  //read
+    public function readall_telefonos(){  //read 
 
-        $sql="select * from no_telefonos_usuario";
-        $resul=mysqli_query($this->con(),$sql);
+        $sql6="select * from no_telefonos_usuario";
+        $resul=mysqli_query($this->con(),$sql6);
         while($row=mysqli_fetch_assoc($resul)){
             $this->usuarios[]=$row;
         }
         return $this->usuarios;
     }
+
+    public function search_telefono($telefono){
+        $tel=0;
+       
+        $conexion=$this->con();
+     
+        $slq="select telefono_usuario from no_telefonos_usuario where telefono_usuario=$telefono";
+        $resul = $conexion->query($slq);
+        $rows = $resul->fetchAll();
+
+        if ($resul->rowCount() > 0) {
+            foreach ($rows as $row) {
+                $tel=$row[$telefono]; //valor de la palabra
+            }
+        } else {
+            $tel=0;
+        }
+
+        /*$resul=mysqli_query($this->con(),$slq);
+        if ($row = mysqli_fetch_row($resul)) {
+            $tel = trim($row[0]);
+            }
+       
+        return $tel;*/
+    }
+
 
     //Leemos los tipos de telefonos de la BD    ok
     public function read_tipo_telefono(){
@@ -94,8 +120,8 @@ class UserDAO extends Conectar{
 
 }
     //Insertamos Usuario    ok
-    public function insert($nombre,$apellido,$sexo,$correo,$tipo_telefono,$telefono,$tipo_telefono2,
-                    $telefono2,$contra,$askf,$answer,$estado,$rol){ //create
+    public function insert($nombre,$apellido,$sexo,$correo,$tipo_telefono,$telefono,$contra,$askf,
+                    $answer,$estado,$rol){ //create 
         
         $resul4=false;
         //Insertamos los datos del usuario correspondientes a los datos personales
@@ -112,28 +138,14 @@ class UserDAO extends Conectar{
             if ($row = mysqli_fetch_row($rs)) {
             $id = trim($row[0]);
             }
-            if(empty($telefono2)){
                  //insertamos los telefonos ingresados por el usuario en especifico
                 $sql2="insert into no_telefonos_usuario(id_usuario,telefono_usuario,id_tipo_telefono)
                 values('$id','$telefono','$tipo_telefono')";
 
                 $resul2=mysqli_query($this->con(),$sql2);
-            }else{
-                $sql2="insert into no_telefonos_usuario(id_usuario,telefono_usuario,id_tipo_telefono)
-                values('$id','$telefono','$tipo_telefono')";
-
-                $resul2=mysqli_query($this->con(),$sql2);
-
-                if($resul2){
-                    $sql3="insert into no_telefonos_usuario(id_usuario,telefono_usuario,id_tipo_telefono)
-                    values('$id','$telefono2','$tipo_telefono2')";
-
-                    $resul3=mysqli_query($this->con(),$sql3);
-
-                }
-            }
+            
            
-            if($resul3){
+            if($resul2){
 
                 //insertamos los datos de sesión ingresados por el usuario
                 $sql4="insert into login_usuario(correo,clave,pregunta,respuesta,id_usuario)
@@ -197,7 +209,7 @@ class UserDAO extends Conectar{
         return $this->usuarios;
     }
 
-
+    //Método que permite leer los roles de los usuarios del sistema
     public function read_roles(){
         $sql="select * from rol_usuario";
         $resul=mysqli_query($this->con(),$sql);
@@ -206,6 +218,27 @@ class UserDAO extends Conectar{
         }
         return $this->usuarios;
     }
+    //Método que permite insertar un nuevo telefono al usuario
+    public function insert_telefono($idu,$tipo_telefono,$telefono){
+        $sql="insert into no_telefonos_usuario(id_usuario,telefono_usuario,id_tipo_telefono)
+        values('$idu','$telefono','$tipo_telefono')";
+
+        $resul=mysqli_query($this->con(),$sql);
+
+        return $resul;
+    }
+
+    //Método que permite actualizar telefono del usuario
+    public function update_telefono($idu,$telefono,$tipo,$tel_anterior){
+      
+        $sql="update no_telefonos_usuario set telefono_usuario='$telefono', id_tipo_telefono='$tipo'
+         where id_usuario=$idu and telefono_usuario='$tel_anterior' ";
+
+        $resul=mysqli_query($this->con(),$sql);
+
+        return $resul;
+    }
+
 
 }
 

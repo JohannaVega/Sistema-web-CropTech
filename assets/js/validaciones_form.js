@@ -27,12 +27,15 @@ function validarEditC() {
 }
    //Validan los campos de input cuando se registra un usuario nuevo
    function validar_insertU() { 
-    var nombres,apellidos,sexo,correo,telefono,contra,contra2,ask,answer;
+    var nombres,apellidos,sexo,correo,telefono,contra,contra2,ask,answer,
+        tipo_telefono,tipo_telefono2;
 
         nombres = document.getElementById("pnombre").value;
         apellidos = document.getElementById("sapellido").value;
         sexo = document.getElementById("sexo").value;
         correo = document.getElementById("correo").value;
+        tipo_telefono = document.getElementById("tipo_telefono").value;
+        tipo_telefono2 = document.getElementById("tipo_telefono2").value;
         telefono = document.getElementById("telefono").value;
         telefono2 = document.getElementById("telefono2").value;
         contra = document.getElementById("pass1").value;
@@ -42,7 +45,7 @@ function validarEditC() {
     
         
     if(nombres===""|| apellidos===""|| sexo===""|| correo===""  || telefono==="" || 
-     contra==="" || contra2==="" || ask==="" || answer===""){
+      tipo_telefono=="" || tipo_telefono2=="" || contra==="" || contra2==="" || ask==="" || answer===""){
       alert("Por favor rellene los campos obligatorios ");
       return false;
     }
@@ -53,17 +56,20 @@ function validarEditC() {
       alert("Datos no validos (No se permiten espacios en blanco)");
       return false;
     }
-  
-    if((!/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/g.test(nombres) || nombres.length>100)){
+    if( (/^([0-9])*$/.test(nombres)) || nombres.length>100){
       alert("Nombres invalidos");
       return false;
     }
-    if( !/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/g.test(apellidos) || apellidos.length>100){
+    if( (/^([0-9])*$/.test(apellidos)) || apellidos.length>100){
       alert("Apellidos invalidos");
       return false;
     }
-     if((telefono.length || telefono2.length)>11){
-      alert("Telefonos invalidos");
+    if(tipo_telefono == '0' && tipo_telefono>1){
+      alert("No seleccionó tipo de teléfono no.1 o seleccion no valida");
+      return false;
+    }
+     if((telefono.length || telefono2.length)>10){
+      alert("Telefonos invalidos, no pueden contener más de 10 números");
       return false;
      }
     if((contra.length || contra2.length)>16){
@@ -81,6 +87,9 @@ function validarEditC() {
     }
 
    }
+   //-------------------------------------------------------------------------------------------//
+
+
    //Validan los campos de input cuando se registra un cultivo nuevo
    function validarInsertC(){
     var nombre_cultivo,fecha_registro;
@@ -105,6 +114,9 @@ function validarEditC() {
       return false;
     }
    }
+  //-------------------------------------------------------------------------------------------//
+
+
    //Validan los campos de input cuando se registra una tienda 
    function validarinsertT(){
     var name_shop,address,descripcion;
@@ -131,6 +143,9 @@ function validarEditC() {
       return false;
      }
    }
+   //-------------------------------------------------------------------------------------------//
+
+
    //Se validan los campos de input cuando se edita un usuario
   //validarEditP
    function validarEditU(){
@@ -173,6 +188,7 @@ function validarEditC() {
             return true;
         }
    }
+   //-------------------------------------------------------------------------------------------//
    
   
    //Se validan los inputs de la contraseña a actualizar

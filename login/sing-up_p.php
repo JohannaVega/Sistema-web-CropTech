@@ -98,8 +98,8 @@
                                             <label>Tipo de telefono no. 1:</label>
                                             <select class="form-select" id="tipo_telefono" name="tipo_telefono" required>
                                             <option value="0">Selecciona una opción</option>
-                                            <option value="1">Teléfono fijo</option>
-                                            <option value="2">Teléfono movil</option>
+                                            <option value="1">Teléfono movil</option>
+                                            <option value="2">Teléfono fijo</option>
                                             </select>
                                         </div>
                                     </div>
@@ -108,26 +108,6 @@
                                             <label>Telefono no. 1:</label>
                                             <input type="number" class="form-control" name="telefono"
                                             aria-label="Telefono" min="1000000" max="3999999999" id="telefono" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-row row justify-content-around p-2 pt-3">
-                                        <div class="form-group col-md-8">
-                                            <label>Tipo de telefono no.  2:</label>
-                                            <select class="form-select " id="tipo_telefono2" name="tipo_telefono2" >
-                                            <option value="0">Selecciona una opción</option>
-                                            <option value="1">Teléfono fijo</option>
-                                            <option value="2">Teléfono movil</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-row row justify-content-center p-2 pt-3 pb-3">
-                                        <div class="form-group col-md-8">
-                                            <label>Telefono no.  2:</label>
-                                            <input type="number" class="form-control" name="telefono2"
-                                            aria-label="Telefono" min="1000000" max="3999999999" id="telefono2" >
-                                            <div id="passwordHelpBlock" class="form-text">
-                                                Este campo es opcional.
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-row row justify-content-center p-2">
@@ -166,6 +146,7 @@
                                     <div class="form-row row justify-content-center p-2">
                                         <div class="form-group col-md-8">
                                             <label>Respuesta:</label>
+                                            <?php echo $roles[1]['id_rol_usuario'];?>
                                             <input type="password" class="form-control" id="answer" name="answer" 
                                             aria-label="Respuesta" required>
                                             <input type="hidden" name="estado" value='<?php echo "activo";?>'>
@@ -235,41 +216,65 @@
                                             if($_GET['iderror'] == '2'){
                                             ?>
                                             <script>
-                                                alert("El telefono ingresado, ya registrado en el sistema"); 
+                                                alert("El telefono no.1 ingresado, ya está registrado en el sistema"); 
                                             </script>
-                                            <p  style="color:red;" >El telefono ingresado, ya registrado en el sistema</p>
+                                            <p  style="color:red;" >El telefono no.1 ingresado, ya registrado en el sistema</p>
                                             <?php
                                             }
                                             if($_GET['iderror'] == '3'){
-                                                ?>
-                                                <script>
-                                                alert("No selecciono sexo, vuelva a llenar el formualrio"); 
-                                                </script>
-                                                <p align="center" style="color:red;" >No selecciono sexo, vuelva a llenar el formualrio</p>
-                                                <?php
+                                            ?>
+                                            <script>
+                                                alert("El correo ingresado ya esta registrado en el sistema"); 
+                                            </script>
+                                            <p style="color:red;" >El correo ingresado ya esta registrado en el sistema</p>
+                                            <?php
                                             }
                                             if($_GET['iderror'] == '4'){
-                                                ?>
-                                                <script>
-                                                alert("No selecciono pregunta, vuelva a llenar el formualrio"); 
-                                                </script>
-                                                <p align="center" style="color:red;" >No selecciono pregunta, vuelva a llenar el formualrio</p>
-                                                <?php
+                                            ?>
+                                            <script>
+                                                alert("No selecciono sexo, vuelva a llenar el formualrio"); 
+                                            </script>
+                                            <p style="color:red;" >No selecciono sexo, vuelva a llenar el formualrio</p>
+                                            <?php
                                             }
                                             if($_GET['iderror'] == '5'){
                                             ?>
                                             <script>
-                                                alert("El email ingresado ya esta registrado en el sistema"); 
+                                                alert("No selecciono pregunta, vuelva a llenar el formualrio"); 
                                             </script>
-                                            <p a style="color:red;" >El email ingresado ya esta registrado en el sistema</p>
+                                            <p  style="color:red;" >No selecciono pregunta, vuelva a llenar el formualrio</p>
                                             <?php
                                             }
                                             if($_GET['iderror'] == '6'){
                                             ?>
                                             <script>
-                                                alert("Las contraseñas ingresadas no son iguales"); 
+                                                 alert("Las contraseñas ingresadas no son iguales"); 
                                             </script>
                                             <p  style="color:red;" >Las contraseñas ingresadas no son iguales</p>
+                                            <?php
+                                            }
+                                            if($_GET['iderror'] == '7'){
+                                            ?>
+                                            <script>
+                                                alert("No selecciono tipo de telefono no. 1"); 
+                                            </script>
+                                            <p  style="color:red;" >No selecciono tipo de telefono no. 1. Vuelva a llenar el formulario</p>
+                                            <?php
+                                            }
+                                            if($_GET['iderror'] == '8'){
+                                            ?>
+                                            <script>
+                                                alert("No seleccionó tipo de telefono no. 2 o no ingresó telefono no.2"); 
+                                            </script>
+                                            <p  style="color:red;" >No seleccionó tipo de telefono no.2 o no ingresó telefono no.2</p>
+                                            <?php
+                                            }
+                                            if($_GET['iderror'] == '9'){
+                                            ?>
+                                            <script>
+                                                alert("El telefono no.2 ingresado, ya registrado en el sistema"); 
+                                            </script>
+                                            <p  style="color:red;" >El telefono no.2 ingresado, ya registrado en el sistema</p>
                                             <?php
                                             }
                                         }

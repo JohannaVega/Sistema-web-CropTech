@@ -109,25 +109,36 @@ public function validarCorreo($mail){//correo  //ok
        }
 return $direccionador1;
 }
-//FUNCION PARA VERIFICAR LA EXISTENCIA DE UN ID DE USUARIOS   //ok
-public function verificarIdUser($id){//el id del usuario es su # de tel debido a que se usa para iniciar sesion
-    $direccionador1=0;
 
-    $resul2=$this->obj_user->readall_telefonos();
+//FUNCION PARA VERIFICAR LA EXISTENCIA DE UN NUMERO DE TELEFONO   //ok
+public function verificarIdUser($id){
+    $direccionador1=0;
+    $resul=$this->obj_user->readall_telefonos();
    
-       for($i=0;$i<count($resul2);$i++){
-           if($resul2[$i]['telefono_usuario'] == $id){
+       for($i=0;$i<count($resul);$i++){
+           if($resul[$i]['id_usuario'] == $id){
                $direccionador1=2;
            }
        }
    
-return $direccionador1;
+return $direccionador1; 
 }
+
+public function buscar_telefono($telefono){
+    $flag=0;
+
+    $resul= $this->obj_user->search_telefono($telefono);
+    if($resul==$telefono){
+        $flag=1;
+    }
+    return $flag;
+}
+
 //INSERTANDO USUARIOS    //ok
-public function insertarUser($nombre,$apellido,$sexo,$correo,$tipo_telefono,$telefono,$tipo_telefono2,
-                            $telefono2,$contra,$askf,$answer,$estado,$rol){
+public function insertarUser($nombre,$apellido,$sexo,$correo,$tipo_telefono,$telefono,
+                            $contra,$askf,$answer,$estado,$rol){
     $resul=$this->obj_user->insert($nombre,$apellido,$sexo,$correo,$tipo_telefono,$telefono,
-        $tipo_telefono2,$telefono2,$contra,$askf,$answer,$estado,$rol);
+                                    $contra,$askf,$answer,$estado,$rol);
     return $resul;
   }
 
@@ -140,7 +151,7 @@ public function insertarUser($nombre,$apellido,$sexo,$correo,$tipo_telefono,$tel
 
    //funcion que valida el estado del insert: información de usuarios
    public function validarRegistroUser($nombre,$apellido,$sexo,$correo,$tipo_telefono,$telefono,
-    $tipo_telefono2,$telefono2,$contra,$contra2,$ask,$answer,$estado,$rol){
+                    $contra,$contra2,$ask,$answer,$estado,$rol){
     $feedback="";
     if($contra == $contra2){
         if($this->validarPass($contra) == ' '){
@@ -159,21 +170,13 @@ public function insertarUser($nombre,$apellido,$sexo,$correo,$tipo_telefono,$tel
                             if($sexo != '0' ){
                         if($this->validarCorreo($correo) == 0){//verifica correo no exista para registrarlo
                                     if($this->verificarIdUser($telefono)==0){//si redirecciona un 0 es porq no existe el tel en la bd
-                                        if(!empty($telefono2)){//si telefono 2 no esta vacio,seguimos proceso de insertar all datos
-                                           // if($tipo_telefono2 != '0' && $tipo_telefono2<=2){
-                                                if($this->insertarUser($nombre,$apellido,$sexo,$correo,$tipo_telefono,$telefono,
-                                                    $tipo_telefono2,$telefono2,$contra,$askf,$answer,$estado,$rol) == true){
-                                                    $feedback='ok';
-                                                }else{
-                                                    $feedback='1';//error en el insert
-                                                }
-
-
-                                            }else{
-                                                $feedback='8';//No selecciono tipo de telefono no. 2
-                                            }
-                                        //}
-
+                                        if($this->insertarUser($nombre,$apellido,$sexo,$correo,$tipo_telefono,$telefono,
+                                            $contra,$askf,$answer,$estado,$rol) == true){
+                                            $feedback='ok';
+                                        }else{
+                                            $feedback='1';//error en el insert
+                                        }
+                                        
                                     }else{
                                         $feedback='2';//telefono1 ya existe en la bd
                                     }
@@ -252,23 +255,6 @@ public function insertarUser($nombre,$apellido,$sexo,$correo,$tipo_telefono,$tel
      return $feedback;
   }
 
-  public function correoUnico5($id,$nombre,$apellido,$email){
-    $feedback="";
-  if($this->validarCorreoUnico($email,$id) == 0){//verifica correo no exista para registrarlo
-      if($this->verificarTelefono_unico($telefono1,$id)==0){//si redirecciona un 0 es porq no existe el tel en la bd
-         if($this->updateDatosUsser($id,$nombre,$apellido,$email,$telefono1,$telefono2)==true){
-          $feedback='hecho';
-         }else{
-          $feedback='fail';
-         }
-      }else{
-          $feedback='telefono';//el telefono ya existe
-      }
-   }else{
-      $feedback='email';//correo existe
-   }
-   return $feedback;
-}
 
  //Metodo que permite llegar al obj user para actualizar los datos del usuario   ok
   public function updateDatosUsser($id,$nombre,$apellido,$email){
@@ -356,6 +342,52 @@ public function insert_tienda($idu,$name,$apellido,$name_shop,$address,$descripc
    public function read_roles(){ //ok
        $resul=$this->obj_user->read_roles();
        return $resul;
+   }
+   
+   public function agregar_telefono($idu,$tipo_telefono,$telefono){
+        $feedback="";
+        $exist=$this->verificarIdUser($telefono);
+        if($exist==0){
+            if($this->obj_user->insert_telefono($idu,$tipo_telefono,$telefono)==true){
+                $feedback='hecho';//Se inserto telefono
+
+            }else $feedback='error';//No se inserto telefono
+
+        }else{
+            $feedback='tele';//telefono ya existe en la bd
+        }
+       
+        return $feedback;
+   }
+
+   public function editar_telefono($idu,$telefono,$tel_anterior){ //ok
+        $feedback="";
+        $exist=$this->verificarIdUser($telefono);
+
+        if($exist==0){
+            $cant_nums= strlen($telefono);
+            $tipo=0;
+            if($cant_nums==10){
+                $tipo=1;
+            }if($cant_nums==7){
+                $tipo=2;
+            }
+            if($tipo=1 or $tipo=2){
+                if($this->obj_user->update_telefono($idu,$telefono,$tipo,$tel_anterior)==true){
+                    $feedback='hecho';//Se actualizó telefono
+
+                }else $feedback='error';//No se actualizó telefono
+
+            }else{
+                $feedback='not';//Telefono con longitud no valida
+            }
+                
+        }else{
+            $feedback='tele';//telefono ya existe en la bd
+        }
+       
+        return $feedback;
+
    }
    /*public function validar_cultivosbyUser($idu){
        $existe=false;

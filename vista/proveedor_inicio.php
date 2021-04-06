@@ -58,6 +58,7 @@ if($_SESSION['usuario']){
 
         <!--TRAIGO LOS DATOS DE USUARIO-->
         <?php 
+            $id=$_SESSION['usuario']; //la varible int es un entero
             require '../modelo/facade.php';
             $fac=new facade();
             $resul=$fac->readOneFullById($_SESSION['usuario']);
@@ -102,27 +103,42 @@ if($_SESSION['usuario']){
                                         <p  style="color:red;" >Las contraseñas ingresadas no son iguales y/o no contienen numeros y/o mayusculas</p>
                                         <?php
                                         }
-                            if($_GET['iderror'] == 'ok'){
-                                        ?>
-                                        <p  style="color:green;" >Registro actualizado correctamente</p>
-                                        <?php
-                                        }   
-                            if($_GET['iderror'] == 'tel'){
-                                        ?>
-                                        <p  style="color:red;" >Telefono no.1 ingresado al actualizar datos ya existe</p>
-                                        <?php
-                                        } 
-                            if($_GET['iderror'] == 'em'){
-                                        ?>
-                                        <p  style="color:red;" >Correo ingresado al actualizar datos ya existe</p>
-                                        <?php
-                                        }     
-                            if($_GET['iderror'] == 'bad'){
-                                        ?>
-                                        <p  style="color:red;" >Error al actualizar el registro, intentelo más tarde</p>
-                                        <?php
-                                        }
-                                        }?>
+                                if($_GET['iderror'] == 'ok'){
+                                            ?>
+                                            <p  style="color:green;" >Datos actualizados correctamente</p>
+                                            <?php
+                                            }   
+                                if($_GET['iderror'] == 'em'){
+                                              ?>
+                                              <p  style="color:red;" >Correo ingresado al actualizar datos ya existe</p>
+                                              <?php
+                                              }     
+                                if($_GET['iderror'] == 'bad'){
+                                            ?>
+                                            <p  style="color:red;" >Error al actualizar el registro, intentelo más tarde</p>
+                                            <?php
+                                            }
+                                 if($_GET['iderror'] == 'ok2'){
+                                            ?>
+                                            <p  style="color:green;" >Teléfono ingresado correctamente</p>
+                                            <?php
+                                            } 
+                                if($_GET['iderror'] == 'bad1'){
+                                            ?>
+                                            <p  style="color:red;" >Error al ingresar o actualizar teléfono, intentelo más tarde</p>
+                                            <?php
+                                            }
+                                if($_GET['iderror'] == 'tel'){
+                                            ?>
+                                            <p  style="color:red;" >Teléfono ingresado ya existe en el sistema, por favor intente con otro no. telefonico</p>
+                                            <?php
+                                            }
+                                if($_GET['iderror'] == 'not'){
+                                             ?>
+                                             <p  style="color:red;" >Teléfono ingresado, no valido</p>
+                                            <?php
+                                            }
+                                }?>
                         </div>
 
                         <?php for($i=0;$i<1;$i++){?> 
@@ -135,24 +151,47 @@ if($_SESSION['usuario']){
                         ?>
                         <hr>
                         <br>
-                        <?php for($i=0;$i<count($resul);$i++){?>
-                            <label class="pb-2"> Teléfono<?php echo $i+1 ?>:</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" id="telefono<?php echo $i+1 ?>"
-                                name="telefono<?php echo $i+1 ?>"
-                                value='<?php echo $resul[$i]['telefono_usuario'];?>'
-                                aria-label="Número de telefono">
-                                <button class="btn btn-outline-success p-2" type="button">Editar</button>
-                            </div>
+                        <div id="passwordHelpBlock" class="form-text">
+                            Si desea actualizar el número registrado, <br>
+                            ingrese el núevo número y presione
+                            el botón editar.
+                        </div>
+                        <br>
+                        <form action="../controlador/validar_updates.php" method="post">
+                            <?php $cant_telefonos=count($resul);
+                            for($i=0;$i<count($resul);$i++){?>
+                                <label class="pb-2"> Teléfono<?php echo $i+1 ?>:</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="telefono<?php echo $i+1 ?>"
+                                    name="telefono<?php echo $i+1 ?>"
+                                    value='<?php echo $resul[$i]['telefono_usuario'];?>'
+                                    aria-label="Número de telefono">
+
+                                    <input type="hidden" name="idu" value='<?php echo $id;?>'>
+                                            
+                                    <input type="hidden" name="tel_anterior<?php echo $i+1 ?>" id="tel_anterior<?php echo $i+1 ?>" 
+                                    value='<?php echo $resul[$i]['telefono_usuario'];?>'>
+
+                                    <button class="btn btn-outline-success p-2" value="EDIT_TELP<?php echo $i+1 ?>" name="user_edit"
+                                    type="submit">Editar</button>
+
+                                </div>
+                            <?php
+                            }
+                            ?>
+                        </form>
                         <?php
+                        if($cant_telefonos<2){
+                        ?>
+                            <br>
+                            <a href="http://localhost/proyecto_grado/croptech/vista/proveedor_addtel.php?up=<?php echo $_SESSION['usuario']; ?>" 
+                            class="text-shadow">Añadir teléfono</a>
+                            <br>
+                         <?php
                         }
                         ?>
-                        <br>
-                        <a href="#" class="text-shadow">Añadir teléfono</a>
-                        <br>
-                       
-                        <br>
                         
+                        <br>
                         <div class="pd-4">
                             <a href="http://localhost/proyecto_grado/croptech/vista/proveedor_editP.php" class="btn btn-secondary">EDITAR CLAVE</a>
                             <a href="http://localhost/proyecto_grado/croptech/vista/proveedor_editD.php" class="btn btn-success">EDITAR DATOS</a>
