@@ -46,16 +46,17 @@ if($_SESSION['usuario']){
                         <li class="nav-item"><a class="nav-link" aria-current="page" 
                         href="http://localhost/proyecto_grado/croptech/vista/proveedor_mishop.php">Tu tienda</a> </li>
                     </ul>
-                <form class="d-flex form-inline my-2 my-lg-0  navbar-right" >
-                        <a href="http://localhost/proyecto_grado/croptech/controlador/cerrar_sesion.php" 
-                        class="btn btn btn-dark" style="float: right;">Cerrar sesión</a>
-                </form>
+                    <form class="d-flex form-inline my-2 my-lg-0  navbar-right" >
+                            <a href="http://localhost/proyecto_grado/croptech/controlador/cerrar_sesion.php" 
+                            class="btn btn btn-dark" style="float: right;">Cerrar sesión</a>
+                    </form>
 
                  </div>
             </div>
-        </nav>
-        <!--FIN NAVBAR-->
+    </nav>
+    <!--FIN NAVBAR-->
 
+        <!--TRAIGO LOS DATOS DE LA TIENDA DEL USUARIO-->
         <?php
             require '../modelo/facade.php';
             $fac=new facade();

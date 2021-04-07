@@ -1,5 +1,6 @@
 <?php
-if(isset($_GET['up']) ){
+session_start(); 
+if($_SESSION['usuario']){
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,7 +44,7 @@ if(isset($_GET['up']) ){
                     <li class="nav-item"><a class="nav-link " aria-current="page" 
                     href="http://localhost/proyecto_grado/croptech/vista/proveedor_registrar.php">Registrar tienda</a> </li>
                     <li class="nav-item"><a class="nav-link " aria-current="page" 
-                    href="#">Tus tiendas</a> </li>
+                    href="http://localhost/proyecto_grado/croptech/vista/proveedor_mishop.php">Tu tienda</a> </li>
                 </ul>
               
                 <form class="d-flex form-inline my-2 my-lg-0  navbar-right" >
@@ -57,7 +58,7 @@ if(isset($_GET['up']) ){
     <!--FIN NAVBAR-->
 
     <?php
-    $idu=$_GET['up'];
+    $idu=$_SESSION['usuario'];
     ?>
 
     <!--SECCIÓN CONTENIDO-->
@@ -131,12 +132,14 @@ if(isset($_GET['up']) ){
   
     <?php  require "../footer.php"; ?>
 
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" 
+    <!--COMPLEMENTOS BOOTSTRAP-->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" 
         integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" 
         crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" 
         integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" 
         crossorigin="anonymous"></script>
+    <!--FIN COMPLEMENTOS BOOTSTRAP-->
     
 </body>
 </html>

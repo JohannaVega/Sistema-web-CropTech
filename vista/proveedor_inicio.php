@@ -44,7 +44,7 @@ if($_SESSION['usuario']){
                         <li class="nav-item"><a class="nav-link " aria-current="page" 
                         href="http://localhost/proyecto_grado/croptech/vista/proveedor_registrar.php">Registrar tienda</a> </li>
                         <li class="nav-item"><a class="nav-link " aria-current="page" 
-                        href="#">Tus tiendas</a> </li>
+                        href="http://localhost/proyecto_grado/croptech/vista/proveedor_mishop.php">Tu tienda</a> </li>
                     </ul>
                 <form class="d-flex form-inline my-2 my-lg-0  navbar-right" >
                         <a href="http://localhost/proyecto_grado/croptech/controlador/cerrar_sesion.php" 
@@ -88,6 +88,7 @@ if($_SESSION['usuario']){
                         ?>
                         <hr>
                         <br>
+                        <!--SECCIÓN ERROR-->
                         <div id="error">
                             <?php
                             if(isset($_GET['iderror'])){
@@ -140,7 +141,9 @@ if($_SESSION['usuario']){
                                             }
                                 }?>
                         </div>
-
+                        <!--FIN SECCIÓN ERROR-->
+                        
+                        <!--ZONA DONDE SE MUESTRAN DATOS DE USUARIO-->
                         <?php for($i=0;$i<1;$i++){?> 
                         <p class="lead">Nombres: <?php echo $name=$resul[$i]['nombre']?> </p>
                         <p class="lead">Apellidos: <?php echo $resul[$i]['apellido']?> </p>
@@ -196,6 +199,7 @@ if($_SESSION['usuario']){
                             <a href="http://localhost/proyecto_grado/croptech/vista/proveedor_editP.php" class="btn btn-secondary">EDITAR CLAVE</a>
                             <a href="http://localhost/proyecto_grado/croptech/vista/proveedor_editD.php" class="btn btn-success">EDITAR DATOS</a>
                         </div>
+                        <!--FIN ZONA DONDE SE MUESTRAN DATOS DE USUARIO-->
                          
                     </div>
                 
@@ -207,7 +211,7 @@ if($_SESSION['usuario']){
                             <h1 id="name" class="text-center text-white text-shadow">CropTech - Profile</h1>
                             <hr>
                             <br>
-                            <h3 align="center" class="pt-5">Hola, <?php echo $name; ?></h3>
+                            <h3 class="pt-5">Hola, <?php echo $name; ?></h3>
                             <p >En esta sección puedes visualizar y editar tus datos de usuario.</p>
                         <div>
                     </div>

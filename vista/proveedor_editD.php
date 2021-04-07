@@ -45,7 +45,7 @@ if($_SESSION['usuario']){
                         <li class="nav-item"><a class="nav-link " aria-current="page" 
                         href="http://localhost/proyecto_grado/croptech/vista/proveedor_registar.php">Registrar tienda</a> </li>
                         <li class="nav-item"><a class="nav-link " aria-current="page" 
-                        href="#">Tus tiendas</a> </li>
+                        href="http://localhost/proyecto_grado/croptech/vista/proveedor_mishop.php">Tu tienda</a> </li>
                     </ul>
                     <form class="d-flex form-inline my-2 my-lg-0  navbar-right" >
                             <a href="http://localhost/proyecto_grado/croptech/controlador/cerrar_sesion.php" 
@@ -65,56 +65,56 @@ if($_SESSION['usuario']){
             $resul=$fac->readOneFullById($_SESSION["usuario"]);
             $id=$_SESSION["usuario"];
         ?>
-    <!--CONTENEDOR TODO-->
-    <div class="container-lg pb-4 pt-4">
-        <!--CONTEINER FORMULARIO-->
-        <div class="m-1 row justify-content-center">
-            <div class="col-auto p-5 text-center bg-light border border-success"> 
-                <div class="jumbotron">
-                    <h4 class="display-5 text-success text-shadow h1">Editar datos personales</h4>
-                    <hr>
-                    <form action="../controlador/validar_updates.php" method="POST">
-                        <div class="form-row row justify-content-center p-2">
-                            <div class="form-group col-md-12">
-                                <input type="text" id="nombres" value='<?php echo $resul[0]['nombre'];?>'name="nombres"
-                                class="form-control" placeholder="Nombres" required>
+        <!--CONTENEDOR TODO-->
+        <div class="container-lg pb-4 pt-4">
+            <!--CONTEINER FORMULARIO-->
+            <div class="m-1 row justify-content-center">
+                <div class="col-auto p-5 text-center bg-light border border-success"> 
+                    <div class="jumbotron">
+                        <h4 class="display-5 text-success text-shadow h1">Editar datos personales</h4>
+                        <hr>
+                        <form action="../controlador/validar_updates.php" method="POST">
+                            <div class="form-row row justify-content-center p-2">
+                                <div class="form-group col-md-12">
+                                    <input type="text" id="nombres" value='<?php echo $resul[0]['nombre'];?>'name="nombres"
+                                    class="form-control" placeholder="Nombres" required>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-row row justify-content-center p-2">
-                            <div class="form-group col-md-12">
-                                <input type="text" id="apellidos" value='<?php echo $resul[0]['apellido'];?>'name="apellidos"
-                                class="form-control" placeholder="Apellidos" required>
-                            </div>
-                        </div> 
-
-                        <div class="form-row row justify-content-center p-2">
-                            <div class="form-group col-md-12">
-                                <input type="text" id="sexo" value='<?php echo $resul[0]['sexo'];?>'name="sexo"
-                                class="form-control" placeholder="Sexo" readonly>
+                            <div class="form-row row justify-content-center p-2">
+                                <div class="form-group col-md-12">
+                                    <input type="text" id="apellidos" value='<?php echo $resul[0]['apellido'];?>'name="apellidos"
+                                    class="form-control" placeholder="Apellidos" required>
+                                </div>
                             </div> 
-                        </div>  
 
-                        <div class="form-row row justify-content-center p-2">
-                            <div class="form-group col-md-12">
-                                <input type="text" id="correo" class="form-control" value='<?php echo $resul[0]['correo'];?>' 
-                                name="correo" placeholder="Correo" required>
-                            </div>
-                        </div>  
+                            <div class="form-row row justify-content-center p-2">
+                                <div class="form-group col-md-12">
+                                    <input type="text" id="sexo" value='<?php echo $resul[0]['sexo'];?>'name="sexo"
+                                    class="form-control" placeholder="Sexo" readonly>
+                                </div> 
+                            </div>  
 
-                        <input type="hidden" name="idu" value='<?php echo $id;?>'>
-                        <button type="submit" value="EDITARD" name="user_edit" 
-                        class="btn btn-outline-secondary btn-lg" onclick="return validarEditU();">EDITAR USUARIO</button>
-                    </form>
+                            <div class="form-row row justify-content-center p-2">
+                                <div class="form-group col-md-12">
+                                    <input type="text" id="correo" class="form-control" value='<?php echo $resul[0]['correo'];?>' 
+                                    name="correo" placeholder="Correo" required>
+                                </div>
+                            </div>  
+
+                            <input type="hidden" name="idu" value='<?php echo $id;?>'>
+                            <button type="submit" value="EDITARD" name="user_edit" 
+                            class="btn btn-outline-secondary btn-lg" onclick="return validarEditU();">EDITAR USUARIO</button>
+                        </form>
+                    </div>
+
+
                 </div>
-
-
             </div>
+            <!-- FIN CONTEINER FORMULARIO-->
         </div>
-        <!-- FIN CONTEINER FORMULARIO-->
-    </div>
-    <!--CONTENEDOR TODO-->
-    <hr>
+        <!--CONTENEDOR TODO-->
+        <hr>
         <!--CONTEINER SEPARADOR RIBBON-->
         <div class="p-3" id="separator-ribbon">
             <div class="bg-light">     
@@ -125,7 +125,7 @@ if($_SESSION['usuario']){
 
         <?php  require "../footer.php"; ?>
 
-    <!--COMPLEMENTOS BOOTSTRAP-->
+        <!--COMPLEMENTOS BOOTSTRAP-->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" 
             integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" 
             crossorigin="anonymous">
@@ -134,7 +134,7 @@ if($_SESSION['usuario']){
             integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" 
             crossorigin="anonymous">
         </script>
-    <!--FIN COMPLEMENTOS BOOTSTRAP-->
+        <!--FIN COMPLEMENTOS BOOTSTRAP-->
 
 </body>
 </html>

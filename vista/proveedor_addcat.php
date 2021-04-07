@@ -117,6 +117,7 @@ if($_SESSION['usuario']){
                         </div>
                         <!--FIN SECCIÓN ERROR-->
                         
+                        <!--FORMULARIO,SE MUESTRAN LOS DATOS DE CATEGORIAS DE PRODUCTOS-->
                         <form action="../controlador/validar_shop.php" method="POST">
                             
                         <div class="form-row p-2 pt-3">
@@ -156,6 +157,7 @@ if($_SESSION['usuario']){
                             </div>
                         </div>
                         </form>
+                        <!--FIN FORMULARIO,SE MUESTRAN LOS DATOS DE CATEGORIAS DE PRODUCTOS-->
                     </div>
                 </div>
                 <!--SECCIÓN CAJA TRASERA-->

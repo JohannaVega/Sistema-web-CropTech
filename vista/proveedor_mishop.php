@@ -55,7 +55,7 @@ if($_SESSION['usuario']){
         </nav>
         <!--FIN NAVBAR-->
 
-         <!--TRAIGO LOS DATOS DE USUARIO-->
+        <!--TRAIGO LOS DATOS DE USUARIO-->
         <?php 
             require '../modelo/facade.php';
             $fac=new facade();
@@ -82,8 +82,9 @@ if($_SESSION['usuario']){
                 </div>
                  <!--FIN SECCIÓN CAJA TRASERA-->
             </div>
-            <!--SECCIÓN ERROR-->
+            
             <div id="error" class="m-1 row justify-content-center">
+                <!--SECCIÓN ERROR-->
                 <div class="col-auto">
                     <?php
                     if(isset($_GET['iderror'])){
@@ -146,28 +147,30 @@ if($_SESSION['usuario']){
                         </div>
                     <hr>
                     <div class="row justify-content-md-center">
-                        <div class="p-3 text-center">
-                            <h3 class="text-dark text-shadow">Datos de contacto</h3>
-                        </div>
-                        <br>
-                    
-                        <div class="col-4 border border-dark">
-                            
-                            <br>
-                            <?php $cant_telefonos=count($resul);
-                                for($i=0;$i<count($resul);$i++){?>
-                                    <label class="pb-2"> Teléfono<?php echo $i+1 ?>:</label>    
+                        <div class="col-4 ">
+                            <div class="p-3 text-center border border-secondary">
+                                <h1 id="name" class="text-dark text-shadow">Teléfonos contacto</h1>
+                            </div>
+                            <div id="passwordHelpBlock" class="form-text text-center">
+                                A continuación visualizarás los teléfonos de contacto de
+                                la tienda.
+                            </div>
+                            <div class="p-3 text-center">
+                                <?php $cant_telefonos=count($resul);
+                                    for($i=0;$i<count($resul);$i++){?>
+                                        <label class="pb-2"> Teléfono <?php echo $i+1 ?>:</label>    
                                         <p class="lead">
                                         <?php echo $resul[$i]['telefono_usuario']?> 
                                         </p>
-                                    
+                                            
                                 <?php
                                 }
                                 ?>
-                       
+                            </div>
                         </div>
-                        <div class="col-4 m-5">
-                            <div id="passwordHelpBlock" class="form-text text-center">
+                        <div class="col-4 m-5 bg-success ">
+                            <br><br>
+                            <div  id="passwordHelpBlock" class=" pt-3 text-white text-center">
                                 Si desea actualizar el número de telefono registrado , <br>
                                 Dirigase a la sección de inicio en donde dispone de la opción 
                                 para hacerlo.
@@ -212,7 +215,7 @@ if($_SESSION['usuario']){
                                     <br>
                                     Seleciona la opción "Ver"
                                     </p>
-                                    <a href="#" 
+                                    <a href="http://localhost/proyecto_grado/croptech/vista/proveedor_ver.php" 
                                     class="btn btn-outline-success">Ver</a>
                                 </div>
                         </div>

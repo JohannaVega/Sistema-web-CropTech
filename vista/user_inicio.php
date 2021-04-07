@@ -46,19 +46,13 @@ if($_SESSION['usuario']){
         <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Inicio</a> </li>
         <li class="nav-item"><a class="nav-link" 
         href="http://localhost/proyecto_grado/croptech/vista/user_perfil.php?idU=<?php echo $_SESSION['usuario']; ?>">Perfil</a></li>
-        <li class="nav-item"><a class="nav-link" href="#" >Acerca de nosotros</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" >Proveedores</a></li>
       </ul>
 
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-
       <form class="d-flex form-inline my-2 my-lg-0  navbar-right" >
-          <button class="btn btn btn-dark"
-            data-toggle="button" aria-pressed="false" autocomplete="off"
-            style="float: right;" type="submit">Sing out</button>
-         </form>
+          <a href="http://localhost/proyecto_grado/croptech/controlador/cerrar_sesion.php" 
+          class="btn btn btn-dark" style="float: right;">Cerrar sesión</a>
+      </form>
 
     </div>
   </div>

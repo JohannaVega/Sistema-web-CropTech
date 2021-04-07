@@ -43,7 +43,7 @@ if($_SESSION['usuario']){
                         <li class="nav-item"><a class="nav-link active" aria-current="page" 
                         href="http://localhost/proyecto_grado/croptech/vista/proveedor_registrar.php">Registrar tienda</a> </li>
                         <li class="nav-item"><a class="nav-link " aria-current="page" 
-                        href="http://localhost/proyecto_grado/croptech/vista/proveedor_mishop.php">Tus tiendas</a> </li>
+                        href="http://localhost/proyecto_grado/croptech/vista/proveedor_mishop.php">Tu tienda</a> </li>
                     </ul>
                 <form class="d-flex form-inline my-2 my-lg-0  navbar-right" >
                         <a href="http://localhost/proyecto_grado/croptech/controlador/cerrar_sesion.php" 
@@ -52,8 +52,8 @@ if($_SESSION['usuario']){
 
                  </div>
             </div>
-        </nav>
-        <!--FIN NAVBAR-->
+    </nav>
+    <!--FIN NAVBAR-->
 
         <br>
 
@@ -78,36 +78,37 @@ if($_SESSION['usuario']){
             </div>
             <!--FIN SECCIÓN CAJA TRASERA-->
         </div>
-    <!--SECCIÓN ERROR-->
-    <div id="error" class="m-1 row justify-content-center">
-        <div class="col-auto">
-            <?php
-            if(isset($_GET['iderror'])){
-                if($_GET['iderror'] == 'ok'){
-            ?>
-                <script>
-                    alert("Tienda registrada correctamente"); 
-                </script>
-                <p  style="color:green;" >Tienda registrada correctamente</p>
-            <?php } 
-                else if ($_GET['iderror'] == 'bad'){
-                    ?>
+
+        <!--SECCIÓN ERROR-->
+        <div id="error" class="m-1 row justify-content-center">
+            <div class="col-auto">
+                <?php
+                if(isset($_GET['iderror'])){
+                    if($_GET['iderror'] == 'ok'){
+                ?>
                     <script>
-                        alert("Error al registrar la tienda, intentelo más tarde"); 
+                        alert("Tienda registrada correctamente"); 
                     </script>
-                    <p  style="color:red;" >Error al registrar la tienda, intentelo más tarde</p>
-            <?php }
-                else if ($_GET['iderror'] == 'limit'){
-                    ?>
-                    <script>
-                        alert("Lo sentimos,no es posible agregar más de una tienda"); 
-                    </script>
-                    <p  style="color:red;" >Lo sentimos,no es posible agregar más de una tienda</p>
-            <?php }
-            } ?>
+                    <p  style="color:green;" >Tienda registrada correctamente</p>
+                <?php } 
+                    else if ($_GET['iderror'] == 'bad'){
+                        ?>
+                        <script>
+                            alert("Error al registrar la tienda, intentelo más tarde"); 
+                        </script>
+                        <p  style="color:red;" >Error al registrar la tienda, intentelo más tarde</p>
+                <?php }
+                    else if ($_GET['iderror'] == 'limit'){
+                        ?>
+                        <script>
+                            alert("Lo sentimos,no es posible agregar más de una tienda"); 
+                        </script>
+                        <p  style="color:red;" >Lo sentimos,no es posible agregar más de una tienda</p>
+                <?php }
+                } ?>
+            </div>
         </div>
-    </div>
-    <!--FIN SECCIÓN ERROR-->
+        <!--FIN SECCIÓN ERROR-->
         <hr>
                     <!--COLUMNA 1-->
                     <div class="col-auto p-5  bg-light border border-success">
