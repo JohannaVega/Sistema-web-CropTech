@@ -17,7 +17,7 @@ class facade{
         $this->obj_cultivo = new CultivoDAO();
         $this->obj_proveedor = new ProveedorDAO();
     }
-    
+
 //FUNCION PARA IDENTIFICAR TIPO DE USUARIO 
 public function TipoUser($id){//ok
     $tipo=0;                   
@@ -149,7 +149,7 @@ public function insertarUser($nombre,$apellido,$sexo,$correo,$tipo_telefono,$tel
     return $resul;
     }
 
-   //funcion que valida el estado del insert: información de usuarios
+   //funcion que valida el estado del insert: información de usuarios    OK
    public function validarRegistroUser($nombre,$apellido,$sexo,$correo,$tipo_telefono,$telefono,
                     $contra,$contra2,$ask,$answer,$estado,$rol){
     $feedback="";
@@ -261,10 +261,7 @@ public function insertarUser($nombre,$apellido,$sexo,$correo,$tipo_telefono,$tel
     $resul=$this->obj_user->updateUser($id,$nombre,$apellido,$email);
     return $resul;
     }
- //Metodo que permite leer la información del usuario administrador
- public function readAdmonById($id){
-    
-    }
+ 
 
 //FUNCIÓN QUE VALIDA QUE EL CORREO A REGISTRAR
 //no este registrado por otro usuario      ok pendiente
@@ -294,37 +291,101 @@ public function verificarTelefono_unico($telefono,$id){
 return $direccionador1;
 }
 
-//Funcion que llama invoca a un metodo de la clase proveedorDAO para insertar tienda ok
-public function insert_tienda($idu,$name,$apellido,$name_shop,$address,$descripcion){
-    $feedback='';
-    if($resul=$this->obj_proveedor->insert($idu,$name,$apellido,$name_shop,$address,$descripcion) == true){
-        $feedback='ok';
-    }else{
-       $feedback='bad';
-    }
+//Funcion que invoca a un metodo de la clase proveedorDAO para insertar tienda    ok
+public function insert_tienda($idu,$name_shop,$address,$address_web,$descripcion){
+    $feedback="";
+    $resul = $this->obj_proveedor->read_tienda_u($idu);
+
+    
+     if(count($resul)<1){
+        if($resul=$this->obj_proveedor->insert($idu,$name_shop,$address,$address_web,$descripcion)==true){
+            $feedback='ok';
+        }else{
+            $feedback='bad';
+        }
+     }else{
+        $feedback='limit';//no puede agregar más de dos tiendas
+     }
     return $feedback;
 }
-  /*
-    //Metodo que actualiza la contraseña del administrador
-  public function updatePassAdmonById($id,$pass1,$pass2){
-    $feedback='';
-    if($pass1 == $pass2){
-         if($this->validarPass($pass1) == ' '){
-             if($this->obj_admon->updatePass($id,$pass1) == true){
-                 $feedback='ok';
-             }else{
-                 $feedback='3';//error en el update
-             }
-         }else{
-            $feedback='2';//las clave dada no es valida
-         }
+
+//Funcion que permite editar los datos de una tienda en especifico    ok
+public function editar_tienda($idp,$name_shop,$address,$address_web,$descripcion){
+    $feedback="";
+    if(empty($name_shop) or empty($address) or empty($descripcion)){
+        $feedback='void';
     }else{
-        $feedback='1';//las claves dadas no son iguales
+        if($resul=$this->obj_proveedor->update($idp,$name_shop,$address,$address_web,$descripcion)==true){
+            $feedback='ok';
+        }else{
+            $feedback='bad';
+        }
     }
+        
+    
+    
     return $feedback;
-  }
-  */
-  
+}
+
+//Fución que permite leer la información completa de las tiendas de un usuario
+public function read_tiendas_user($idu){//ok
+    $resul = $this->obj_proveedor->read_tiendas_user($idu);
+
+    return $resul;
+}
+
+//Fución que permite leer la informacion de la tienda de un usuario 
+//trayendo unicamente la información almacenada en la tabla proveedor
+public function read_tienda_proveedor($idu){//ok
+    $resul=$this->obj_proveedor->read_tienda_u($idu);
+
+    return $resul;
+}
+
+//Función que permite asignar categoria a tienda de proveedor
+public function insert_categoria_pro($idu,$categoria){//ok
+
+    $feedback="";
+    $resul=$this->obj_proveedor->read_tiendas_user($idu);
+
+    $id_proveedor= $resul[0]['id_proveedor'];
+
+    $exist=$this->categoria_proveedor($id_proveedor,$categoria);
+
+    if(empty($categoria)){
+        $feedback='cate';//no seleccionó categoria
+
+    }else if($categoria>0 && $categoria<5){
+
+        if(!$exist){
+            if($resul=$this->obj_proveedor->insert_categoria_pro($id_proveedor,$categoria)==true){
+                $feedback='ok';
+            }else{
+                $feedback='bad';
+                }
+        }else{
+            $feedback='yet';//categoria ya registrada
+        }
+      
+    }else 
+        $feedback='not';//categoria no valida
+
+    return $feedback;
+
+}
+//Función que me permite validar si una categoria ya 
+//le pertenece a un proveedor
+public function categoria_proveedor($id_proveedor,$categoria){
+    $exist=false;
+    $resul=$this->obj_proveedor->read_categorias_byProv($id_proveedor,$categoria);
+
+    for($i=0; $i<count($resul); $i++){
+        if($resul[$i]['id_tipo_categoria'] == $categoria){
+            $exist=true;
+        }
+    }
+    return $exist;
+}
 
    //Metodo que permite agregar un cultivo, retorna ok cuando
    //se realizó el insert exitosamente
@@ -338,13 +399,14 @@ public function insert_tienda($idu,$name,$apellido,$name_shop,$address,$descripc
     return $feedback;
    }
 
-
+   //Metodo que permite leer los roles del sistema
    public function read_roles(){ //ok
        $resul=$this->obj_user->read_roles();
        return $resul;
    }
-   
-   public function agregar_telefono($idu,$tipo_telefono,$telefono){
+
+   //Método que permite agregar telefono a un usuario en especifico
+   public function agregar_telefono($idu,$tipo_telefono,$telefono){//ok
         $feedback="";
         $exist=$this->verificarIdUser($telefono);
         if($exist==0){
@@ -360,6 +422,7 @@ public function insert_tienda($idu,$name,$apellido,$name_shop,$address,$descripc
         return $feedback;
    }
 
+   //Método que permite editar telefono de un usuario en especifico
    public function editar_telefono($idu,$telefono,$tel_anterior){ //ok
         $feedback="";
         $exist=$this->verificarIdUser($telefono);
@@ -388,6 +451,13 @@ public function insert_tienda($idu,$name,$apellido,$name_shop,$address,$descripc
        
         return $feedback;
 
+   }
+
+   
+   //Metodo que permite ver las categorias de tiendas del sistema
+   public function ver_categorias(){ //ok
+       $resul=$this->obj_proveedor-> read_categorias();
+       return $resul;
    }
    /*public function validar_cultivosbyUser($idu){
        $existe=false;

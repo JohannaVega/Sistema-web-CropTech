@@ -5,8 +5,10 @@
  var expnum=/^([0-9])*$/;
  var exptelefono=/^\d{10}$/;
  var exptelefono1=/^\d{7}$/;
+ var expnumbers=/^([0-9])*$/;
  var expespacio= /^\s+$/;//valida espacios en blanco
  var expCorreo=/\w+@\w+\.+[a-z]/;
+ var expURL=/^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/;
  var exptext=/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/g;//valida solo txt
  var exptextsin_= /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+[a-zA-ZÀ-ÿ\u00f1\u00d1][a-zA-ZÀ-ÿ\u00f1\u00d1]+$/;//valida txt sin espacios
 
@@ -56,11 +58,11 @@ function validarEditC() {
       alert("Datos no validos (No se permiten espacios en blanco)");
       return false;
     }
-    if( (/^([0-9])*$/.test(nombres)) || nombres.length>100){
+    if( (expnumbers.test(nombres)) || nombres.length>100){
       alert("Nombres invalidos");
       return false;
     }
-    if( (/^([0-9])*$/.test(apellidos)) || apellidos.length>100){
+    if( (expnumbers.test(apellidos)) || apellidos.length>100){
       alert("Apellidos invalidos");
       return false;
     }
@@ -122,6 +124,7 @@ function validarEditC() {
     var name_shop,address,descripcion;
     name_shop = document.getElementById("name_shop").value;
     address = document.getElementById("address").value;
+    address_web = document.getElementById("address_web").value;
     descripcion = document.getElementById("descripcion").value;
 
     if(name_shop===""|| descripcion==="" || address===""){
@@ -138,9 +141,13 @@ function validarEditC() {
       alert("Nombre del establecimiento invalido");
       return false;
      }
-     if(expnum.test(descripcion) || expnum.test(name_shop)){
-      alert("No se permite ingresar solo numeros en los");
+     if(expnumbers.test(descripcion) || expnumbers.test(name_shop)){
+      alert("No se permite ingresar solo numeros en los campos descripción y nombre del establecimiento");
       return false;
+     }
+     if(!expURL.test(address_web)){
+       alert("Solo se permiten URL como: http://www.algunlugar.com");
+       return false;
      }
    }
    //-------------------------------------------------------------------------------------------//

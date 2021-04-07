@@ -214,6 +214,9 @@ if($_SESSION['usuario']){
                 </div>
                 <!--FIN SECCIÓN CAJA TRASERA-->
             </div>
+            <div>
+            </div>
+            </div>
         </div>
         <!--FIN CONTEINER CONTENIDO-->
 

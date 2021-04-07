@@ -22,7 +22,7 @@ if(isset($_POST['user']) && isset($_POST['pass'])){
 
     if($tipo_user==1){
         //redireccionamos a la pagina de inicio del cultivador
-        header("Location: http://localhost/proyecto_grado/croptech/vista/user_inicio.php?id");
+        header("Location: http://localhost/proyecto_grado/croptech/vista/user_inicio.php?id=$iddef");
     }else
     if($tipo_user==2){
         //redireccionamos a la pagina de inicio del proveedor
@@ -30,7 +30,7 @@ if(isset($_POST['user']) && isset($_POST['pass'])){
     }else
     if($tipo_user==3){
         //redireccionamos a la pagina de inicio del admin
-        header("Location: http://localhost/proyecto_grado/croptech/vista/admon_inicio.php"); 
+        header("Location: http://localhost/proyecto_grado/croptech/vista/admon_inicio.php?id=$iddef"); 
     }
     else{
         echo "<script type='text/javascript'>

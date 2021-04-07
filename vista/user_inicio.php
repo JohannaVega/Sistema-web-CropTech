@@ -138,7 +138,7 @@ if($_SESSION['usuario']){
                         <img src="../assets/img/historial.jpg" class="card-img-top" width="100" height="200"
                         alt="...">
                         <div class="card-body">
-                        <h5 class="card-title">Historial de cultivos</h5>
+                          <h5 class="card-title">Historial de cultivos</h5>
                           <p class="card-text">Para ver el historial de tus cultivos. Presiona
                               la opción "Ver historial".
                           </p>

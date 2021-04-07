@@ -40,10 +40,10 @@ if($_SESSION['usuario']){
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link " aria-current="page" 
                         href="http://localhost/proyecto_grado/croptech/vista/proveedor_inicio.php">Inicio</a> </li>
-                        <li class="nav-item"><a class="nav-link " aria-current="page" 
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" 
                         href="http://localhost/proyecto_grado/croptech/vista/proveedor_registrar.php">Registrar tienda</a> </li>
                         <li class="nav-item"><a class="nav-link " aria-current="page" 
-                        href="#">Tus tiendas</a> </li>
+                        href="http://localhost/proyecto_grado/croptech/vista/proveedor_mishop.php">Tus tiendas</a> </li>
                     </ul>
                 <form class="d-flex form-inline my-2 my-lg-0  navbar-right" >
                         <a href="http://localhost/proyecto_grado/croptech/controlador/cerrar_sesion.php" 
@@ -55,13 +55,7 @@ if($_SESSION['usuario']){
         </nav>
         <!--FIN NAVBAR-->
 
-    <!--TRAIGO LOS DATOS DE USUARIO-->
-    <?php 
-        require '../modelo/facade.php';
-        $fac=new facade();
-        $resul=$fac->readOneFullById($_SESSION['usuario']);
-    ?>
-    <br>
+        <br>
 
     <!--CONTEINER CONTENIDO-->
     <div class="container-lg pb-4 pt-4">
@@ -78,6 +72,7 @@ if($_SESSION['usuario']){
                             descripción de los productos que ofreces para que nuestros 
                             usuarios te escogan como su proveedor de insumos. 
                         </p>
+                        <h4 class="text-black">Recuerda, que solo puedes agregar una tienda</h4>
                     </div>
                 </div>
             </div>
@@ -102,30 +97,29 @@ if($_SESSION['usuario']){
                     </script>
                     <p  style="color:red;" >Error al registrar la tienda, intentelo más tarde</p>
             <?php }
+                else if ($_GET['iderror'] == 'limit'){
+                    ?>
+                    <script>
+                        alert("Lo sentimos,no es posible agregar más de una tienda"); 
+                    </script>
+                    <p  style="color:red;" >Lo sentimos,no es posible agregar más de una tienda</p>
+            <?php }
             } ?>
         </div>
     </div>
     <!--FIN SECCIÓN ERROR-->
         <hr>
-        
                     <!--COLUMNA 1-->
-                    <div class="col-auto p-5 text-center bg-light border border-success">
+                    <div class="col-auto p-5  bg-light border border-success">
                         <div class="jumbotron">
                             <div id= "contenedor-name">
-                                <h1 id="name" class="text-black text-center" >Resgistra tu tienda física</h1>
+                                <h1 id="name" class="text-black text-center" >Registra tu tienda física</h1>
                                 <hr>
                             </div>
 
                                 <!--SECCIÓN FORMULARIO-->
                                 <form action="../controlador/validar_shop.php" method="post">
-                                    <div class="form-row row justify-content-center p-2">
-                                        <br>
-                                        <div class="form-group col-md-12">
-                                            <h6 class="display-6">Nombre del usuario: <?php echo $resul[0]['nombre'];?></h6>
-                                            <input type="hidden" name="name" value='<?php echo $resul[0]['nombre'];?>'>
-                                            <input type="hidden" name="apellido" value='<?php echo $resul[0]['apellido'];?>'>
-                                        </div>
-                                    </div>
+                                        
                                         <div class="form-row row justify-content-center p-2">
                                             <div class="form-group col-md-12" >
                                                 <input type="text" class="form-control" placeholder="Nombre establecimiento" 
@@ -134,8 +128,18 @@ if($_SESSION['usuario']){
                                         </div>
                                         <div class="form-row row justify-content-center p-2">
                                             <div class="form-group col-md-12" >
-                                                <input type="text" class="form-control" placeholder="Dirección establecimiento" 
+                                                <input type="text" class="form-control" placeholder="Dirección física establecimiento" 
                                                 id="address" name="address" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-row row justify-content-center p-2">
+                                            <div class="form-group col-md-12" >
+                                                <input type="url" class="form-control" placeholder="Dirección web" 
+                                                id="address" name="address_web" title="Sólo se permiten URLs .com bien formadas">
+                                                <div id="passwordHelpBlock" class="form-text">
+                                                   Si cuenta con un enlace a la pagina web o un enlace a la página de
+                                                   Facebook e Instagram de su tienda ingreselo aquí.
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-row row justify-content-center p-2">
@@ -149,15 +153,18 @@ if($_SESSION['usuario']){
                                                 </div>
                                             </div>
                                         </div>
-                                        <input type="hidden" name="idu" value='<?php echo $resul[0]['id_usuario'];?>'>
-                                        <button type="submit" value="INSERT_SHOP" name="proveedor" class="btn btn-outline-secondary btn-lg" 
-                                        onclick="return validarinsertT();" >Registrar tienda</button>
+                                        <input type="hidden" name="idu" value='<?php echo $_SESSION['usuario'];?>'>
+                                        <div class="col-auto text-center ">
+                                            <button type="submit" value="INSERT_SHOP" name="proveedor" class="btn btn-outline-secondary btn-lg" 
+                                            onclick="return validarinsertT();" >Registrar tienda</button>
+                                        </div>
                                 </form>
                         </div>
                     </div>
                     <!--FIN COLUMNA 1-->
                      
                 </div>
+               
                 
     </div>
     <!--FIN CONTEINER CONTENIDO-->
@@ -188,7 +195,7 @@ if($_SESSION['usuario']){
 </html>
 
 <?php
-}else{
+ } else {
   echo "<script type='text/javascript'>
   alert('ERROR!! al iniciar sesion');
   window.location='../index.php';
