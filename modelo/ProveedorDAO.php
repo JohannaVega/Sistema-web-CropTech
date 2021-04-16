@@ -97,10 +97,12 @@ class ProveedorDAO extends Conectar{
         INNER JOIN no_telefonos_usuario t on  p.id_usuario = t.id_usuario
          where p.id_usuario=$idu";
         $resul=mysqli_query($this->con(),$sql);
-        while($row=mysqli_fetch_assoc($resul)){
-            $this->proveedores[]=$row;
-        }
-        return $this->proveedores;
+        
+            while($row=mysqli_fetch_assoc($resul)){
+                $this->proveedores[]=$row;
+            }
+            return $this->proveedores;
+       
     }
 
     //Leemos la información de la tienda de un proveedor, buscando por id_usuario

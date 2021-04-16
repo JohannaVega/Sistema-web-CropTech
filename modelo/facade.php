@@ -61,7 +61,7 @@ class facade{
         return $tipo;
    } 
 
-   //funcion para definir id de la sesion
+   //funcion para definir id de la sesion,el $id es el mail del usuario
    public function idDefinitivo($id){ //ok
         $iddef=0;
 
@@ -72,6 +72,13 @@ class facade{
     
         return $iddef;
    }
+
+   //Me permite optener la informacion de sing-in de un usuario por medio del id
+   public function read_datos_login($id_user){ //ok
+
+    $resul=$this->obj_user->read_user_login($id_user);
+    return $resul;
+}
 
     //FUNCION PARA VERIFICAR QUE UNA CLAVE CUMPLA CON LAS CONDICIONES
     public function validarPass($clave){//con expresiones regulares    //ok
@@ -108,6 +115,22 @@ class facade{
             }
         }
     return $direccionador1;
+    }
+
+    //Funcion que valida que la respuesta a la pregunta ingresada sea la correcta
+    public function validarPregunta($id,$respuesta){
+        
+        $resul1=$this->obj_user->readall_login();
+       
+           for($i=0;$i<count($resul1);$i++){
+               if($resul1[$i]['id_usuario'] == $id){
+                  if(strtoupper($resul1[$i]['respuesta']) == strtoupper($respuesta)){
+                      return true;
+                  }   
+               }
+           }
+        
+       return false;
     }
 
     //FUNCION PARA VERIFICAR LA EXISTENCIA DE UN NUMERO DE TELEFONO   //ok
@@ -325,7 +348,6 @@ class facade{
     //Fución que permite leer la información completa de la tienda de un usuario
     public function read_tiendas_user($idu){//ok
         $resul = $this->obj_proveedor->read_tiendas_user($idu);
-
         return $resul;
     }
 
@@ -333,7 +355,6 @@ class facade{
     //trayendo unicamente la información almacenada en la tabla proveedor
     public function read_tienda_proveedor($idu){//ok
         $resul=$this->obj_proveedor->read_tienda_u($idu);
-
         return $resul;
     }
     

@@ -116,114 +116,188 @@ if($_SESSION['usuario']){
             <!--FIN SECCIÓN ERROR-->
             <hr>
 
-            <!--COLUMNA 1-->
-            <div class="col-auto p-5  bg-light border border-success">
-                <div class="jumbotron">
-                    <div id= "contenedor-name">
-                        <h1 id="name" class="text-black text-center" >Tu tienda</h1>
-                        
-                        <hr>
+            <!--VERIFICO QUE USUARIO TENGA TIENDA REGISTRADA-->
+            <!--SI LA CONSULTA ES VACIA ENVIAMOS AL USUARIO A REGISTRAR TIENDA-->
+            <?php
+            if(count($resul)==0){
+            ?>
+                <!--COLUMNA 1-->
+                <div class="col-auto p-5  bg-light border border-success">
+                    <div class="jumbotron">
+                        <div id= "contenedor-name">
+                            <h1 id="name" class="text-black text-center" >¡Aún no tienes tu tienda registrada!</h1>
+                            <div class="text-black text-center">
+                                <label >¿Qué esperas? Registrala.</label>
+                            </div>
+                            <hr>
+                        </div>
+                        <br>
                     </div>
 
-                    <br>
-                    <?php for($i=0;$i<1;$i++){?> 
-                        <label class="pb-2"> Nombre establecimiento:</label>   
-                        <p class="lead"><?php echo $name=$resul[$i]['nombre_establecimiento']?> </p>
-                        <label class="pb-2"> Dirección física:</label>   
-                        <p class="lead"><?php echo $resul[$i]['direccion_fisica']?> </p>
-                        <label class="pb-2"> Dirección web:</label>  
-                        <p class="lead">
-                        <a href="<?php echo $resul[$i]['direccion_web']?>"><?php echo $resul[$i]['direccion_web']?></a>
-                        </p>
-                        <label class="pb-2"> Descripción:</label>  
-                        <p class="lead"><?php echo $resul[$i]['descripcion_tienda']?> </p>
-                        <?php
-                        }
-                        ?>
-                        <br>
-                        <div class="pd-4 text-center">
-                            <a href="http://localhost/proyecto_grado/croptech/vista/proveedor_edit.php" 
-                            class="btn btn-success">EDITAR DATOS</a>
+                    <!--CONTENEDOR CARDS-->
+                    <div id="cards">
+                        <!--FILA 2-->
+                        <div class="row justify-content-md-center">
+                            <!--COLUMNA 2.1-->
+                            <div class="col-4 ">
+                                <div class="card w-100 card-border mb-5">
+                                        <img src="../assets/img/categoria.jpg" class="card-img-top" width="100" height="200"
+                                        alt="...">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Registrar mi tienda</h5>
+                                            <p class="card-text">Para iniciar el proceso de registro de tu tienda.
+                                            <br>
+                                            Seleciona la opción "Registrar tienda"
+                                            </p>
+                                            <a href="http://localhost/proyecto_grado/croptech/vista/proveedor_registrar.php" 
+                                            class="btn btn-outline-success">Registrar tienda</a>
+                                        </div>
+                                </div>
+                            </div>
+                            <!--FIN COLUMNA 2.1-->
+                            <!--COLUMNA 2.2-->
+                            <div class="col-4 ">
+                                <div class="card w-100 card-border mb-5">
+                                    <img src="../assets/img/ver_tiendas.png" class="card-img-top" width="100" height="200"
+                                     alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Ver otros proveedores</h5>
+                                        <p class="card-text">Si deseas ver la información de otros proveedores
+                                        registrados.
+                                        <br>
+                                        Seleciona la opción "Ver"
+                                        </p>
+                                        <a href="http://localhost/proyecto_grado/croptech/vista/proveedor_ver.php" 
+                                        class="btn btn-outline-success">Ver</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    <hr>
+                        <!--FIN FILA 2-->
+                    </div>
+                    <!--FIN CONTENEDOR CARDS-->
+
+                </div>
+                <!--FIN COLUMNA 1-->
+
+            <!--VERIFICO QUE USUARIO TENGA TIENDA REGISTRADA-->
+            <!--SI LA CONSULTA NO ES VACIA MOSTRAMOS DATOS DE TIENDA-->
+            <?php
+            }else{
+            ?>
+                <div class="col-auto p-5  bg-light border border-success">
+                    <div class="jumbotron">
+                        <div id= "contenedor-name">
+                            <h1 id="name" class="text-black text-center" >Tu tienda</h1>
+                            
+                            <hr>
+                        </div>
+
+                        <br>
+                        <?php for($i=0;$i<1;$i++){?> 
+                            <label class="pb-2"> Nombre establecimiento:</label>   
+                            <p class="lead"><?php echo $name=$resul[$i]['nombre_establecimiento']?> </p>
+                            <label class="pb-2"> Dirección física:</label>   
+                            <p class="lead"><?php echo $resul[$i]['direccion_fisica']?> </p>
+                            <label class="pb-2"> Dirección web:</label>  
+                            <p class="lead">
+                            <a href="<?php echo $resul[$i]['direccion_web']?>"><?php echo $resul[$i]['direccion_web']?></a>
+                            </p>
+                            <label class="pb-2"> Descripción:</label>  
+                            <p class="lead"><?php echo $resul[$i]['descripcion_tienda']?> </p>
+                            <?php
+                            }
+                            ?>
+                            <br>
+                            <div class="pd-4 text-center">
+                                <a href="http://localhost/proyecto_grado/croptech/vista/proveedor_edit.php" 
+                                class="btn btn-success">EDITAR DATOS</a>
+                            </div>
+                        <hr>
+                        <div class="row justify-content-md-center">
+                            <div class="col-4 ">
+                                <div class="p-3 text-center border border-secondary">
+                                    <h1 id="name" class="text-dark text-shadow">Teléfonos contacto</h1>
+                                </div>
+                                <div id="passwordHelpBlock" class="form-text text-center">
+                                    A continuación visualizarás los teléfonos de contacto de
+                                    la tienda.
+                                </div>
+                                <div class="p-3 text-center">
+                                    <?php $cant_telefonos=count($resul);
+                                        for($i=0;$i<count($resul);$i++){?>
+                                            <label class="pb-2"> Teléfono <?php echo $i+1 ?>:</label>    
+                                            <p class="lead">
+                                            <?php echo $resul[$i]['telefono_usuario']?> 
+                                            </p>
+                                                
+                                    <?php
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="col-4 m-5 bg-success ">
+                                <br><br>
+                                <div  id="passwordHelpBlock" class=" pt-3 text-white text-center">
+                                    Si desea actualizar el número de telefono registrado , <br>
+                                    Dirigase a la sección de inicio en donde dispone de la opción 
+                                    para hacerlo.
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                </div>
+                <!--FIN COLUMNA 1-->
+
+                <hr>
+                <br>
+
+                <!--CONTENEDOR CARDS-->
+                <div>
+                    <!--FILA 1-->
                     <div class="row justify-content-md-center">
                         <div class="col-4 ">
-                            <div class="p-3 text-center border border-secondary">
-                                <h1 id="name" class="text-dark text-shadow">Teléfonos contacto</h1>
-                            </div>
-                            <div id="passwordHelpBlock" class="form-text text-center">
-                                A continuación visualizarás los teléfonos de contacto de
-                                la tienda.
-                            </div>
-                            <div class="p-3 text-center">
-                                <?php $cant_telefonos=count($resul);
-                                    for($i=0;$i<count($resul);$i++){?>
-                                        <label class="pb-2"> Teléfono <?php echo $i+1 ?>:</label>    
-                                        <p class="lead">
-                                        <?php echo $resul[$i]['telefono_usuario']?> 
+                            <div class="card w-100 card-border mb-5">
+                                    <img src="../assets/img/categoria.jpg" class="card-img-top" width="100" height="200"
+                                    alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Agregar categoria de mi tienda</h5>
+                                        <p class="card-text">Para que nuestros usuarios puedan ver tu tienda
+                                        de acuerdo a categorias especificas a la hora de buscar proveedores.
+                                        <br>
+                                        Seleciona la opción "Añadir categoria"
                                         </p>
-                                            
-                                <?php
-                                }
-                                ?>
+                                        <a href="http://localhost/proyecto_grado/croptech/vista/proveedor_addcat.php?us=<?php echo $resul[0]['id_usuario']; ?>" 
+                                        class="btn btn-outline-success">Añadir categoria</a>
+                                    </div>
                             </div>
                         </div>
-                        <div class="col-4 m-5 bg-success ">
-                            <br><br>
-                            <div  id="passwordHelpBlock" class=" pt-3 text-white text-center">
-                                Si desea actualizar el número de telefono registrado , <br>
-                                Dirigase a la sección de inicio en donde dispone de la opción 
-                                para hacerlo.
+                        <div class="col-4 ">
+                            <div class="card w-100 card-border mb-5">
+                                    <img src="../assets/img/ver_tiendas.png" class="card-img-top" width="100" height="200"
+                                    alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Ver otros proveedores</h5>
+                                        <p class="card-text">Si deseas ver la información de otros proveedores
+                                        registrados.
+                                        <br>
+                                        Seleciona la opción "Ver"
+                                        </p>
+                                        <a href="http://localhost/proyecto_grado/croptech/vista/proveedor_ver.php" 
+                                        class="btn btn-outline-success">Ver</a>
+                                    </div>
                             </div>
                         </div>
                     </div>
+                    <!--FIN FILA 1-->
+                </div>
+                <!--FIN CONTENEDOR CARDS-->
 
-                    
-                </div>
-            </div>
-            <!--FIN COLUMNA 1-->
-            <hr>
-            <br>
-            <!--CONTENEDOR CARDS-->
-            <div>
-                <!--FILA 1-->
-                <div class="row justify-content-md-center">
-                    <div class="col-4 ">
-                        <div class="card w-100 card-border mb-5">
-                                <img src="../assets/img/categoria.jpg" class="card-img-top" width="100" height="200"
-                                alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">Agregar categoria de mi tienda</h5>
-                                    <p class="card-text">Para que nuestros usuarios puedan ver tu tienda
-                                    de acuerdo a categorias especificas a la hora de buscar proveedores.
-                                    <br>
-                                    Seleciona la opción "Añadir categoria"
-                                    </p>
-                                    <a href="http://localhost/proyecto_grado/croptech/vista/proveedor_addcat.php?us=<?php echo $resul[0]['id_usuario']; ?>" 
-                                    class="btn btn-outline-success">Añadir categoria</a>
-                                </div>
-                        </div>
-                    </div>
-                    <div class="col-4 ">
-                        <div class="card w-100 card-border mb-5">
-                                <img src="../assets/img/ver_tiendas.png" class="card-img-top" width="100" height="200"
-                                alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">Ver otros proveedores</h5>
-                                    <p class="card-text">Si deseas ver la información de otros proveedores
-                                    registrados.
-                                    <br>
-                                    Seleciona la opción "Ver"
-                                    </p>
-                                    <a href="http://localhost/proyecto_grado/croptech/vista/proveedor_ver.php" 
-                                    class="btn btn-outline-success">Ver</a>
-                                </div>
-                        </div>
-                    </div>
-                </div>
-                <!--FIN FILA 1-->
-            </div>
-            <!--FIN CONTENEDOR CARDS-->
+            <?php
+            }
+            ?>
 
         </div>
         <!--FIN CONTEINER CONTENIDO-->

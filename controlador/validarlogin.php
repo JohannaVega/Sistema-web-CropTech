@@ -148,7 +148,34 @@ if(isset($_POST['edit_admon']) && $_POST['edit_admon']=='CREAR_U' ){
     
         header("Location: http://localhost/proyecto_grado/croptech/vista/admon_insert.php?iderror=$resul");
      }
+}
+
+//----------------------RECUPERAR CONTRASEÑA ---------------------------//
+if(isset($_POST['mail']) && isset($_POST['recuperar']) && $_POST['recuperar']=='recuperar'){
+    $objf=new facade();
+    $tipo=$objf->validarCorreo($_POST['mail']);
+    if($tipo == 0){
+    header("Location: http://localhost/proyecto_grado/croptech/login/recuperar.php?error=1"); 
+    }else{//Si el correo es valido
+    $iddef=$objf->idDefinitivo($_POST['mail']);//definimos el id de la sesion
+    header("Location: http://localhost/proyecto_grado/croptech/login/ask.php?user=$iddef");
     }
+
+}
+
+//----------------------VALIDAR RESPUESTA ---------------------------//
+if(isset($_POST['validarR']) && isset($_POST['id']) && isset($_POST['answer'])){
+  $id=$_POST['id'];
+  $ans=$_POST['answer'];
+
+  $objf=new facade();
+  $resul=$objf->validarPregunta($id,$ans);
+  if($resul == true){
+    header("Location: http://localhost/clinicafinal/Login/cambio.php?user=$id");  
+  }else{
+    header("Location: http://localhost/clinicafinal/Login/ask.php?error=1&user=$id"); 
+  }
+  }
 
 
 

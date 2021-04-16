@@ -72,7 +72,7 @@
                                         <button type="submit" class="btn btn-outline-success btn-lg">Iniciar sesión</button>
                                     </div>
                                     <div class="text-center p-2">
-                                    <a href="vista/recuperar.php"> <button type="button"
+                                    <a href="recuperar.php"> <button type="button"
                                     class="btn btn-outline-dark">¿Olvido su contraseña?</button></a>
                                     </div>
                                 </form>

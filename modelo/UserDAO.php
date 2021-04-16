@@ -43,6 +43,18 @@ class UserDAO extends Conectar{
         }
         return $this->usuarios;
     }
+    
+    //Leemos los datos de login de un usuario mediante su id
+    public function read_user_login($id_user){   //ok
+
+        $sql="select * from login_usuario WHERE id_usuario=$id_user";
+        $resul=mysqli_query($this->con(),$sql);
+        while($row=mysqli_fetch_assoc($resul)){
+            $this->usuarios[]=$row;
+        }
+        return $this->usuarios;
+
+    }
 
     //Leemos los telefonos de sesión de los usuarios    ok
     public function readall_telefonos(){  //read 
@@ -107,7 +119,7 @@ class UserDAO extends Conectar{
     }
     
 
-    //Leemos usuario por  correo    ok
+    //Leemos datos de un usuario por  correo    ok
     public function readOneById($id){ 
     
         $sql="select * from login_usuario where correo='$id'";
