@@ -64,6 +64,14 @@
                     <!-- NOS REDIRECCIONA A VALIDARLOGIN CUANDO PRESIONA RECUPERAR CONTRASEÑA -->
                     <h1 class="text-center">Pregunta de seguridad</h1>
                     <hr>
+                    <?php   
+                        if(isset($_GET['error']) && $_GET['error']==1){
+                            ?><br>
+                            <p style="color:red;" >La respuesta ingresada no corresponde con la 
+                                registrada en el sistema..</p>
+                            <?php
+                        }
+                        ?>
                     <br>
                     
                     <!--SECCIÓN FORMULARIO-->

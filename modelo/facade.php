@@ -118,7 +118,7 @@ class facade{
     }
 
     //Funcion que valida que la respuesta a la pregunta ingresada sea la correcta
-    public function validarPregunta($id,$respuesta){
+    public function validarPregunta($id,$respuesta){//ok
         
         $resul1=$this->obj_user->readall_login();
        
@@ -252,7 +252,7 @@ class facade{
                     $feedback='3';//error en el update
                 }
             }else{
-                $feedback='2';//las claves dadas no es valida
+                $feedback='2';//las claves dadas no son validas
             }
         }else{
             $feedback='1';//las claves dadas no son iguales

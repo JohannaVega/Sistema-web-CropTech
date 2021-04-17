@@ -198,8 +198,7 @@ if($_SESSION['usuario']){
             window.location='user_shops.php';
             </script>";
 
-        }
-                
+        }         
         ?>
 
     

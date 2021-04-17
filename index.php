@@ -56,7 +56,7 @@
                     <li class="nav-item"><a class="nav-link"
                     href="http://localhost/proyecto_grado/croptech/login/sing-up.php">Gestiona tu cultivo</a></li>
                     <li class="nav-item"><a class="nav-link" id="link2"
-                    href="#separator-ribbon">Proveedores</a></li>
+                    href="http://localhost/proyecto_grado/croptech/vista/ver_proveedores.php">Proveedores</a></li>
                     <li class="nav-item"><a class="nav-link" aria-current="page" 
                     href="http://localhost/proyecto_grado/croptech/login/sing-up_a.php">Administradores</a> </li>
                 </ul>
@@ -90,9 +90,10 @@
         <div class="container-md ">
             <div class="conteiner-texto">
                 <div class="row justify-content-center pt-5">
-                    <h1 id="name" class="text-black text-center" >¿Quiénes somos?</h1>
+                    <h1 id="name" class="text-shadow text-center" >¿Quiénes somos?</h1>
+                    <hr>
                 </div>
-                    <div class="row pt-5 pb-5">
+                    <div class="row pt-3 pb-5">
                         <p>Somos un sistema web completo que pretende ayudar a cada uno de 
                             los agricultores urbanos a gestionar y optimizar sus huertos urbanos.
                 
@@ -119,7 +120,7 @@
         <div class="container-md p-5">
                 <div class="row">
                     <h3 class="text-center pb-5 pt-5 h1">¡Comienza ahora!</h3>
-            </div>
+                 </div>
 
             <div class="row justify-content-md-center">
                 <div class="col-sm-4">
@@ -142,27 +143,25 @@
                     </div>
                 </div>
                 <div class="col-sm-4">
-                    <div class="card w-100 card-border mb-5">
-                        <img src="assets/img/upcultivo.jpg" class="card-img-top" width="200" height="200"
-                        alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Unirte como un proveedor</h5>
-                            <p class="card-text">¿Eres un proveedor?
-                                Si deseas ofrecer tus productos en nuestra plataforma para que
-                                nuestros agricultores urbanos tengan acceso a los mejores insumos,
-                                crea tu cuenta e inicia como un proveedor, la informacion de tu tienda
-                                se publicará en el sistema.
-                            </p>
-                            <p class="card-text">  
-                                Presiona el botón "Registrarme".
-                            </p>
-                            <a href="http://localhost/proyecto_grado/croptech/login/sing-up_p.php" class="btn btn-outline-success text-center">Registrarme</a>
+                        <div class="card w-100 card-border mb-5">
+                            <img src="assets/img/historial.jpg" class="card-img-top" width="100" height="200"
+                            alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Contáctanos</h5>
+                                <p class="card-text">Si deseas obtener nuestra información de contácto. 
+                                </p>
+                                <p class="card-text">  
+                                    Presiona el botón: "Contácto".
+                                </p>
+                                <a href="http://localhost/proyecto_grado/croptech/contacto.php" 
+                                class="btn btn-outline-success text-center">Contácto</a>
+                            </div>
                         </div>
-                      </div>
                 </div>
+               
             </div>
 
-            <div class="row justify-content-around ">
+            <div class="row justify-content-md-center ">
 
             <div class="col-sm-4">
                     <div class="card w-100 card-border mb-5">
@@ -187,20 +186,23 @@
                 </div>
 
                 <div class="col-sm-4">
-                        <div class="card w-100 card-border mb-5">
-                            <img src="assets/img/historial.jpg" class="card-img-top" width="100" height="200"
-                            alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Contáctanos</h5>
-                                <p class="card-text">Si deseas obtener nuestra información de contácto. 
-                                </p>
-                                <p class="card-text">  
-                                    Presiona el botón: "Contácto".
-                                </p>
-                                <a href="http://localhost/proyecto_grado/croptech/contacto.php" 
-                                class="btn btn-outline-success text-center">Contácto</a>
-                            </div>
+                    <div class="card w-100 card-border mb-5">
+                        <img src="assets/img/upcultivo.jpg" class="card-img-top" width="200" height="200"
+                        alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Unirte como un proveedor</h5>
+                            <p class="card-text">¿Eres un proveedor?
+                                Si deseas ofrecer tus productos en nuestra plataforma para que
+                                nuestros agricultores urbanos tengan acceso a los mejores insumos,
+                                crea tu cuenta e inicia como un proveedor, la informacion de tu tienda
+                                se publicará en el sistema.
+                            </p>
+                            <p class="card-text">  
+                                Presiona el botón "Registrarme".
+                            </p>
+                            <a href="http://localhost/proyecto_grado/croptech/login/sing-up_p.php" class="btn btn-outline-success text-center">Registrarme</a>
                         </div>
+                      </div>
                 </div>
             </div>
 
@@ -212,7 +214,8 @@
     <!--SECCIÓN SEPARADOR-->
     <div id="separator-ribbon">
             <div class="bg-light">     
-            <h4 class="text-center pb-5 pt-5">Tiendas de suministros para cultivos:</h4></div>
+                <h1 class="text-center pb-5 pt-5">¡ Nuestra ubicación !</h1>
+            </div>
           </div>
     </div>
     <!--FIN SECCIÓN SEPARADOR-->

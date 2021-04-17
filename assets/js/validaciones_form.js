@@ -214,7 +214,7 @@ function validarEditC() {
      return false;
     }
     if((pass1.length || pass2.length)>16){
-     alert("La contraseña exedio el limite de caracteres");
+     alert("La contraseña exedió el límite de caracteres");
      return false;
     }
     if(pass1==pass2){
@@ -225,6 +225,7 @@ function validarEditC() {
      return false;
     }
    }
+   //-------------------------------------------------------------------------------------------//
 
    function validarInsertC() {
      var idm, idp, fecha, hora;

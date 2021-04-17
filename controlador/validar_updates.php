@@ -1,6 +1,6 @@
 <?php
 session_start();
-if($_SESSION['usuario']){
+if($_SESSION['usuario'] || isset($_POST['iduser'])){
     require '../modelo/facade.php';
 
     /*Se valida el valor que se envia por el metodo POST, del botón correspondiente
@@ -24,6 +24,16 @@ if(isset($_POST['user_edit']) && $_POST['user_edit']=='EDITARP'){//OK
   }
 }
 
+    /*POST: RECUPERAR CONTRASEÑA, PERMITE EDITAR CONTRASEÑA */
+if(isset($_POST['user_edit']) && $_POST['user_edit']=='EDITAR_PASS'){ //OK
+  if(isset($_POST['pass1']) && isset($_POST['pass2']) && isset($_POST['iduser'])){
+     $obj=new facade();
+     $user=$_POST['iduser'];
+
+     $resul=$obj->updatePassUserById($_POST['iduser'],$_POST['pass1'],$_POST['pass2']);
+     header("Location: http://localhost/proyecto_grado/croptech/login/cambio.php?iderror=$resul&user=$user");
+  }
+}
   
 
 

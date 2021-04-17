@@ -139,8 +139,6 @@ if($_SESSION['usuario']){
             </div>
         </div> <!-- /#wrapper -->
 
-
-
         <hr>
         <!--CONTEINER SEPARADOR RIBBON-->
         <div class="p-3" id="separator-ribbon">

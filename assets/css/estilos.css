@@ -87,21 +87,43 @@ main{
     height: 100%;
     text-align: justify;
 
-    background-image: url(../img/crop.jpg);
+    background-image: url(../img/help7.jpg);opacity:0.8;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
+    /*../img/crop.jpg*/
 
-    /*background-color: rgb(76, 119, 33, 0.5);*/
 }
+
 .conteiner-texto{
     padding: 10px 20px;
     height: 100%;
     text-align: justify;
     /* Genera una transparencia en el fondo del contenedor*/
     backdrop-filter: blur(10px); 
-    background-color: rgb(76, 119, 33, 0.7);
+    background-color: rgb(228, 241, 233, 0.7);
+}
+
+.content-capacitate{
+    padding: 10px 20px;
+    height: 100%;
+    text-align: justify;
+
+    background-image: url(../img/crop.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.content-texto{
+    padding: 10px 20px;
+    height: 100%;
+    text-align: justify;
+    /* Genera una transparencia en el fondo del contenedor*/
+    backdrop-filter: blur(10px); 
+    background-color: rgb(228, 241, 233, 0.7);
 }
 
 /*.caja_trasera div button{
@@ -142,54 +164,7 @@ main{
     transition: left 500ms cubic-bezier(0.175, 0.885, 0.320, 1.275);
 
 }
-.contenedor_login-register form{
-    width: 100%;
-    padding: 30px 30px;
-    background-color: #fff;
-    /*absolute permite que mueva el form*/
-    position: relative;
-    border-color: #000000 ;
-    border-radius: 20px; /*borde reodondeado*/
-}
-.contenedor_login-register form h2{
-    font-size: 25px;
-    text-align: center;
-    /*espaciado entre inputs y el text h2*/
-    margin-bottom: 20px;
-    color: #3f3f44 ;
-}
-.contenedor_login-register form input{
-    width: 100%;
-    margin-top: 20px;/*espaciado entre inputs*/
-    padding: 10px;
-    border: none;
-    background-color: #f2f2f2;
-    font-size: 16px;/*tamaño*/
-    outline: none;
-}
-.contenedor_login-register form select{
-    width: 100%;
-    margin-top: 20px;/*espaciado entre inputs*/
-    padding: 10px;
-    border: none;
-    background-color: #f2f2f2;
-    font-size: 16px;/*tamaño*/
-    outline: none;
-}
 
-.contenedor_login-register form button{
-    padding: 10px 40px;
-    margin-top: 10px;/*espaciado*/
-
-}
-/*transicion formularios*/
-.formulario_login{
-    opacity: 1;
-    display: block;
-}
-.formulario_register{
-    display: none;
-}
 .text-shadow{/*Sombra de texto*/
     text-shadow: 0 3px 3px rgba(0, 0, 0, 0.6); ;
 }

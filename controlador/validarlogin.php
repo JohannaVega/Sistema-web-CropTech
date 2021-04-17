@@ -171,9 +171,9 @@ if(isset($_POST['validarR']) && isset($_POST['id']) && isset($_POST['answer'])){
   $objf=new facade();
   $resul=$objf->validarPregunta($id,$ans);
   if($resul == true){
-    header("Location: http://localhost/clinicafinal/Login/cambio.php?user=$id");  
+    header("Location: http://localhost/proyecto_grado/croptech/login/cambio.php?user=$id");  
   }else{
-    header("Location: http://localhost/clinicafinal/Login/ask.php?error=1&user=$id"); 
+    header("Location: http://localhost/proyecto_grado/croptech/login/ask.php?error=1&user=$id"); 
   }
   }
 
