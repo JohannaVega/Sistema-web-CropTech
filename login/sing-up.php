@@ -145,7 +145,6 @@
                                     <div class="form-row row justify-content-center p-2">
                                         <div class="form-group col-md-8">
                                             <label>Respuesta:</label>
-                                            <?php echo $roles[0]['id_rol_usuario'];?>
                                             <input type="password" class="form-control" id="answer" name="answer" 
                                             aria-label="Respuesta" required>
                                             <input type="hidden" name="estado" value='<?php echo "activo";?>'>

@@ -11,10 +11,16 @@ if($_SESSION['usuario']){
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link rel="stylesheet" href="../assets/css/estilos.css">
 
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+        </style>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+        </style>
+
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
         integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
         crossorigin="" />
-
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" 
         integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" 
@@ -32,127 +38,126 @@ if($_SESSION['usuario']){
                 </a>
          </div>
 
-     <!--Boton que se muestra cuando 
-     disminuyan las dimensiones del ancho de pantalla
-    id del navbar= "navbarSupportedContent"-->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
 
-    <!--La clase colapsa los elementos del nav-->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link " aria-current="page" 
-        href="http://localhost/proyecto_grado/croptech/vista/user_inicio.php">Inicio</a> </li>
-        <li class="nav-item"><a class="nav-link" 
-        href="http://localhost/proyecto_grado/croptech/vista/user_perfil.php">Perfil</a></li>
-        <li class="nav-item">
-        <a class="nav-link active" 
-        href="http://localhost/proyecto_grado/croptech/vista/cultivo-historial.php">Mis cultivos</a></li>
-      </ul>
+            <!--La clase colapsa los elementos del nav-->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link " aria-current="page" 
+                href="http://localhost/proyecto_grado/croptech/vista/user_inicio.php">Inicio</a> </li>
+                <li class="nav-item"><a class="nav-link" 
+                href="http://localhost/proyecto_grado/croptech/vista/user_perfil.php">Perfil</a></li>
+                <li class="nav-item">
+                <a class="nav-link active" 
+                href="http://localhost/proyecto_grado/croptech/vista/cultivo-historial.php">Mis cultivos</a></li>
+                <li class="nav-item"><a class="nav-link" 
+                href="http://localhost/proyecto_grado/croptech/vista/user_shops.php" >Proveedores</a></li>
+            </ul>
 
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-
-      <form class="d-flex form-inline my-2 my-lg-0  navbar-right" >
-          <button class="btn btn btn-dark"
-            data-toggle="button" aria-pressed="false" autocomplete="off"
-            style="float: right;" type="submit">Sing out</button>
-         </form>
-
+            <form class="d-flex form-inline my-2 my-lg-0  navbar-right" >
+                <a href="http://localhost/proyecto_grado/croptech/controlador/cerrar_sesion.php" 
+                class="btn btn btn-dark" style="float: right;">Cerrar sesión</a>
+            </form>
     </div>
   </div>
 </nav>
         <!--FIN NAVBAR-->
-        <?php require '../modelo/facade.php';
-            $obj=new facade();
+        <?php 
+            require '../modelo/facade.php';
             $idu=$_SESSION['usuario'];
-            $resul=$obj->read_cultivos($idu);
+
+            $obj_1=new facade();
+            $exist=$obj_1-> validar_cultivos_user($idu);
+
+            $obj_2=new facade();
+            $resul=$obj_2-> read_cultivos_user($idu);
+
+
         ?>
-             <hr>
-            <div class="pt-2 pl-5 pr-5">
-            <div >     
-            <h3 class="text-center pb-3 pt-3">Hecha un vistazo a tus cultivos !!</h3></div>
-            </div>
-            </div>
-            <hr>
-            
-
-             <div class="container"> 
+             
              <div class="m-1 row justify-content-center">
-             <div class="col-auto p-5 text-center bg-light border border-success">
-             <h3 class="display-5 text-success text-shadow h1">Historial de tus cultivos</h3>
-                <hr>
-                
-             <?php
-             if(($exist=$obj->read_cultivosbyUser($idu))=='si'){//se muestran los cultivos registrados
-             ?>
-             <!--Tabla con los cultivos registrados-->
-               <div class="table-responsive">
-                    <table id="tmedicos" class="table table-striped table-light">
-                        <thead>
-                            <tr>
-                            <th scope="col">Nombre cultivo</th>
-                            <th scope="col">Fecha de registro</th>
-                            
-                            <th scope="col"></th>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
-                            
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php for($i=0;$i<count($resul);$i++){?>
-                            <tr>
-                            <td><?php echo $resul[$i]['nombre_cultivo'];?></td>
-                            <td><?php echo $resul[$i]['fecha_registro'];?></td>
-
-                            <!--editar datos-->
-                            <td> <a href="http://localhost/proyecto_grado/croptech/vista/admon_editUP.php?idu=<?php echo $resul[$i]['id_usuario'];?>"
-                            class="btn btn-outline-success"  title="Ver datos del cultivo">
-                            <img src="http://localhost/proyecto_grado/croptech/assets/img/ver.png" alt="Editar" id="icono" height="30px" width="30px"></a></td>
-                            <!--editar contraseña-->
-                            <td><a href="http://localhost/proyecto_grado/croptech/vista/admon_editUD.php?idu=<?php echo $resul[$i]['id_usuario'];?>"
-                            class="btn btn-outline-success" title="Actualizar datos del cultivo">
-                            <img src="http://localhost/proyecto_grado/croptech/assets/img/actualizar.png" alt="Editar" id="icono" height="30px" width="30px"></a></td>
-                            <td>
-                            <a href="http://localhost/proyecto_grado/croptech/controlador/validar_updates.php?idu=<?php echo $resul[$i]['id_usuario'];?>&accion=delete"
-                                class="btn btn-outline-success" title="Eliminar cultivo">
-                            <img src="http://localhost/proyecto_grado/croptech/assets/img/delete.png" 
-                            alt="Editar" id="icono" height="30px" width="30px"></a></td>
-                            <?php } ?>
-                            </tr>
-                        
-                        </tbody>
-                    </table>
- 
-                </div>
-            <br><br>
-                <!--Fin de la tabla-->
-        
-             <?php } 
-             ?>
-             <?php
-             if(($exist=$obj->read_cultivosbyUser($idu))=='no')
-             { ?>
-                <!--Mostramos mensaje (no tiene registro de cultivos)-->
-                
-                  <div class="container">
-                    <div class="m-1 row justify-content-center">
-                        <h3 class="text-center pb-5 pt-5 h1">¡Aún no tienes cultivos registrados!</h3>
-                    </div>
-
-                        <div class="m-1 row justify-content-center">
-                        <div class="col-auto p-5 text-center">
-                        <img src="http://localhost/proyecto_grado/croptech/assets/img/sad.png" alt="sad"  height="100px" width="100px"></a></td>
-                        </div>
-                        </div>
-                 </div>
-                <?php } ?>
+                <div class="col-auto p-5 text-center ">
+                    <h1 class="display-5 text-success text-shadow h1">Hecha un vistazo a tus cultivos !!</h1>
+                    <hr>
                 </div>
             </div>
+        
+
+             <div class="container-lg "> 
+                <div class="m-1 row justify-content-center">
+                <div class="col-auto p-5 text-center bg-light border border-success">
+                <h3 class="display-5 text-success text-shadow h1">Historial de tus cultivos</h3>
+                    <hr>
+                    
+                <?php
+                if($exist=='exist'){//se muestran los cultivos registrados
+                ?>
+                <!--Tabla con los cultivos registrados-->
+                <div class="table-responsive">
+                        <table id="tmedicos" class="table table-striped table-light">
+                            <thead>
+                                <tr>
+                                <th scope="col">Nombre cultivo</th>
+                                <th scope="col">Fecha de registro</th>
+                                <th scope="col">Estado</th>
+                                
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                                
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php for($i=0;$i<count($resul);$i++){?>
+                                <tr>
+                                <td><?php echo $resul[$i]['nombre_cultivo'];?></td>
+                                <td><?php echo $resul[$i]['fecha_siembra'];?></td>
+                                <td><?php echo $resul[$i]['estado'];?></td>
+
+                                <!--editar datos-->
+                                <td> <a href="http://localhost/proyecto_grado/croptech/vista/admon_editUP.php?idu=<?php echo $resul[$i]['nro_registro_siembra'];?>"
+                                class="btn btn-outline-success"  title="Ver datos del cultivo">
+                                <img src="http://localhost/proyecto_grado/croptech/assets/img/ver.png" alt="Editar" id="icono" height="30px" width="30px"></a></td>
+                                <!--editar contraseña-->
+                                <td><a href="http://localhost/proyecto_grado/croptech/vista/admon_editUD.php?idu=<?php echo $resul[$i]['nro_registro_siembra'];?>"
+                                class="btn btn-outline-success" title="Actualizar datos del cultivo">
+                                <img src="http://localhost/proyecto_grado/croptech/assets/img/actualizar.png" alt="Editar" id="icono" height="30px" width="30px"></a></td>
+                                <td>
+                                <a href="http://localhost/proyecto_grado/croptech/controlador/validar_updates.php?idu=<?php echo $resul[$i]['nro_registro_siembra'];?>&accion=delete"
+                                    class="btn btn-outline-success" title="Desactivar cultivo">
+                                <img src="http://localhost/proyecto_grado/croptech/assets/img/delete.png" 
+                                alt="Editar" id="icono" height="30px" width="30px"></a></td>
+                                <?php } ?>
+                                </tr>
+                            
+                            </tbody>
+                        </table>
+    
+                    </div>
+                <br><br>
+                    <!--Fin de la tabla-->
+            
+                <?php } else if ($exist=='no_exist')
+                { ?>
+                    <!--Mostramos mensaje (no tiene registro de cultivos)-->
+                    
+                    <div class="container">
+                        <div class="m-1 row justify-content-center">
+                            <h3 class="text-center pb-5 pt-5 h1">¡Aún no tienes cultivos registrados!</h3>
+                        </div>
+
+                            <div class="m-1 row justify-content-center">
+                            <div class="col-auto p-5 text-center">
+                            <img src="http://localhost/proyecto_grado/croptech/assets/img/sad.png" alt="sad"  height="100px" width="100px"></a></td>
+                            </div>
+                            </div>
+                    </div>
+                    <?php } ?>
+                    </div>
+                </div>
             </div>
 
                 <!--Fin mensaje-->

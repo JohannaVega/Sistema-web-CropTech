@@ -25,6 +25,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" 
     integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" 
     crossorigin="anonymous">
+
+    <?php
+        header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+        header("Expires: Sat, 1 Jul 2000 05:00:00 GMT"); // Fecha en el pasado
+    ?>
     
 </head>
 <body>
@@ -57,8 +62,6 @@
                     href="http://localhost/proyecto_grado/croptech/login/sing-up.php">Gestiona tu cultivo</a></li>
                     <li class="nav-item"><a class="nav-link" id="link2"
                     href="http://localhost/proyecto_grado/croptech/vista/ver_proveedores.php">Proveedores</a></li>
-                    <li class="nav-item"><a class="nav-link" aria-current="page" 
-                    href="http://localhost/proyecto_grado/croptech/login/sing-up_a.php">Administradores</a> </li>
                 </ul>
 
                 <form class="d-flex form-inline my-2 my-lg-0  navbar-right" >

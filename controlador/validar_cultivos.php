@@ -6,9 +6,10 @@ if($_SESSION['usuario']){
     //Validamos que hayan llegado los valores correctamente por el metodo POST
     //Y procedemos a instanciar el obj facade para iagregar cultivo nuevo
 if(isset($_POST['user_c']) && $_POST['user_c']=='CREAR_C' ){
-    if(isset($_POST['cnombre']) &&  isset($_POST['fecha_registro']) && isset($_POST['idu'])){
+    if(isset($_POST['cnombre']) &&  isset($_POST['fecha_registro']) && isset($_POST['idu'])
+    && isset($_POST['estado'])){
        $obj=new facade();
-       $resul=$obj->addcultivo($_POST['idu'],$_POST['cnombre'],$_POST['fecha_registro']);
+       $resul=$obj->addcultivo($_POST['idu'],$_POST['cnombre'],$_POST['fecha_registro'],$_POST['estado']);
 
       if($resul=="ok")
        header("Location: http://localhost/proyecto_grado/croptech/vista/cultivo-agregar.php?iderror=ok");

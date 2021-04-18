@@ -151,9 +151,9 @@ class facade{
         $flag=0;
 
         $resul= $this->obj_user->search_telefono($telefono);
-        if($resul==$telefono){
-            $flag=1;
-        }
+            if($resul==$telefono){
+                $flag=1;
+            }
         return $flag;
     }
 
@@ -428,9 +428,9 @@ class facade{
 
    //Metodo que permite agregar un cultivo, retorna ok cuando
    //se realizó el insert exitosamente
-   public function addcultivo($idu, $cnombre, $fecha_registro){
+   public function addcultivo($idu, $cnombre, $fecha_registro, $estado){
         $feedback='';
-        if($resul=$this->obj_cultivo->insert($idu, $cnombre, $fecha_registro) == true){
+        if($resul=$this->obj_cultivo->insert($idu, $cnombre, $fecha_registro, $estado) == true){
             $feedback='ok';
         }else{
         $feedback='bad';
@@ -438,11 +438,38 @@ class facade{
         return $feedback;
    }
 
+   //Metodo que me ermite leer los cultivos registrado en la Base de datos
+   public function read_all_cultivos(){ //ok
+    $resul=$this->obj_cultivo->read_all();
+    return $resul;
+   }
+
    //Metodo que permite leer los roles del sistema
    public function read_roles(){ //ok
        $resul=$this->obj_user->read_roles();
        return $resul;
    }
+
+   public function validar_cultivos_user($idu){
+        $feedback="";
+        $resul=$this->obj_cultivo->read_cultivos_user($idu);
+        $exist=count($resul);
+
+        if($exist==0){
+            $feedback="no_exist";
+        }else{
+            $feedback="exist";
+        }
+        return $feedback;
+   }
+
+   //Metodo que permite leer los cultivos de un usuario
+   public function read_cultivos_user($idu){//ok
+    $resul=$this->obj_cultivo->read_cultivos_user($idu);
+    return $resul;
+
+   }
+
 
    //Método que permite agregar telefono a un usuario en especifico
    public function agregar_telefono($idu,$tipo_telefono,$telefono){//ok

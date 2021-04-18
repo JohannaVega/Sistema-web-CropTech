@@ -168,7 +168,7 @@ if($_SESSION['usuario']){
                         <hr>
                         <br>
                         <h3  class="pt-5">Hola de nuevo, </h3>
-                        <p >Puedes seleccionar varias opciones (Seleccionas una la envías y luego seleccionas la siguiente), selecciona la que sería una categoria de
+                        <p >Puedes seleccionar varias opciones (Seleccionas una la envías y luego seleccionas la siguiente), selecciona categorias de
                         productos que tu tienda ofrece.</p>
                         <div>
                     </div>

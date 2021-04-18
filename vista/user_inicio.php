@@ -11,6 +11,13 @@ if($_SESSION['usuario']){
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link rel="stylesheet" href="../assets/css/estilos.css">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+        </style>
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+        </style>
 
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
         integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
@@ -46,7 +53,10 @@ if($_SESSION['usuario']){
         <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Inicio</a> </li>
         <li class="nav-item"><a class="nav-link" 
         href="http://localhost/proyecto_grado/croptech/vista/user_perfil.php?idU=<?php echo $_SESSION['usuario']; ?>">Perfil</a></li>
-        <li class="nav-item"><a class="nav-link" href="#" >Proveedores</a></li>
+        <li class="nav-item"><a class="nav-link" 
+        href="http://localhost/proyecto_grado/croptech/vista/cultivo-historial.php" >Mis cultivos</a></li>
+        <li class="nav-item"><a class="nav-link"
+        href="http://localhost/proyecto_grado/croptech/vista/user_shops.php" >Proveedores</a></li>
       </ul>
 
       <form class="d-flex form-inline my-2 my-lg-0  navbar-right" >
@@ -163,7 +173,8 @@ if($_SESSION['usuario']){
     <!--SEPARADOR RIBBON-->
     <div id="separator-ribbon">
             <div class=" bg-light">
-            <h3 class="text-center pb-5 pt-5">Tiendas de suministros para tus cultivos:</h3></div>
+            <h1 class="text-center pb-5 pt-5">¡ Nuestra ubicación !</h1>
+            </div>
           </div>
 
     <!--API leflet maps-->
