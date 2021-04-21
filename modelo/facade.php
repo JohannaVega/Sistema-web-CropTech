@@ -444,12 +444,19 @@ class facade{
     return $resul;
    }
 
-   //Metodo que permite leer los roles del sistema
-   public function read_roles(){ //ok
+   //Metodo que permite leer los roles del sistema 
+   public function read_roles(){ 
        $resul=$this->obj_user->read_roles();
        return $resul;
    }
 
+   //Metodo que permite leer el rol de un usuario
+   public function read_rol_byId($id){
+        $resul=$this->obj_user->read_rol($id);
+        return $resul;
+   }
+
+  //Metodo que permite validar si un usuario tiene cultivos 
    public function validar_cultivos_user($idu){
         $feedback="";
         $resul=$this->obj_cultivo->read_cultivos_user($idu);
@@ -526,8 +533,32 @@ class facade{
        return $resul;
    }
 
-   public function ver_tiendas(){
+   public function ver_tiendas(){//ok
        $resul= $this->obj_proveedor->read_alltiendas();
+       return $resul;
+   }
+
+   //Metodo que permite enviar notificaciones al admon
+   //para desactivar usuario
+   public function desactivar_usuario($idu,$tipo_solicitud,$detalles){//ok
+
+    $feedback="";
+
+    $fecha_solicitud = date('Y-m-d');
+
+    $resul= $this->obj_user->save_solicitud($idu,$tipo_solicitud,$detalles,$fecha_solicitud);
+    if($resul){
+        $feedback="ok";
+    }else
+        $feedback="bad";
+
+
+    return $feedback;
+
+   }
+
+   public function leer_solicitudes(){
+       $resul = $this->obj_admon->read_solicitudes();
        return $resul;
    }
 

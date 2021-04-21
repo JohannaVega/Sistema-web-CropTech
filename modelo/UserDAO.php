@@ -171,7 +171,7 @@ class UserDAO extends Conectar{
 
 
     //Leemmos la informacion del usuario por medio del id de usuario reistrado en la BD   ok
-    public function readOneFullById($id){ 
+    public function readOneFullById($id){  
         $sql="select * from usuario u
         INNER JOIN login_usuario l on u.id_usuario = l.id_usuario
         INNER JOIN no_telefonos_usuario n on u.id_usuario = n.id_usuario
@@ -209,20 +209,9 @@ class UserDAO extends Conectar{
 
         return $resul2;
     } 
-    //Metodo que permite ver los datos personales de los usuarios
-    //junto con los cultivos registrados
-    public function readAllFull(){
-        $sql="select * from tb_usuario u,tb_cultivo c
-        where u.id_usuario=c.id_usuario";
-        $resul=mysqli_query($this->con(),$sql);
-        while($row=mysqli_fetch_assoc($resul)){
-            $this->usuarios[]=$row;
-        }
-        return $this->usuarios;
-    }
 
     //Método que permite leer los roles de los usuarios del sistema
-    public function read_roles(){
+    public function read_roles(){ 
         $sql="select * from rol_usuario";
         $resul=mysqli_query($this->con(),$sql);
         while($row=mysqli_fetch_assoc($resul)){
@@ -231,7 +220,7 @@ class UserDAO extends Conectar{
         return $this->usuarios;
     }
     //Método que permite insertar un nuevo telefono al usuario
-    public function insert_telefono($idu,$tipo_telefono,$telefono){
+    public function insert_telefono($idu,$tipo_telefono,$telefono){ //ok
         $sql="insert into no_telefonos_usuario(id_usuario,telefono_usuario,id_tipo_telefono)
         values('$idu','$telefono','$tipo_telefono')";
 
@@ -241,10 +230,21 @@ class UserDAO extends Conectar{
     }
 
     //Método que permite actualizar telefono del usuario
-    public function update_telefono($idu,$telefono,$tipo,$tel_anterior){
+    public function update_telefono($idu,$telefono,$tipo,$tel_anterior){ //ok
       
         $sql="update no_telefonos_usuario set telefono_usuario='$telefono', id_tipo_telefono='$tipo'
          where id_usuario=$idu and telefono_usuario='$tel_anterior' ";
+
+        $resul=mysqli_query($this->con(),$sql);
+
+        return $resul;
+    }
+
+    public function save_solicitud($idu,$tipo_solicitud,$detalles,$fecha_solicitud){//ok
+        $estado="En espera";
+        $sql="insert into solicitud_admon(id_usuario,id_tipo_solicitud,detalle_solicitud,
+            fecha_solicitud,estado)
+        values('$idu','$tipo_solicitud','$detalles','$fecha_solicitud','$estado')";
 
         $resul=mysqli_query($this->con(),$sql);
 

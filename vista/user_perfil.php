@@ -199,6 +199,10 @@ if($_SESSION['usuario']){
                         <a href="http://localhost/proyecto_grado/croptech/vista/user_edit_p.php" class="btn btn-secondary">EDITAR CLAVE</a>
                         <a href="http://localhost/proyecto_grado/croptech/vista/user_edit_e.php" class="btn btn-success">EDITAR DATOS</a>
                     </div>
+                    <hr>
+                    <div class="p-4">
+                        <a href="http://localhost/proyecto_grado/croptech/vista/desactivar_cuenta.php" class="btn btn-danger">Desactivar cuenta</a>
+                    </div>
                 </div>
             </div>
             <!--SECCIÓN CAJA TRASERA-->

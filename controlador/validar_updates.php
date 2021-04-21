@@ -218,11 +218,7 @@ if(isset($_POST['telefono2']) &&  isset($_POST['idu']) &&  isset($_POST['tel_ant
 /*-------------------FIN UPDATE NÚMEROS PARA TODOS LOS USUARIOS----------------*/
 
  
-
-
-    //Se valida el valor que se envia por el metodo POST, del botón correspondiente
-    //a editar DATOS DE USARIO CULTIVADOR, si cumple con el valor, se procede a instanciar 
-    //al facade para comunicarnos con el DAO permitiendonos actualizar los datos
+    /*EDITAR DATOS USUARIO CULTIVADOR*/
 if(isset($_POST['user_edit']) && $_POST['user_edit']=='EDITAR1' ){//OK
     if(isset($_POST['nombres']) &&  isset($_POST['apellidos']) && isset($_POST['sexo'])
      && isset($_POST['correo'])){
@@ -300,36 +296,22 @@ if(isset($_POST['Sadmon']) && $_POST['Sadmon']=='EDITAR' && isset($_POST['idu'])
   
   }
 
-    //Eliminando usuario (Lo hace el usuario administrador)
-  if(isset($_GET['idu']) && $_GET['accion']=='delete'){
-    $obj=new facade();
-    $resul=$obj->deleteFullUser($_GET['idu']);
-    if($resul){
-       header("Location: http://localhost/proyecto_grado/croptech/vista/admon_usuarios.php?iderror=ok2");
-    }else{
-       header("Location: http://localhost/proyecto_grado/croptech/vista/admon_usuarios.php?iderror=bad2");
-    }
- }
+  /*-------------------DESACTIVAR USUARIOS----------------*/
 
-  //actualizando datos de usuario (Lo hace el usuario administrador)
- if(isset($_POST['admon_edit']) && $_POST['admon_edit']=='EDITAR_A' ){
-  if(isset($_POST['nombres']) &&  isset($_POST['apellidos']) && isset($_POST['sexo']) &&
-  isset($_POST['telefono']) && isset($_POST['correo']) ){
-     $obj=new facade();
-     $resul=$obj->correoUnico($_POST['idu'],$_POST['nombres'],$_POST['apellidos'],
-     $_POST['correo'],$_POST['telefono']);
-     if($resul=="hecho"){
-      header("Location: http://localhost/proyecto_grado/croptech/vista/admon_usuarios.php?iderror=ok");
-     }if($resul=="telefono"){
-       header("Location: http://localhost/proyecto_grado/croptech/vista/admon_usuarios.php?iderror=tel");
-     }if($resul=="email"){
-       header("Location: http://localhost/proyecto_grado/croptech/vista/admon_usuarios.php?iderror=em");
-     }if($resul=="fail"){
-      header("Location: http://localhost/proyecto_grado/croptech/vista/admon_usuarios.php?iderror=bad");
-     }
-    
+  if(isset($_POST['user_edit']) && $_POST['user_edit']=='DESACTIVAR_USER' ){
+    if(!empty($_POST['descripcion']) &&  !empty($_POST['idu']) && !empty($_POST['tipo']) ){
+
+    $obj=new facade();
+    $resul=$obj->desactivar_usuario($_POST['idu'],$_POST['tipo'],$_POST['descripcion']);
+
+    header("Location: http://localhost/proyecto_grado/croptech/vista/desactivar_cuenta.php?iderror=$resul");
+
+    }
   }
- }
+
+   /*-------------------FIN DESACTIVAR USUARIOS----------------*/
+
+  
 
 }else{
     echo "<script type='text/javascript'>

@@ -152,9 +152,21 @@ function validarEditC() {
    }
    //-------------------------------------------------------------------------------------------//
 
+   function validar_desactivarU(){
+     var descripcion;
+     descripcion = document.getElementById("descripcion").value;
+
+     if(descripcion===""){
+      alert("Por favor rellene todos campos son obligatorios ");
+      return false; 
+    }
+    if(expespacio.test(descripcion.value)){
+      alert("Datos no validos (No se permiten espacios en blanco)");
+      return false;
+    }
+   }
 
    //Se validan los campos de input cuando se edita un usuario
-  //validarEditP
    function validarEditU(){
     let act=0;
     console.log("enviando5..");
