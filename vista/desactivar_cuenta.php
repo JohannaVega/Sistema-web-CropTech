@@ -154,17 +154,32 @@ if($_SESSION['usuario']){
                         <div id="error">
                             <?php
                             if(isset($_GET['iderror'])){
-                                if($_GET['iderror'] == 'ok'){
+                               /* if($_GET['iderror'] == 'ok'){
                                     ?>
                                     <br>
                                     <p  style="color:green;" >Solicitud enviada correctamente</p>
+
                                     <?php
                                 }
                                 if($_GET['iderror'] == 'bad'){
                                     ?>
+                                    <br>
                                     <p  style="color:red;" >Error en el envío de la solicitud, intentelo más tarde</p>
                                     <?php
-                                }            
+                                } */
+                                if($_GET['iderror'] == 'mensaje_ok'){
+                                    ?>
+                                    <br>
+                                    <p  style="color:green;" >Mensaje enviado al E-Mail del admon</p>
+
+                                    <?php
+                                }
+                                if($_GET['iderror'] == 'mensaje_bad'){
+                                    ?>  
+                                    <br>
+                                    <p  style="color:red;" >Mensaje no enviado al E-Mail del admon</p>
+                                    <?php
+                                }           
                             }
                             ?>
                         </div>

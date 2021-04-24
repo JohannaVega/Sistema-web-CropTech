@@ -16,6 +16,15 @@ class AdmonDAO extends Conectar{
         return $this->admons;
     }
 
+    public function read_tipo_solicitudes(){
+        $sql="select * from solicitud";
+        $resul=mysqli_query($this->con(),$sql);
+        while($row=mysqli_fetch_assoc($resul)){
+            $this->admons[]=$row;
+        }
+        return $this->admons;
+    }
+
 
 }
 

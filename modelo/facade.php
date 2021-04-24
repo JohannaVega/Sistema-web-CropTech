@@ -4,6 +4,14 @@ include 'UserDAO.php';
 include 'CultivoDAO.php';
 include 'ProveedorDAO.php';
 
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require '../PHPMailer/Exception.php';
+require '../PHPMailer/PHPMailer.php';
+require '../PHPMailer/SMTP.php';
+
 class facade{
     //instanciando objetos DAO
     private $obj_admon;
@@ -542,22 +550,112 @@ class facade{
    //para desactivar usuario
    public function desactivar_usuario($idu,$tipo_solicitud,$detalles){//ok
 
-    $feedback="";
+        $feedback="";
 
-    $fecha_solicitud = date('Y-m-d');
+        $fecha_solicitud = date('Y-m-d');
 
-    $resul= $this->obj_user->save_solicitud($idu,$tipo_solicitud,$detalles,$fecha_solicitud);
-    if($resul){
-        $feedback="ok";
-    }else
-        $feedback="bad";
+        $resul= $this->obj_user->save_solicitud($idu,$tipo_solicitud,$detalles,$fecha_solicitud);
+
+        $tipo = $this->obj_admon->read_tipo_solicitudes();
+        
+        if($resul){
+
+            /*Configuracion de variables para enviar el correo*/
+            $mail_username="croptech.admon@gmail.com";//Correo electronico saliente ejemplo: tucorreo@gmail.com
+            $mail_userpassword="505Crop *606";//Tu contraseña de gmail
+            $mail_addAddress="eyvegaf@gmail.com";//correo electronico que recibira el mensaje
+          
+                            
+            
+            $mail_setFromEmail="croptech.admon@gmail.com";
+            $mail_setFromName="Croptech";
+
+             //------Asunto
+             for($i=0;$i<count($tipo);$i++){
+                if($tipo[$i]['id_solicitud']==$tipo_solicitud){
+                    $mail_subject=$tipo[$i]['tipo_solicitud'];
+                    
+                }
+        
+            }      
+
+            $txt_message=$detalles." ID USER: ".$idu; 
+            $estado_correo=$this->sendemail($mail_username,$mail_userpassword,$mail_setFromEmail,$mail_setFromName,$mail_addAddress,$txt_message,$mail_subject);
+            
+            if($estado_correo=="Tu mensaje ha sido enviado!")
+                $feedback="mensaje_ok";
+
+            else
+                $feedback=$estado_correo;
 
 
-    return $feedback;
+            //$feedback="ok";
+
+        }/*else
+            $feedback="bad";*/
+
+
+        return $feedback;
 
    }
 
-   public function leer_solicitudes(){
+    //Funcion que me permite enviar correos de solicitudes al administrador
+   private function sendemail($mail_username,$mail_userpassword,$mail_setFromEmail,$mail_setFromName,$mail_addAddress,$txt_message,$mail_subject){
+        $feedback="";
+
+        $mail = new PHPMailer;
+        date_default_timezone_set('Etc/UTC');
+
+         //Server settings
+        $mail->isSMTP();                            // Establecer el correo electrónico para utilizar SMTP
+        $mail->Host = 'smtp.gmail.com';             // Especificar el servidor de correo a utilizar 
+        $mail->SMTPAuth = true;                     // Habilitar la autenticacion con SMTP
+        $mail->Username = $mail_username;          // Correo electronico saliente ejemplo: tucorreo@gmail.com
+        $mail->Password = $mail_userpassword; 		// Tu contraseña de gmail
+        $mail->SMTPSecure = 'tls';                  // Habilitar encriptacion, `ssl` es aceptada
+        $mail->Port = 587;                          // Puerto TCP  para conectarse 
+
+
+        $mail->setFrom($mail_setFromEmail, $mail_setFromName);//Quien envia el mensaje
+        $mail->addAddress($mail_addAddress);   // Receptor del mail
+
+        //$body = file_get_contents('http://localhost/proyecto_grado/croptech/vista/plantilla_mail.php');
+        
+        //contenido
+        $mail->isHTML(true);  // Establecer el formato de correo electrónico en HTML
+        $mail->Subject = $mail_subject;
+
+        /*----MENSAJE HTML---*/
+        //incrustar imagen para cuerpo de mensaje(no confundir con Adjuntar)
+        $mail->AddEmbeddedImage('../assets/img/logo.png', 'imagen'); //ruta de archivo de imagen
+
+        //cargar archivo css para cuerpo de mensaje
+        $rcss = "../assets/css/estilo.css";//ruta de archivo css
+        $fcss = fopen ($rcss, "r");//abrir archivo css
+        $scss = fread ($fcss, filesize ($rcss));//leer contenido de css
+        fclose ($fcss);//cerrar archivo css
+        //Cargar archivo html   
+        $shtml = file_get_contents('../vista/plantilla_mail.php');
+        //reemplazar sección de plantilla html con el css cargado y mensaje creado
+        $incss  = str_replace('<style id="estilo"></style>',"<style>$scss</style>",$shtml);
+        $cuerpo = str_replace('<p id="mensaje"></p>',$txt_message,$incss);
+        $mail->Body = $cuerpo; //cuerpo del mensaje
+        $mail->AltBody = '---';//Mensaje de sólo texto si el receptor no acepta HTML
+        //$mail->Body = $body;
+        //$mail->msgHTML($txt_message);
+ 
+        if(!$mail->send()) {
+            $feedback="No se pudo enviar el mensaje.. ". $mail->ErrorInfo;
+            /*echo '<p style="color:red">No se pudo enviar el mensaje..';
+            echo 'Error de correo: ' . $mail->ErrorInfo;
+            echo "</p>";*/
+        } else {
+            $feedback="Tu mensaje ha sido enviado!";
+        }
+        return $feedback;
+    }
+   //Funcion que permite leer las solicitudes realizadas al admon, de la bd
+   public function leer_solicitudes(){//ok
        $resul = $this->obj_admon->read_solicitudes();
        return $resul;
    }
