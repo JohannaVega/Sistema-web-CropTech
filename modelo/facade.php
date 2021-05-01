@@ -434,6 +434,9 @@ class facade{
         return $exist;
     }
 
+    //SECCION CULTIVOS
+
+
    //Metodo que permite agregar un cultivo, retorna ok cuando
    //se realizó el insert exitosamente
    public function addcultivo($idu, $cnombre, $fecha_registro, $estado){
@@ -448,9 +451,115 @@ class facade{
 
    //Metodo que me ermite leer los cultivos registrado en la Base de datos
    public function read_all_cultivos(){ //ok
-    $resul=$this->obj_cultivo->read_all();
-    return $resul;
+        $resul=$this->obj_cultivo->read_all();
+        return $resul;
    }
+
+    //Metodo que permite buscar los cultivos seleccionados de un usuario mediante su id
+    public function read_cultivos_byuser($idu){
+        $resul=$this->obj_cultivo->read_cultivos_user($idu);
+        return $resul; 
+    }
+
+     //Metodo que permite el ingreso de cultivos para que estos sean elegidos por los usuarios cultivadores 
+     public function addcultivostochoose($id_culti,$cnombre,$luminosidadop,$humedadop,$temperaturaop,$tiempo_siembra,$primera_fecha_registro,$id_tipo){
+        $feedback='';
+        if($resul=$this->obj_cultivo->insert_cultivos_tochooose($id_culti,$cnombre,$luminosidadop,$humedadop,$temperaturaop,$tiempo_siembra,$primera_fecha_registro,$id_tipo) == true){
+            $feedback='ok';
+        }else {
+            $feedback='bad';
+        }
+        return $feedback;
+    } 
+
+    //Metodo que permite ingresar cultivos para que posteriormente sean elegidos por los usuarios cultivadores
+    public function  add_especifications_ofcultivo($id_imagen,$cantidad_hojas_nuevas,$centimetros_obtenidos,$comentarios,$fecha_registro,$id_condiciones,$nro_registro_siembra){
+        $feedback='';
+        if($resul=$this->obj_cultivo->insert_especifications_cultivo($id_imagen,$cantidad_hojas_nuevas,$centimetros_obtenidos,$comentarios,$fecha_registro,$id_condiciones,$nro_registro_siembra) == true ){
+              $feedback='ok';
+        }else{
+            $feedback='bad';
+        }
+        return $feedback;
+   } 
+
+    //Metodo que permite leer todos los tipos de cultivos que hay 
+    public function read_tiposcultivo(){
+        $resul=$this->obj_cultivo->read_tipos_cultivo();
+        return $resul;
+    }
+
+    //Metodo que permite leer el mediante el id de cultivo cual es su tipo
+    public function read_typeof_cultivo($id_culti){
+        $resul=$this->obj_cultivo->read_tipo_byidcultivo($id_culti);
+        return $resul;
+    }
+
+    //Metodo que permite leer todos los registros de seguimiento de un cultivo
+    public function read_historialbynoregistro($nro_registro_siembra){
+        $resul=$this->obj_cultivo->readallbynroregistro($nro_registro_siembra);
+        return $resul;
+    }
+
+    //Metodo que permite leer el seguimiento de un cultivo por su numero de seguimiento
+    public function read_seguimientobynumber($no_seguim){
+        $resul=$this->obj_cultivo->readOneByNOSEG($no_seguim);
+        return $resul; 
+    }
+
+    //Metodo que permite ingresar los datos para las imagenes que se subiran en cada uno de los seguimientos de cada cultivo
+    //---->resolver esta seccion
+    public function add_datosimagen($id_imagen,$nombre_imagen,$imagen,$tipo){
+        $feedback='';
+        if($resul=$this->obj_cultivo->insert_datos_IMAGEN($id_imagen,$nombre_imagen,$imagen,$tipo) == true){
+            $feedback='ok';
+        }else{
+            $feedback='bad';
+        }
+        return $feedback;
+   }
+
+    //Metodo que permite ingresar los datos de las condiciones climaticas de nuestro cultivo para la tabla cultivo_registro_u
+    public function insert_datos_condicionesclima($id_condiciones,$cantidad_humedad,$nivel_temperatura,$cantidad_luminosidad){
+        $feedback='';
+        if($resul=$this->obj_cultivo->insert_datos_condiciones_amb($id_condiciones,$cantidad_humedad,$nivel_temperatura,$cantidad_luminosida) == true){
+            $feedback='ok';
+        }else{
+            $feedback='bad';
+        }
+        return $feedback;
+    }
+
+     //Metodo que permite leer todos los registros de siembra que hay en el sistema
+     public function read_registros_siembra(){
+        $resul=$this->obj_cultivo->read_reg_siembra();
+        return $resul;
+    }
+
+    //Metodo que permite validar si un usuario tiene cultivos 
+    public function validar_cultivos_user($idu){
+        $feedback="";
+        $resul=$this->obj_cultivo->read_cultivos_user($idu);
+        $exist=count($resul);
+
+        if($exist==0){
+            $feedback="no_exist";
+        }else{
+            $feedback="exist";
+        }
+        return $feedback;
+    }
+
+    //Metodo que permite leer los cultivos de un usuario
+    public function read_cultivos_user($idu){//ok
+        $resul=$this->obj_cultivo->read_cultivos_user($idu);
+        return $resul;
+    }
+
+    //FIN SECCION CULTIVOS
+
+
+
 
    //Metodo que permite leer los roles del sistema 
    public function read_roles(){ 
@@ -463,28 +572,6 @@ class facade{
         $resul=$this->obj_user->read_rol($id);
         return $resul;
    }
-
-  //Metodo que permite validar si un usuario tiene cultivos 
-   public function validar_cultivos_user($idu){
-        $feedback="";
-        $resul=$this->obj_cultivo->read_cultivos_user($idu);
-        $exist=count($resul);
-
-        if($exist==0){
-            $feedback="no_exist";
-        }else{
-            $feedback="exist";
-        }
-        return $feedback;
-   }
-
-   //Metodo que permite leer los cultivos de un usuario
-   public function read_cultivos_user($idu){//ok
-    $resul=$this->obj_cultivo->read_cultivos_user($idu);
-    return $resul;
-
-   }
-
 
    //Método que permite agregar telefono a un usuario en especifico
    public function agregar_telefono($idu,$tipo_telefono,$telefono){//ok
@@ -596,7 +683,6 @@ class facade{
 
 
         return $feedback;
-
    }
 
     //Funcion que me permite enviar correos de solicitudes al administrador
@@ -654,6 +740,7 @@ class facade{
         }
         return $feedback;
     }
+
    //Funcion que permite leer las solicitudes realizadas al admon, de la bd
    public function leer_solicitudes(){//ok
        $resul = $this->obj_admon->read_solicitudes();

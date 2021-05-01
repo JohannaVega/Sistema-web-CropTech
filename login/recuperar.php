@@ -46,8 +46,7 @@
         <div class="container-lg pb-4 pt-4">
     
             <div class="m-1 row">
-                <div class="col-3">
-                </div>
+               
                 <!--COLOMUNA 1-->
                 <div class="col-auto p-5 bg-light border border-success">
                     <br>

@@ -118,6 +118,36 @@ function validarEditC() {
    }
   //-------------------------------------------------------------------------------------------//
 
+  //Validaremos los campos input cuando registraremos una nueva actualizacion a un cultivo
+  function validarActualizacionC(){
+    var cantidad_hojas_nuevas,centimetros_obtenidos,fecha_registro;
+    cantidad_hojas_nuevas = document.getElementById("cantidad_hojas_nuevas").value;
+    centimetros_obtenidos = document.getElementById("centimetros_obtenidos").value;
+    fecha_registro = document.getElementById("fecha_registro").value; 
+
+      if(cantidad_hojas_nuevas===""|| centimetros_obtenidos=="" ||fecha_registro===""){
+        alert("Por favor rellene los campos obligatorios ");
+        return false;
+      }
+      if(expespacio.test(cantidad_hojas_nuevas.value)||exespacio.test(centimetros_obtenidos.value)|| expespacio.test(fecha_registro.value)){
+        alert("Datos no validos (No se permiten espacios en blanco)");
+        return false;
+      }
+      if((cantidad_hojas_nuevas.length)>3){
+        alert("Cantidad de hojas invalido");
+        return false;
+      }
+      if((centimetros_obtenidos.length)>3){
+        alert("Cantidad de centimetros obtenidos en crecimiento invalido");
+        return false;
+      }
+     if(!expfecha.test(fecha_registro)){
+      alert("Formato de fecha invalido");
+      return false;
+      }
+  }
+  //-------------------------------------------------------------------------------------------//
+
 
    //Validan los campos de input cuando se registra una tienda 
    function validarinsertT(){
@@ -151,19 +181,20 @@ function validarEditC() {
      }
    }
    //-------------------------------------------------------------------------------------------//
-
+   
+   //Se valida que el input de desactivar usuario no este vacio
    function validar_desactivarU(){
      var descripcion;
      descripcion = document.getElementById("descripcion").value;
 
-     if(descripcion===""){
-      alert("Por favor rellene todos campos son obligatorios ");
-      return false; 
-    }
-    if(expespacio.test(descripcion.value)){
-      alert("Datos no validos (No se permiten espacios en blanco)");
-      return false;
-    }
+      if(descripcion===""){
+        alert("Por favor rellene todos campos son obligatorios ");
+        return false; 
+      }
+      if(expespacio.test(descripcion.value)){
+        alert("Datos no validos (No se permiten espacios en blanco)");
+        return false;
+      }
    }
 
    //Se validan los campos de input cuando se edita un usuario

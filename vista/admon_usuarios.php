@@ -56,7 +56,7 @@ if($_SESSION['usuario']){
 
     <?php require '../modelo/facade.php';
         $obj=new facade();
-        $resul=$obj->readAllUsuarioFull();
+        $resul=$obj->leer_solicitudes();
     ?>
     <br>
     <div class="container"> 
