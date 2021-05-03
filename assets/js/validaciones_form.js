@@ -124,6 +124,9 @@ function validarEditC() {
     cantidad_hojas_nuevas = document.getElementById("cantidad_hojas_nuevas").value;
     centimetros_obtenidos = document.getElementById("centimetros_obtenidos").value;
     fecha_registro = document.getElementById("fecha_registro").value; 
+    cantidad_humedad=document.getElementById("cantidad_humedad").value;
+    cantidad_luminosidad=document.getElementById("cantidad_luminosidad").value;
+    nivel_temperatura=document.getElementById("nivel_temperatura").value;
 
       if(cantidad_hojas_nuevas===""|| centimetros_obtenidos=="" ||fecha_registro===""){
         alert("Por favor rellene los campos obligatorios ");
@@ -144,6 +147,18 @@ function validarEditC() {
      if(!expfecha.test(fecha_registro)){
       alert("Formato de fecha invalido");
       return false;
+      }
+       if((cantidad_humedad.length)>3){
+        alert("Cantidad de humedad medida invalida");
+        return false;
+      }
+      if((cantidad_luminosidad.length)>4){
+        alert("Cantidad de luminosidad medida invalida");
+        return false;
+      }
+      if((nivel_temperatura.length)>3){
+        alert("nivel de temperatura medido invalido");
+        return false;
       }
   }
   //-------------------------------------------------------------------------------------------//
