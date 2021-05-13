@@ -26,6 +26,29 @@ class CultivoDAO extends Conectar{
         return $this->cultivos;
     }
 
+     //Leemos los datos de un registro de una siembra registrada
+     public function read_registro_c($registro_s){//read
+        $sql="select c.id_cultivo,c.nombre_cultivo, rs.fecha_siembra, rs.nro_registro_siembra,
+                rs.estado
+                from registro_siembra rs
+                LEFT JOIN cultivo c ON rs.id_cultivo = c.id_cultivo
+                WHERE rs.nro_registro_siembra=$registro_s";   
+
+        $resul=mysqli_query($this->con(),$sql);
+        while($row=mysqli_fetch_assoc($resul)){
+            $this->cultivos[]=$row;
+        }
+        return $this->cultivos;
+    }
+
+    //Cambiamos el estado activo/desactivo del registro de una siembra
+    public function change_estado($registro_s){
+        $sql= "update registro_siembra set estado='Desactivo' where nro_registro_siembra=$registro_s";
+        $resul=mysqli_query($this->con(),$sql);
+        return $resul;
+
+    }
+
     //Leemos los datos de cultivos por id de usuario
     public function read_cultivos_user($idu){//read
         $sql="select c.id_cultivo,c.nombre_cultivo, rs.fecha_siembra, rs.nro_registro_siembra,

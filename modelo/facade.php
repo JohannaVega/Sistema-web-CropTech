@@ -537,7 +537,7 @@ class facade{
     }
 
     //Metodo que permite validar si un usuario tiene cultivos 
-    public function validar_cultivos_user($idu){
+    public function validar_cultivos_user($idu){//ok
         $feedback="";
         $resul=$this->obj_cultivo->read_cultivos_user($idu);
         $exist=count($resul);
@@ -555,6 +555,26 @@ class facade{
         $resul=$this->obj_cultivo->read_cultivos_user($idu);
         return $resul;
     }
+
+    //Metodo que permite leer registro de una siembra en especifico
+    public function read_registro_siembra($registro_s){//ok
+        $resul=$this->obj_cultivo->read_registro_c($registro_s);
+        return $resul;
+    }
+
+    //Metodo que permite desactivar el registro de una siembra
+    public function desactivar_registro_s($registro_s){
+        $feedback="";
+        $resul=$this->obj_cultivo->change_estado($registro_s);
+        if($resul){
+            $feedback="ok";
+        }else{
+            $feedback="bad";
+        }
+        
+        return $resul;
+    }
+
 
     //FIN SECCION CULTIVOS
 

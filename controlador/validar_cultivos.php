@@ -17,6 +17,14 @@ if(isset($_POST['user_c']) && $_POST['user_c']=='CREAR_C' ){
        header("Location: http://localhost/proyecto_grado/croptech/vista/cultivo-agregar.php?iderror=bad");
     }
    }
+//Validamos que llegue el id_c del registro del cultivo a desactivar
+if(isset($_GET['idc'])){
+    $obj= new facade();
+    $resul= $obj ->desactivar_registro_s($_GET['idc']);
+
+    header("Location: http://localhost/proyecto_grado/croptech/vista/cultivo_desactivar.php?iderror=$resul");
+
+}
 
 }else{
     echo "<script type='text/javascript'>

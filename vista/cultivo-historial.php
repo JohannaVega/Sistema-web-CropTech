@@ -79,7 +79,7 @@ if($_SESSION['usuario']){
         ?>
              
              <div class="m-1 row justify-content-center">
-                <div class="col-auto p-5 text-center ">
+                <div class="col-auto p-3 text-center ">
                     <h1 class="display-5 text-success text-shadow h1">Hecha un vistazo a tus cultivos !!</h1>
                     <hr>
                 </div>
@@ -126,7 +126,7 @@ if($_SESSION['usuario']){
                                 class="btn btn-outline-success" title="Actualizar datos del cultivo">
                                 <img src="http://localhost/proyecto_grado/croptech/assets/img/actualizar.png" alt="Editar" id="icono" height="30px" width="30px"></a></td>
                                 <td>
-                                <a href="http://localhost/proyecto_grado/croptech/controlador/validar_updates.php?idu=<?php echo $resul[$i]['nro_registro_siembra'];?>&accion=delete"
+                                <a href="http://localhost/proyecto_grado/croptech/vista/cultivo_desactivar.php?idc=<?php echo $resul[$i]['nro_registro_siembra'];?>&accion=delete"
                                     class="btn btn-outline-success" title="Desactivar cultivo">
                                 <img src="http://localhost/proyecto_grado/croptech/assets/img/delete.png" 
                                 alt="Editar" id="icono" height="30px" width="30px"></a></td>
@@ -162,12 +162,12 @@ if($_SESSION['usuario']){
 
                 <!--Fin mensaje-->
              <!--Fin conteiner donde de muestra el registro de cultivos-->
-             <hr>
-                <div class="p-3" id="separator-ribbon">
-                    <div class="bg-light">     
+            <hr>
+            <div class="p-3" id="separator-ribbon">
+                <div class="bg-light">     
                     <h4 class="text-center pb-3 pt-3"></h4></div>
                 </div>
-                </div>
+            </div>
 
             <?php require '../footer.php';?>
 
