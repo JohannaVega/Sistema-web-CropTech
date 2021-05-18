@@ -7,6 +7,7 @@ class AdmonDAO extends Conectar{
         $this->admons=array();
     }   
 
+    //Metodo que permite leer solicitudes de los usuarios
     public function read_solicitudes(){
         $sql="select * from solicitud_admon";
         $resul=mysqli_query($this->con(),$sql);
@@ -15,7 +16,7 @@ class AdmonDAO extends Conectar{
         }
         return $this->admons;
     }
-
+    //Metodo que permite leer los tipos de solicitudes existentes
     public function read_tipo_solicitudes(){
         $sql="select * from solicitud";
         $resul=mysqli_query($this->con(),$sql);
@@ -23,6 +24,16 @@ class AdmonDAO extends Conectar{
             $this->admons[]=$row;
         }
         return $this->admons;
+    }
+    //Metodo que permite leer una solicitud en especifico para ser atendida
+    public function read_solicitud_atender($id_solicitud){
+        $sql="select * from solicitud_admon where id_solicitud_admon=$id_solicitud";
+        $resul=mysqli_query($this->con(),$sql);
+        while($row=mysqli_fetch_assoc($resul)){
+            $this->admons[]=$row;
+        }
+        return $this->admons;
+
     }
 
 

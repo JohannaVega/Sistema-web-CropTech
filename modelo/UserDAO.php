@@ -239,9 +239,11 @@ class UserDAO extends Conectar{
 
         return $resul;
     }
-
+    
+    //Método que permite guardar solicitudes del usuario
     public function save_solicitud($idu,$tipo_solicitud,$detalles,$fecha_solicitud){//ok
         $estado="En espera";
+
         $sql="insert into solicitud_admon(id_usuario,id_tipo_solicitud,detalle_solicitud,
             fecha_solicitud,estado)
         values('$idu','$tipo_solicitud','$detalles','$fecha_solicitud','$estado')";

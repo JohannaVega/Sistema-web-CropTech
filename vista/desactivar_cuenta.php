@@ -154,19 +154,13 @@ if($_SESSION['usuario']){
                         <div id="error">
                             <?php
                             if(isset($_GET['iderror'])){
-                               /* if($_GET['iderror'] == 'ok'){
+                                if($_GET['iderror'] == 'no_razon' || $_GET['iderror'] == 'no_detalles'){
                                     ?>
                                     <br>
-                                    <p  style="color:green;" >Solicitud enviada correctamente</p>
+                                    <p  style="color:red;" >No se indicó la razón por la que desea desactivar la cuenta, intentalo de nuevo</p>
 
                                     <?php
                                 }
-                                if($_GET['iderror'] == 'bad'){
-                                    ?>
-                                    <br>
-                                    <p  style="color:red;" >Error en el envío de la solicitud, intentelo más tarde</p>
-                                    <?php
-                                } */
                                 if($_GET['iderror'] == 'mensaje_ok'){
                                     ?>
                                     <br>
@@ -190,13 +184,18 @@ if($_SESSION['usuario']){
                                 <div class="form-group col-md-12" >
                                     <label>Cuéntanos las razones por las que deseas desactivar tu cuenta:</label>
                                     
-                                    <textarea  class="form-control"  rows="3" cols="5" 
-                                        id="descripcion" name="descripcion" required> </textarea>
+                                    <select class="form-select" id="descripcion" name="descripcion" required>
+                                        <option value="0">Selecciona una opción</option>
+                                        <option value="1">Ya tengo otra cuenta</option>
+                                        <option value="2">No me parece útil esta plataforma</option>
+                                        <option value="3">No se como usar esta plataforma</option>
+                                        <option value="4">Es algo temporal. Regresaré</option>
+                                        <option value="5">Otro (Proporciona más detalles)</option>
+                                    </select>
+                                    <textarea  class="form-control"  rows="2" cols="5" 
+                                        id="razon" name="razon" 
+                                        placeholder="Indica la razón por la que deseas desactivar tu cuenta" required> </textarea>
                                 </div>
-                            </div>
-                            <div id="passwordHelpBlock" class="form-text">
-                                Justifica la razón por la que deseas desactivar tu cuenta, y será evaluado
-                                para confirmación.
                             </div>
 
                             <input type="hidden" name="idu" value='<?php echo $idu; ?>'>

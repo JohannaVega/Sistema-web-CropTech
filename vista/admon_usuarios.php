@@ -65,8 +65,8 @@ if($_SESSION['usuario']){
             <div class="col-auto p-5 text-center bg-light border border-success">
                 <h3 class="display-5 text-success text-shadow h1">Solicitudes de cuentas</h3>
                 <hr>
-                <a href="http://localhost/proyecto_grado/croptech/vista/admon_insert.php" 
-                class="btn btn-outline-success">Usuario nuevo</a>
+                <a href="http://localhost/proyecto_grado/croptech/vista/admon_historial.php" 
+                class="btn btn-outline-success">VER HISTORIAL DE SOLICITUDES</a>
                 <br>
                 <br>
                 <div id="error">
@@ -116,46 +116,42 @@ if($_SESSION['usuario']){
                 </div>
                 <div class="table-responsive">
             
-                    <table id="tmedicos" class="table table-striped table-dark">
+                    <table id="tmedicos" class="table table-striped table-info">
                         <thead>
-                            <tr >
-                            <th scope="col">Id</th>
-                            <th scope="col">Nombres</th>
-                            <th scope="col">Apellidos</th>
-                            <th scope="col">Sexo</th>
-                            <th scope="col">Telefono</th>
-                            <th scope="col">Correo</th>
-                            <th scope="col">Pregunta de seguridad:</th>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
+                            <tr class="text-success">
+                            <th scope="col">Id solicitud</th>
+                            <th scope="col">Detalle de solicitud</th>
+                            <th scope="col">Id usuario</th>
+                            <th scope="col">Fecha de solicitud</th>
+                            <th scope="col">Estado de solicitud</th>
+                           
                             <th scope="col"></th>
                             
                             </tr>
                         </thead>
                         <tbody>
-                            <?php for($i=0;$i<count($resul);$i++){?>
-                            <tr>
-                            <td><?php echo $resul[$i]['id_usuario'];?></td>
-                            <td><?php echo $resul[$i]['nombre'];?></td>
-                            <td><?php echo $resul[$i]['apellido'];?></td>
-                            <td><?php echo $resul[$i]['sexo'];?></td>
-                            <td><?php echo $resul[$i]['telefono'];?></td>
-                            <td><?php echo $resul[$i]['correo'];?></td>
-                            <td><?php echo $resul[$i]['pregunta'];?></td>
+                            <?php for($i=0;$i<count($resul);$i++){
+                                if($resul[$i]["id_tipo_solicitud"] == 1){
+                                ?>
+                                <tr>
+                                    <td><?php echo $resul[$i]['id_tipo_solicitud'];?></td>
+                                    <td><?php echo $resul[$i]['detalle_solicitud'];?></td>
+                                    <td><?php echo $resul[$i]['id_usuario'];?></td>
+                                    <td><?php echo $resul[$i]['fecha_solicitud'];?></td>
+                                    <td><?php echo $resul[$i]['estado'];?></td>
 
-                            <!--editar datos-->
-                            <td> <a href="http://localhost/proyecto_grado/croptech/vista/admon_editUP.php?idu=<?php echo $resul[$i]['id_usuario'];?>"
-                            class="btn btn-outline-success">
-                            <img src="http://localhost/proyecto_grado/croptech/assets/img/edit-p.png" alt="Editar" id="icono" height="30px" width="30px"></a></td>
-                            <!--editar contraseña-->
-                            <td><a href="http://localhost/proyecto_grado/croptech/vista/admon_editUD.php?idu=<?php echo $resul[$i]['id_usuario'];?>"
-                            class="btn btn-outline-success">
-                            <img src="http://localhost/proyecto_grado/croptech/assets/img/edit-d.png" alt="Editar" id="icono" height="30px" width="30px"></a></td>
-                            <td>
-                            <a href="http://localhost/proyecto_grado/croptech/controlador/validar_updates.php?idu=<?php echo $resul[$i]['id_usuario'];?>&accion=delete"
-                                class="btn btn-outline-success">
-                            <img src="http://localhost/proyecto_grado/croptech/assets/img/delete.png" 
-                            alt="Editar" id="icono" height="30px" width="30px"></a></td>
+                                    <!--editar datos-->
+                                    <td> <a href="http://localhost/proyecto_grado/croptech/vista/admon_atender.php?ids=<?php echo $resul[$i]['id_solicitud_admon'];?>"
+                                    class="btn btn-outline-success">
+                                    ATENDER</a></td>
+                                    <?php
+                            }
+                            ?>
+                                    <!--editar contraseña
+                                    <td><a href="http://localhost/proyecto_grado/croptech/vista/admon_editUD.php?idu=<?php echo $resul[$i]['id_usuario'];?>"
+                                    class="btn btn-outline-success">
+                                    <img src="http://localhost/proyecto_grado/croptech/assets/img/edit-d.png" alt="Editar" id="icono" height="30px" width="30px"></a></td>
+                            -->
                             <?php } ?>
                             </tr>
                         

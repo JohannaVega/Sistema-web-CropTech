@@ -655,53 +655,73 @@ class facade{
 
    //Metodo que permite enviar notificaciones al admon
    //para desactivar usuario
-   public function desactivar_usuario($idu,$tipo_solicitud,$detalles){//ok
+   public function desactivar_usuario($idu,$tipo_solicitud,$detalles,$razon){//ok
 
         $feedback="";
 
         $fecha_solicitud = date('Y-m-d');
 
-        $resul= $this->obj_user->save_solicitud($idu,$tipo_solicitud,$detalles,$fecha_solicitud);
-
-        $tipo = $this->obj_admon->read_tipo_solicitudes();
-        
-        if($resul){
-
-            /*Configuracion de variables para enviar el correo*/
-            $mail_username="croptech.admon@gmail.com";//Correo electronico saliente ejemplo: tucorreo@gmail.com
-            $mail_userpassword="505Crop *606";//Tu contraseña de gmail
-            $mail_addAddress="eyvegaf@gmail.com";//correo electronico que recibira el mensaje
-          
-                            
-            
-            $mail_setFromEmail="croptech.admon@gmail.com";
-            $mail_setFromName="Croptech";
-
-             //------Asunto
-             for($i=0;$i<count($tipo);$i++){
-                if($tipo[$i]['id_solicitud']==$tipo_solicitud){
-                    $mail_subject=$tipo[$i]['tipo_solicitud'];
-                    
+        //Evaluamos que se indicará la razon para desactivar cuenta
+        if($detalles != '0'){
+            if($detalles==1)
+            $detallesf="Ya tengo otra cuenta";
+            if($detalles==2)
+            $detallesf="No me parece útil esta plataforma";
+            if($detalles==3)
+            $detallesf="No se como usar esta plataforma";
+            if($detalles==4)
+            $detallesf="Es algo temporal. Regresaré";
+            if($detalles==5){
+                if( !empty($razon) ){
+                    $detallesf=$razon;
+                }else{
+                    $feedback="no_razon";//no indicaron la razon para desactivar cuenta
                 }
-        
-            }      
+            }
+            //Si se indico la razon, procedemos a generar la solicitud
+            if( $feedback != "no_razon"){
 
-            $txt_message=$detalles." ID USER: ".$idu; 
-            $estado_correo=$this->sendemail($mail_username,$mail_userpassword,$mail_setFromEmail,$mail_setFromName,$mail_addAddress,$txt_message,$mail_subject);
-            
-            if($estado_correo=="Tu mensaje ha sido enviado!")
-                $feedback="mensaje_ok";
+                //Guardamos la solicitud en la BD
+                $resul= $this->obj_user->save_solicitud($idu,$tipo_solicitud,$detalles,$fecha_solicitud);
 
-            else
-                $feedback=$estado_correo;
+                //Leemos los tipos de solicitudes disponibles
+                $tipo = $this->obj_admon->read_tipo_solicitudes();
+                
+                //Si se guardo exitosamente la solicitud en la BD, generamos correo para el admon
+                if($resul){
 
+                    /*Configuracion de variables para enviar el correo*/
+                    $mail_username="croptech.admon@gmail.com";//Correo electronico saliente ejemplo: tucorreo@gmail.com
+                    $mail_userpassword="505Crop *606";//Tu contraseña de gmail
+                    $mail_addAddress="eyvegaf@gmail.com";//correo electronico que recibira el mensaje
+                
+                                    
+                    /* Correo que envia el correo */
+                    $mail_setFromEmail="croptech.admon@gmail.com";
+                    $mail_setFromName="Croptech";
 
-            //$feedback="ok";
+                    //------Asunto
+                    for($i=0;$i<count($tipo);$i++){
+                        if($tipo[$i]['id_solicitud']==$tipo_solicitud){
+                            $mail_subject=$tipo[$i]['tipo_solicitud']; 
+                        }
+                    }      
+                    $txt_message=$detalles." ID USER: ".$idu; 
+                    //Llamamos a la función que nos envia el correo, que nos devuelve el estado del evio del correo
+                    $estado_correo=$this->sendemail($mail_username,$mail_userpassword,$mail_setFromEmail,$mail_setFromName,$mail_addAddress,$txt_message,$mail_subject);
+                    
+                    if($estado_correo=="Tu mensaje ha sido enviado!")
+                        $feedback="mensaje_ok";
+                    else
+                        $feedback=$estado_correo;
 
-        }/*else
-            $feedback="bad";*/
-
-
+                }
+            }
+        }else {
+            $feedback="no_detalles";//No se seleccionaron los detalles para desactivar cuenta
+        }
+         
+        //Retornamos el feedback
         return $feedback;
    }
 
@@ -765,6 +785,62 @@ class facade{
    public function leer_solicitudes(){//ok
        $resul = $this->obj_admon->read_solicitudes();
        return $resul;
+   }
+   //Funcion que permite leer una solicitud en espedifico para ser atendida
+   public function leer_solicitud_atender($id_solicitud){//ok
+      $resul = $this->obj_admon->read_solicitud_atender($id_solicitud);
+      return $resul;
+   }
+
+   //Función que permite atender las solucitudes de desactivar cuenta
+   public function atender_desactivar_cuenta($idu,$ids){
+
+    $resul1 = $this->obj_admon->read_solicitud_atender($ids);
+
+    $resul2 = $this->obj_user-> readOneFullById($idu);
+
+    $correo_user='';
+    $nombre_user='';
+
+    for($i=0; $i<1; $i++){
+        $correo_user= $resul2[$i]['correo'];
+        $nombre_user= $resul2[$i]['nombre'];
+    }
+    
+    for($i=0; $i<count($resul1); $i++){
+        if($resul1[$i]['detalle_solicitud']=='No me parece útil esta plataforma'){
+
+            /*Configuracion de variables para enviar el correo*/
+            $mail_username="croptech.admon@gmail.com";//Correo electronico saliente ejemplo: tucorreo@gmail.com
+            $mail_userpassword="505Crop *606";//Tu contraseña de gmail
+            $mail_addAddress=$correo_user;//correo electronico que recibira el mensaje
+        
+                            
+            /* Correo que envia el correo */
+            $mail_setFromEmail="croptech.admon@gmail.com";
+            $mail_setFromName="Croptech";
+
+            //------Asunto
+            $mail_subject="Respuesta solicitud: DESACTIVAR CUENTA"; 
+             
+            $txt_message="Hola!, ".$nombre_user." Tu cuenta ha sido desactivada, cuando quieras volver a activarla solo inicia sesión"; 
+            //Llamamos a la función que nos envia el correo, que nos devuelve el estado del evio del correo
+            $estado_correo=$this->sendemail($mail_username,$mail_userpassword,$mail_setFromEmail,$mail_setFromName,$mail_addAddress,$txt_message,$mail_subject);
+            
+            if($estado_correo=="Tu mensaje ha sido enviado!")
+                $feedback="mensaje_ok";
+            else
+                $feedback=$estado_correo;
+
+
+
+        } 
+        if($resul1[$i]['detalle_solicitud']=='No se como usar esta plataforma'){
+
+        }
+
+    }
+
    }
 
 }

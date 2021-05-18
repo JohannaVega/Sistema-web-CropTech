@@ -299,14 +299,20 @@ if(isset($_POST['Sadmon']) && $_POST['Sadmon']=='EDITAR' && isset($_POST['idu'])
   /*-------------------DESACTIVAR USUARIOS----------------*/
 
   if(isset($_POST['user_edit']) && $_POST['user_edit']=='DESACTIVAR_USER' ){
-    if(!empty($_POST['descripcion']) &&  !empty($_POST['idu']) && !empty($_POST['tipo']) ){
+    if(isset($_POST['descripcion']) &&  isset($_POST['razon']) && !empty($_POST['idu']) && !empty($_POST['tipo']) ){
 
     $obj=new facade();
-    $resul=$obj->desactivar_usuario($_POST['idu'],$_POST['tipo'],$_POST['descripcion']);
+    $resul=$obj->desactivar_usuario($_POST['idu'],$_POST['tipo'],$_POST['descripcion'],$_POST['razon']);
 
     header("Location: http://localhost/proyecto_grado/croptech/vista/desactivar_cuenta.php?iderror=$resul");
 
     }
+  }
+
+  if(isset($_GET['idu']) && isset($_GET['ids'])){
+    $obj= new facade();
+    $resul= $obj->atender_desactivar_cuenta($_GET['idu'],$_GET['ids']);
+
   }
 
    /*-------------------FIN DESACTIVAR USUARIOS----------------*/
