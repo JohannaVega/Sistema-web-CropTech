@@ -150,16 +150,79 @@ class CultivoDAO extends Conectar{
            
     return $resul;                                            
     }
+                     
+    //INGRESAMOS LOS REGISTROS DE DATOS AMBIENTALES DE NUESTRO CULTIVO
+    public function insert_registro_datos($idSiembra,$centimetros,$cantidad_hojas,$comentarios,$fechaActual,
+    $id_amb,$last_id){
 
-                             
-    //INGRESAMOS LOS DATOS DE LAS CONDICIONES CLIMATICAS DE NUESTRO CULTIVO
-    public function insert_datos_condiciones_amb($id_condiciones,$cantidad_humedad,$nivel_temperatura,$cantidad_luminosidad){
-        $sql="insert into condiciones_ambientales(id_condiciones,cantidad_humedad,nivel_temperatura,cantidad_luminosidad)
-        values('$id_condiciones','$cantidad_humedad','$nivel_temperatura','$cantidad_luminosidad')";
+        $sql="insert into registro_cultivo_u(cantidad_hojas_nuevas,centimetros_obtenidos,comentarios,fecha_registro,id_condiciones,
+                nro_registro_siembra,id_imagen)
+        values('$cantidad_hojas','$centimetros','$comentarios','$fechaActual','$id_amb','$idSiembra','$last_id')";
         $resul=mysqli_query($this->con(),$sql);
 
         return $resul;                                            
     }
+
+    //INGRESAMOS LOS REGISTROS DE DATOS AMBIENTALES DE NUESTRO CULTIVO SIN LA IMAGEN
+    public function insert_registro_datosV2($idSiembra,$centimetros,$cantidad_hojas,$comentarios,$fechaActual,
+    $id_amb){
+
+        $sql="insert into registro_cultivo_u(cantidad_hojas_nuevas,centimetros_obtenidos,comentarios,fecha_registro,id_condiciones,
+                nro_registro_siembra)
+        values('$cantidad_hojas','$centimetros','$comentarios','$fechaActual','$id_amb','$idSiembra')";
+        $resul=mysqli_query($this->con(),$sql);
+
+        return $resul;                                            
+    }
+
+    //INGRESAMOS LOS DATOS AMBIENTALES DE NUESTRO CULTIVO
+    public function insert_datos_ambientales($temperatura,$luminosidad,$humedad){
+
+        $sql="insert into condiciones_ambientales(cantidad_humedad,cantidad_luminosidad,nivel_temperatura)
+        values('$humedad','$luminosidad','$temperatura')";
+
+        $resul=mysqli_query($this->con(),$sql);
+
+        return $resul;                                            
+    }
+
+    public function imagen_insert ($producto_img){
+
+        $sql1 = "insert into imagen (nombre_imagen) values ('$producto_img')";
+
+        $resul=mysqli_query($this->con(),$sql);
+
+        return $resul;
+
+    }
+    public function last_insert (){
+        $rs = mysqli_query($this->con(), "SELECT MAX(id_imagen) AS id FROM imagen");
+            
+        if ($row = mysqli_fetch_row($rs)) {
+            $id = trim($row[0]);
+
+            return $id;
+        }
+    }
+    public function last_insert_amb (){
+        $rs = mysqli_query($this->con(), "SELECT MAX(id_condiciones) AS id FROM condiciones_ambientales");
+            
+        if ($row = mysqli_fetch_row($rs)) {
+            $id = trim($row[0]);
+
+            return $id;
+        }
+    }
+
+
+    public function imagen_update($id,$db_url_img){
+
+        $sql = "UPDATE imagen SET $ruta = '$db_url_img' WHERE id_imagen = $id";
+
+        $resul=mysqli_query($this->con(),$sql);
+
+        return $resul;
+    } 
 
 
  

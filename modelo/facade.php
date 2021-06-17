@@ -520,14 +520,115 @@ class facade{
    }
 
     //Metodo que permite ingresar los datos de las condiciones climaticas de nuestro cultivo para la tabla cultivo_registro_u
-    public function insert_datos_condicionesclima($id_condiciones,$cantidad_humedad,$nivel_temperatura,$cantidad_luminosidad){
+    public function add_condiciones_ambientales ($idSiembra,$temperatura,$luminosidad,$humedad,$centimetros,$cantidad_hojas,
+                                                $producto_img,$img_crop,$comentarios){
+        
         $feedback='';
-        if($resul=$this->obj_cultivo->insert_datos_condiciones_amb($id_condiciones,$cantidad_humedad,$nivel_temperatura,$cantidad_luminosida) == true){
-            $feedback='ok';
+        $fechaActual = date('d-m-Y H:i:s');
+
+        if(!empty($idSiembra)){
+            if(!empty($producto_img) && !empty($_FILES[$img_crop]["name"])){
+
+                if($resul=$this->obj_cultivo->imagen_insert($producto_img)){
+                    $last_id=$this->obj_cultivo->last_insert();
+
+                    $file_name = $_FILES[$img_crop]["name"];
+                    $extension = pathinfo($_FILES[$img_crop]["name"],PATHINFO_EXTENSION);
+                    $ext_formatos = array('png','gif','jpg','jpeg','pdf');
+
+                    //comprobamos la extension del archivo
+                    if(!in_array(strtolower($extension),$ext_formatos)){
+                        $feedback='ext';//error de estencion de archivo
+                        return $feedback;
+                    }
+                    
+
+                    if($_FILES[$img_crop]["size"] > 33000003008000){
+                        $feedback='tam';//Tamaño excede limite
+                        return $feedback;
+                    }
+
+                    $dia = date("d");
+                    $mes = date("m");
+                    $anio = date("Y");
+
+                    $targetDir = "../imagenes/$anio/$mes/$dia/";//ruta
+
+                    @rmdir($targetDir);
+
+                    //si la carpeta no existe se crea
+                    if (!file_exists($targetDir)){
+
+                        @mkdir($targetDir,077,true);
+                    }
+
+                    //token de seguridad, para evitar archivos de igual nombre
+                    $token = md5(uniqid(rand(), true));
+                    $file_name = $token.'.'.$extension;//al nombre le agreganis el token y la ext 
+
+                    $add = $targetDir.$file_name;//almacenamos ruta y nombre del archivo
+                    $db_url_img = "$anio/$mes/$dia/$file_name";//ruta a guardar en la db
+
+                    if(move_uploaded_file($_FILES[$img_crop]["tmp_name"],$add)){//validamos que se suba corectamente al server
+
+                        if($resul=$this->obj_cultivo->imagen_update($last_id,$db_url_img)){
+
+                            //Insertamos datos ambientales
+                            if($resul=$this->obj_cultivo->insert_datos_ambientales($temperatura,$luminosidad,$humedad) == true){
+                                $id_amb=last_insert_amb();
+
+                                
+                            //Insertamos datos ambientales con id de imagen
+                            if($resul=$this->obj_cultivo->insert_registro_datos($idSiembra,$centimetros,$cantidad_hojas,$comentarios,$fechaActual,
+                                                                                $id_amb,$last_id) == true){
+                                $feedback='ok';
+                                return $feedback;
+                            }else{
+                                $feedback='bad';//Error al insertar registro de datos ambientales
+                                return $feedback;
+                            }
+                            }else{
+                                $feedback='amb_bad';//Error al insertar datos ambientales
+                                return $feedback;
+                            }
+                        }else{
+                            $feedback='img_bad';//Error al insertar imagen
+                            return $feedback;
+                        }
+                    }else{
+                        $feedback='server';//Error al cargar imagen al server
+                        return $feedback;
+                    }
+                }else{
+                    $feedback='img';//Error al insertar el nombre de la imagen
+                    return $feedback;
+                }
+            }
+            else{
+                //generamos un insert sin la imagen
+
+                //Insertamos datos ambientales
+                if($resul=$this->obj_cultivo->insert_datos_ambientales($temperatura,$luminosidad,$humedad) == true){
+                    $id_amb=last_insert_amb();
+                    
+                    //Insertamos datos ambientales sin id de imagen
+                    if($resul=$this->obj_cultivo->insert_registro_datosV2($idSiembra,$centimetros,$cantidad_hojas,$comentarios,$fechaActual,
+                                                                        $id_amb) == true){
+                        $feedback='ok';
+                        return $feedback;
+                    }else{
+                        $feedback='bad';
+                        return $feedback;
+                    }
+                }else{
+                    $feedback='amb_bad';
+                    return $feedback;
+                }
+            }
         }else{
-            $feedback='bad';
+            $feedback='isNull';
+            return $feedback;
         }
-        return $feedback;
     }
 
      //Metodo que permite leer todos los registros de siembra que hay en el sistema
