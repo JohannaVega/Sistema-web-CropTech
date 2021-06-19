@@ -11,7 +11,7 @@
  var expURL=/^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/;
  var exptext=/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/g;//valida solo txt
  var exptextsin_= /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+[a-zA-ZÀ-ÿ\u00f1\u00d1][a-zA-ZÀ-ÿ\u00f1\u00d1]+$/;//valida txt sin espacios
-
+var expdecimalComa = /^\d*\,?\d*$/;//valida que una expresion decimal tenga la coma en vez del punto
 
 function validarEditC() {
     var fecha, hora;
@@ -119,46 +119,47 @@ function validarEditC() {
   //-------------------------------------------------------------------------------------------//
 
   //Validaremos los campos input cuando registraremos una nueva actualizacion a un cultivo
-  function validarActualizacionC(){
-    var cantidad_hojas_nuevas,centimetros_obtenidos,fecha_registro;
-    cantidad_hojas_nuevas = document.getElementById("cantidad_hojas_nuevas").value;
-    centimetros_obtenidos = document.getElementById("centimetros_obtenidos").value;
-    fecha_registro = document.getElementById("fecha_registro").value; 
-    cantidad_humedad=document.getElementById("cantidad_humedad").value;
-    cantidad_luminosidad=document.getElementById("cantidad_luminosidad").value;
-    nivel_temperatura=document.getElementById("nivel_temperatura").value;
+  function validar_ActualizacionC(){
+    var cantidad_hojas,centimetros,humedad,luminosidad,temperatura,comentarios;
+    cantidad_hojas = document.getElementById("cantidad_hojas").value;
+    centimetros = document.getElementById("centimetros").value;
+    humedad=document.getElementById("humedad").value;
+    luminosidad=document.getElementById("luminosidad").value;
+    temperatura=document.getElementById("temperatura").value;
+    comentarios=document.getElementById("comentarios").value;
 
-      if(cantidad_hojas_nuevas===""|| centimetros_obtenidos=="" ||fecha_registro===""){
+      if(humedad===""|| luminosidad=="" || temperatura===""){
         alert("Por favor rellene los campos obligatorios ");
         return false;
       }
-      if(expespacio.test(cantidad_hojas_nuevas.value)||exespacio.test(centimetros_obtenidos.value)|| expespacio.test(fecha_registro.value)){
+      if(expespacio.test(humedad.value)||exespacio.test(luminosidad.value)|| expespacio.test(temperatura.value)){
         alert("Datos no validos (No se permiten espacios en blanco)");
         return false;
       }
-      if((cantidad_hojas_nuevas.length)>3){
-        alert("Cantidad de hojas invalido");
+
+      if(!expdecimalComa.test(centimetros.value) || !expdecimalComa.test(humedad.value) || !expdecimalComa.test(luminosidad.value)
+      || !expdecimalComa.test(temperatura.value)){
+        alert("Datos no validos (En las expresiones decimales debe ir una coma(,) no un punto (.) )");
         return false;
       }
-      if((centimetros_obtenidos.length)>3){
-        alert("Cantidad de centimetros obtenidos en crecimiento invalido");
+
+      if((cantidad_hojas.length || centimetros.length || humedad.length || 
+        luminosidad.length || temperatura.length )   >10 ){
+          alert("En un campo, excede el límite de caractes permitidos");
+          return false;
+        }
+        
+      if(!expnum.test(cantidad_hojas.value)){
+        alert("Datos no validos (En los campos númericos no se permiten otro tipo de datos)");
         return false;
+
+
       }
-     if(!expfecha.test(fecha_registro)){
-      alert("Formato de fecha invalido");
-      return false;
-      }
-       if((cantidad_humedad.length)>3){
-        alert("Cantidad de humedad medida invalida");
+
+      if(!exptext.test(comentarios.value)){
+        alert("Datos no validos en el campo de ingresar comentarios");
         return false;
-      }
-      if((cantidad_luminosidad.length)>4){
-        alert("Cantidad de luminosidad medida invalida");
-        return false;
-      }
-      if((nivel_temperatura.length)>3){
-        alert("nivel de temperatura medido invalido");
-        return false;
+
       }
   }
   //-------------------------------------------------------------------------------------------//

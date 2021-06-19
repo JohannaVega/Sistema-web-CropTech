@@ -43,7 +43,7 @@ if(isset($_GET['u']) ){
                   <li class="nav-item"><a class="nav-link active" 
                   href="http://localhost/proyecto_grado/croptech/vista/user_perfil.php">Perfil</a></li>
                   <li class="nav-item"><a class="nav-link" 
-                  href="http://localhost/proyecto_grado/croptech/vista/cultivo-historial.php" >Mis cultivos</a></li>
+                  href="http://localhost/proyecto_grado/croptech/vista/cultivos-activos.php" >Mis cultivos</a></li>
                 </ul>
               
                 <form class="d-flex form-inline my-2 my-lg-0  navbar-right" >

@@ -52,7 +52,7 @@ if($_SESSION['usuario']){
                 href="http://localhost/proyecto_grado/croptech/vista/user_perfil.php">Perfil</a></li>
                 <li class="nav-item">
                 <a class="nav-link active" 
-                href="http://localhost/proyecto_grado/croptech/vista/cultivo-historial.php">Mis cultivos</a></li>
+                href="http://localhost/proyecto_grado/croptech/vista/cultivos-activos.php">Mis cultivos</a></li>
                 <li class="nav-item"><a class="nav-link" 
                 href="http://localhost/proyecto_grado/croptech/vista/user_shops.php" >Proveedores</a></li>
             </ul>
@@ -84,13 +84,68 @@ if($_SESSION['usuario']){
                     <hr>
                 </div>
             </div>
-        
 
              <div class="container-lg "> 
                 <div class="m-1 row justify-content-center">
                 <div class="col-auto p-5 text-center bg-light border border-success">
-                <h3 class="display-5 text-success text-shadow h1">Historial de tus cultivos</h3>
+                <h1>Historial de tus cultivos</h1>
                     <hr>
+                    <div class="m-1 row justify-content-center">
+                <div class="col-auto text-center ">
+
+                <?php
+                if(isset($_GET['iderror'])){
+                    ?>
+                    <?php
+                    if ($_GET['iderror']=='bad'){
+                        ?>
+                        <p  style="color:red;" >Error al registrar los datos ingresados, intentalo más tarde</p>
+                        <?php
+                    }else if ($_GET['iderror']=='ok'){
+                        ?>
+                        <p  style="color:green;" >Registro de datos exitoso</p>
+                        <div id="passwordHelpBlock" class="form-text">
+                            Si desea ver los datos registrados, seleccione la opción ver datos (La lupa) del cultivo recien actualizado.
+                        </div>
+                        <?php
+                    }else if ($_GET['iderror']=='ext'){
+                        ?>
+                        <p  style="color:red;" >Extesión de archivo no valido, vuelva a realizar el registro</p>
+                        <?php
+                    }else if ($_GET['iderror']=='tam'){
+                        ?>
+                        <p  style="color:red;" >Tamaño de la imagen  excede límite permitido, vuelva a realizar el registro</p>
+                        <?php
+                    }else if ($_GET['iderror']=='amb_bad'){
+                        ?>
+                        <p  style="color:red;" >Error al registrar datos ambientales, vuelva a realizar el registro</p>
+                        <?php
+                    }else if ($_GET['iderror']=='img_bad'){
+                        ?>
+                        <p  style="color:red;" >Error al registrar imagen, intentelo más tarde</p>
+                        <?php
+                    }else if ($_GET['iderror']=='server'){
+                        ?>
+                        <p  style="color:red;" >Error al cargar imagen, intentelo más tarde</p>
+                        <?php
+                    }else if ($_GET['iderror']=='img'){
+                        ?>
+                        <p  style="color:red;" >Error al guardar datos de la imagen, intentelo más tarde</p>
+                        <?php
+                    }else if ($_GET['iderror']=='isNull'){
+                        ?>
+                        <p  style="color:red;" >Error en el envio de datos, intentelo más tarde</p>
+                        <?php
+                    }else{
+                        ?>
+                        <p  style="color:red;" ><?php echo 'kol '.$_GET['iderror'] ;?></p>
+                        <?php
+                    }
+                }
+                ?>
+                <hr>
+                </div>
+            </div>
                     
                 <?php
                 if($exist=='exist'){//se muestran los cultivos registrados
@@ -117,20 +172,30 @@ if($_SESSION['usuario']){
                                 <td><?php echo $resul[$i]['fecha_siembra'];?></td>
                                 <td><?php echo $resul[$i]['estado'];?></td>
 
-                                <!--editar datos-->
-                                <td> <a href="http://localhost/proyecto_grado/croptech/vista/admon_editUP.php?idu=<?php echo $resul[$i]['nro_registro_siembra'];?>"
+                               
+                                <td> <a href="http://localhost/proyecto_grado/croptech/vista/admon_editUP.php?idSiembra=<?php echo $resul[$i]['nro_registro_siembra'];?>"
                                 class="btn btn-outline-success"  title="Ver datos del cultivo">
                                 <img src="http://localhost/proyecto_grado/croptech/assets/img/ver.png" alt="Editar" id="icono" height="30px" width="30px"></a></td>
-                                <!--editar contraseña-->
-                                <td><a href="http://localhost/proyecto_grado/croptech/vista/admon_editUD.php?idu=<?php echo $resul[$i]['nro_registro_siembra'];?>"
-                                class="btn btn-outline-success" title="Actualizar datos del cultivo">
-                                <img src="http://localhost/proyecto_grado/croptech/assets/img/actualizar.png" alt="Editar" id="icono" height="30px" width="30px"></a></td>
-                                <td>
-                                <a href="http://localhost/proyecto_grado/croptech/vista/cultivo_desactivar.php?idc=<?php echo $resul[$i]['nro_registro_siembra'];?>&accion=delete"
-                                    class="btn btn-outline-success" title="Desactivar cultivo">
-                                <img src="http://localhost/proyecto_grado/croptech/assets/img/delete.png" 
-                                alt="Editar" id="icono" height="30px" width="30px"></a></td>
-                                <?php } ?>
+                                <?php
+                                if($resul[$i]['estado'] != 'Desactivo'){
+                                    ?>
+                                    <td>
+                                        <a href="http://localhost/proyecto_grado/croptech/vista/cultivo_condiciones_ambientales.php?idSiembra=<?php echo $resul[$i]['nro_registro_siembra'];?>"
+                                        class="btn btn-outline-success" title="Actualizar datos del cultivo">
+                                        <img src="http://localhost/proyecto_grado/croptech/assets/img/actualizar.png" alt="Editar" id="icono" height="30px" width="30px"></a>
+                                    </td>
+                                    <td>
+                                        <a href="http://localhost/proyecto_grado/croptech/vista/cultivo_desactivar.php?idc=<?php echo $resul[$i]['nro_registro_siembra'];?>&accion=delete"
+                                            class="btn btn-outline-success" title="Desactivar cultivo">
+                                        <img src="http://localhost/proyecto_grado/croptech/assets/img/delete.png" 
+                                        alt="Editar" id="icono" height="30px" width="30px"></a>
+                                    </td>
+
+                                <?php
+                                }
+                                
+                                
+                                } ?>
                                 </tr>
                             
                             </tbody>
@@ -145,15 +210,15 @@ if($_SESSION['usuario']){
                     <!--Mostramos mensaje (no tiene registro de cultivos)-->
                     
                     <div class="container">
-                        <div class="m-1 row justify-content-center">
-                            <h3 class="text-center pb-5 pt-5 h1">¡Aún no tienes cultivos registrados!</h3>
+                        <div class="row justify-content-center">
+                            <h1>¡Aún no has registrado tu primer cultivo!</h1>
                         </div>
 
-                            <div class="m-1 row justify-content-center">
-                            <div class="col-auto p-5 text-center">
-                            <img src="http://localhost/proyecto_grado/croptech/assets/img/sad.png" alt="sad"  height="100px" width="100px"></a></td>
+                        <div class="row justify-content-center">
+                            <div class="col-auto text-center">
+                                <img src="http://localhost/proyecto_grado/croptech/assets/img/huert.gif" alt="Heyy"  height="200px" width="200px"></a>
                             </div>
-                            </div>
+                        </div>
                     </div>
                     <?php } ?>
                     </div>

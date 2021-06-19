@@ -31,14 +31,15 @@ if(isset($_POST['cultivo_edit']) && $_POST['cultivo_edit']=='ADDCONAMBIENT' ){
     && isset($_POST['idSiembra'])){
 
        $obj=new facade();
-       $resul=$obj->add_condiciones_ambientales ($_POST['idSiembra'],$_POST['temperatura'],$_POST['luminosidad'],$_POST['humedad'],
-                                                $_POST['centimetros'],$_POST['cantidad_hojas'],$_POST['producto_img'],
-                                                $_POST['img_crop'],$_POST['comentarios']);
+       //$on= $_FILES['uploadedfile']['name'];
+       //$resul= $_FILES[$on]['name'];
 
-      if($resul=="ok")
-       header("Location: http://localhost/proyecto_grado/croptech/vista/cultivo-agregar.php?iderror=ok");
-       else
-       header("Location: http://localhost/proyecto_grado/croptech/vista/cultivo-agregar.php?iderror=bad");
+      
+       $resul=$obj->add_condiciones_ambientales ($_POST['idSiembra'],$_POST['temperatura'],$_POST['luminosidad'],$_POST['humedad'],
+                                                $_POST['centimetros'],$_POST['cantidad_hojas'],
+                                                $_FILES['img_crop'],$_POST['comentarios']);
+    
+       header("Location: http://localhost/proyecto_grado/croptech/vista/cultivo-historial.php?iderror=$resul");
     }
 }
 

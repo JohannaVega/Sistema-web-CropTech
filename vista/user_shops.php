@@ -45,7 +45,7 @@ if($_SESSION['usuario']){
                     <li class="nav-item"><a class="nav-link" 
                     href="http://localhost/proyecto_grado/croptech/vista/user_perfil.php">Perfil</a></li>
                     <li class="nav-item"><a class="nav-link" 
-                    href="http://localhost/proyecto_grado/croptech/vista/cultivo-historial.php" >Mis cultivos</a></li>
+                    href="http://localhost/proyecto_grado/croptech/vista/cultivos-activos.php" >Mis cultivos</a></li>
                     <li class="nav-item"><a class="nav-link active" 
                     href="http://localhost/proyecto_grado/croptech/vista/user_shops.php" >Proveedores</a></li>
                     </ul>

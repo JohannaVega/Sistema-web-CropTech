@@ -45,15 +45,15 @@ if($_SESSION['usuario']){
                     href="http://localhost/proyecto_grado/croptech/vista/user_perfil.php">Perfil</a></li>
                     <li class="nav-item">
                     <a class="nav-link" 
-                    href="http://localhost/proyecto_grado/croptech/vista/cultivo-historial.php" >Mis cultivos</a></li>
+                    href="http://localhost/proyecto_grado/croptech/vista/cultivos-activos.php" >Mis cultivos</a></li>
                     <li class="nav-item"><a class="nav-link" 
                     href="http://localhost/proyecto_grado/croptech/vista/user_shops.php" >Proveedores</a></li>
                 </ul>
 
-            <form class="d-flex form-inline my-2 my-lg-0  navbar-right" >
-                <a href="http://localhost/proyecto_grado/croptech/controlador/cerrar_sesion.php" 
-                class="btn btn btn-dark" style="float: right;">Cerrar sesión</a>
-            </form>
+                <form class="d-flex form-inline my-2 my-lg-0  navbar-right" >
+                    <a href="http://localhost/proyecto_grado/croptech/controlador/cerrar_sesion.php" 
+                    class="btn btn btn-dark" style="float: right;">Cerrar sesión</a>
+                </form>
 
             </div>
         </div>
@@ -66,7 +66,7 @@ if($_SESSION['usuario']){
             $id=$_SESSION['usuario']; 
             require '../modelo/facade.php';
             $fac=new facade();
-            $resul=$fac->ver_tiendas_bycategoria($_GET['idc']);
+           // $resul=$fac->ver_tiendas_bycategoria($_GET['idc']);
     ?>
     
 
@@ -77,15 +77,21 @@ if($_SESSION['usuario']){
                 <div class="jumbotron">
                     <h4 class="display-5 text-success text-shadow h1">Condiciones ambientales</h4>
                     <hr>
-                    <form enctye="multipart/form-data" action="../controlador/validar_cultivos.php" method="POST">
+                    <form  data-toggle="validator"  action="../controlador/validar_cultivos.php" method="POST" enctye="multipart/form-data">
 
-                            <p class="lead">Variables visibles</p>
+                            <div class="form-row row justify-content-center p-2">
+                                <div class="form-group col-md-5">
+                                    <p class="lead">Variables visibles:</p>
+                                    <hr>
+                                </div>
+                            </div>
 
                             <!--INGRESAMOS LA CANTIDAD DE HUMEDAD MEDIDA EN EL REGISTRO-->
                             <div class="form-row row justify-content-center p-2">
                                 <div class="form-group col-md-5">
                                     <p>Centimetros obtenidos: </p>
-                                    <input type="number" id="centimetros" class="form-control" name="centimetros">
+                                    <input type="number" id="centimetros" class="form-control" name="centimetros" 
+                                    placeholder="ejem: 7,7" step="any">
                                 </div>
                             </div> 
 
@@ -93,48 +99,61 @@ if($_SESSION['usuario']){
                             <div class="form-row row justify-content-center p-2">
                                 <div class="form-group col-md-5">
                                     <p>Cantidad de hojas nuevas:</p>
-                                    <input type="number" id="cantidad_hojas" class="form-control" name="cantidad_hojas">
+                                    <input type="number" id="cantidad_hojas" class="form-control" name="cantidad_hojas"
+                                    placeholder="ejem: 10">
                                 </div>
                             </div> 
 
-                            <p class="lead">Variables ambientales</p>
-
                             <div class="form-row row justify-content-center p-2">
                                 <div class="form-group col-md-5">
-                                    <p>Nivel de la humedad ambiental:</p>
-                                    <input type="number" id="humedad" class="form-control" name="humedad" requiered>
+                                    <p class="lead">Variables ambientales:</p>
+                                    <hr>
                                 </div>
                             </div>
 
                             <div class="form-row row justify-content-center p-2">
                                 <div class="form-group col-md-5">
-                                    <p>Cantidad luminosidad ambiental:</p>
-                                    <input type="number" id="luminosidad" class="form-control" name="luminosidad" requiered>
+                                    <p>Porcentaje de la humedad ambiental (%):</p>
+                                    <input type="number" id="humedad" class="form-control" name="humedad" step="any" 
+                                    placeholder="ejem: 5,03" requiered>
                                 </div>
                             </div>
 
                             <div class="form-row row justify-content-center p-2">
                                 <div class="form-group col-md-5">
-                                    <p>Nivel de temperatura ambiental:</p>
-                                    <input type="number" id="temperatura" class="form-control" name="temperatura" requiered>
+                                    <p>Cantidad de luminosidad ambiental (lux):</p>
+                                    <input type="number" id="luminosidad" class="form-control" name="luminosidad" step="any" 
+                                    placeholder="ejem: 25,01" requiered>
+                                </div>
+                            </div>
+
+                            <div class="form-row row justify-content-center p-2">
+                                <div class="form-group col-md-5">
+                                    <p>Nivel de temperatura ambiental (grados Celsius (°C)):</p>
+                                    <input type="number" id="temperatura" class="form-control" name="temperatura" step="any" 
+                                    placeholder="ejem: 16,5" requiered>
                                 </div>
                             </div>
 
                             <div class="form-row row justify-content-center p-2">
                                 <div class="form-group col-md-5">
                                     <p>Adjunta tu imagen:</p> 
-                                    <input type="text" name="producto_img" disabled>
-                                    <input type="file" id="img_crop" class="form-control" name="img_crop">
-                                    <div id="passwordHelpBlock" class="form-text">
-                                        Si lo desea puede ingresar una imagen del estado de su cultivo.
-                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row row justify-content-center p-2">
+                                <div class="form-group col-md-6">
+                                    <input type='file' id='img_crop' class='form-control' name="uploadedfile">
+                                </div>
+
+                                <div id="passwordHelpBlock" class="form-text">
+                                    Si lo desea puede ingresar una imagen del estado de su cultivo.
                                 </div>
                             </div>
 
                             <div class="form-row row justify-content-center p-2">
                                 <div class="form-group col-md-12" >
                                     <label>Comentarios adicionales:</label>
-                                    <textarea  class="form-control"  rows="5" cols="5" 
+                                    <textarea  class="form-control"  rows="3" cols="2" 
                                         id="comentarios" name="comentarios" > </textarea>
                                     <div id="passwordHelpBlock" class="form-text">
                                         Si lo desea puede ingresar comentarios adicionales respecto 
@@ -160,57 +179,52 @@ if($_SESSION['usuario']){
                 </div>
             </div>
 
-<!--FIN COLUMNA 1-->
-
-
-
-
-
+            <!--FIN COLUMNA 1-->
 
             <!--SECCIÓN CAJA TRASERA-->
             <div class="col ">
-                    <div class="caja_trasera"> 
-                        <div>
-                            <h1 id="name" class="text-center text-white text-shadow">CropTech - Cultivo</h1>
-                            <hr>
-                            <br>
-                            <h3 class="pt-5">Hola, </h3>
-                            <p >En esta sección puedes agregar las condiciones climaticas de tu nuevo registro de cultivo </p>
-                        <div>
+                <div class="caja_trasera"> 
+                    <div>
+                        <h1 id="name" class="text-center text-white text-shadow">CropTech - Cultivo</h1>
+                        <hr>
+                        <br>
+                        <h3 class="pt-5">Hola, </h3>
+                        <p >En esta sección puedes actualizar las condiciones climaticas para la gestión de tu cultivo </p>
                     </div>
                 </div>
-                <!--FIN SECCIÓN CAJA TRASERA-->
             </div>
-            <!--FIN FILA 1-->
-
+            <!--FIN SECCIÓN CAJA TRASERA-->
         </div>
+        <!--FIN FILA 1-->
+
+    </div>
             
+    </div>
+    <?php
+    }
+    else{
+        echo "<script type='text/javascript'>
+        alert('ERROR!! En el envio de datos');
+        window.history.back();
+        </script>";
+    }?>
+    <script src="../js/validaciones_form.js"></script>
+    <hr>
+    <div class="p-3" id="separator-ribbon">
+        <div class="bg-light">     
+            <h4 class="text-center pb-3 pt-3"></h4>
         </div>
-        </div>
-        <?php
-        }else{
-            echo "<script type='text/javascript'>
-            alert('ERROR!! En el envio de datos');
-            window.history.back();
-            </script>";
-        }?>
-        <script src="../js/validaciones_form.js"></script>
-        <hr>
-        <div class="p-3" id="separator-ribbon">
-            <div class="bg-light">     
-              <h4 class="text-center pb-3 pt-3"></h4>
-            </div>
-        </div>
-        
+    </div>
+    
 
-      <?php require '../footer.php';?>
+    <?php require '../footer.php';?>
 
-      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" 
-          integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" 
-          crossorigin="anonymous"></script>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" 
-        integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" 
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" 
+        integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" 
         crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" 
+    integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" 
+    crossorigin="anonymous"></script>
 </body>
 </html>
 <?php }else{

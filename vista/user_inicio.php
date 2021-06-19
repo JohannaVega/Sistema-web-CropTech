@@ -54,7 +54,7 @@ if($_SESSION['usuario']){
         <li class="nav-item"><a class="nav-link" 
         href="http://localhost/proyecto_grado/croptech/vista/user_perfil.php?idU=<?php echo $_SESSION['usuario']; ?>">Perfil</a></li>
         <li class="nav-item"><a class="nav-link" 
-        href="http://localhost/proyecto_grado/croptech/vista/cultivo-historial.php" >Mis cultivos</a></li>
+        href="http://localhost/proyecto_grado/croptech/vista/cultivos-activos.php" >Mis cultivos</a></li>
         <li class="nav-item"><a class="nav-link"
         href="http://localhost/proyecto_grado/croptech/vista/user_shops.php" >Proveedores</a></li>
       </ul>
@@ -116,7 +116,7 @@ if($_SESSION['usuario']){
                           <p class="card-text">Actualiza los datos de tu cultivo cada vez que lo desees,
                               de esta manera tendras control del mismo.
                           </p>
-                          <a href="#" class="btn btn-outline-success">Actualizar</a>
+                          <a href="http://localhost/proyecto_grado/croptech/vista/cultivos-activos.php" class="btn btn-outline-success">Actualizar</a>
                         </div>
                       </div>
                 </div>

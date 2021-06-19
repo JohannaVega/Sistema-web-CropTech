@@ -64,6 +64,21 @@ class CultivoDAO extends Conectar{
         return $this->cultivos;
     }
 
+    //Leemos los datos de cultivos activos por id de usuario
+    public function read_cultivos_user_active($idu){//read
+        $sql="select c.id_cultivo,c.nombre_cultivo, rs.fecha_siembra, rs.nro_registro_siembra,
+                rs.estado
+                from registro_siembra rs
+                LEFT JOIN cultivo c ON rs.id_cultivo = c.id_cultivo
+                WHERE rs.id_usuario=$idu AND estado='Activo'";   
+
+        $resul=mysqli_query($this->con(),$sql);
+        while($row=mysqli_fetch_assoc($resul)){
+            $this->cultivos[]=$row;
+        }
+        return $this->cultivos;
+    }
+
     //ingresamos cultivos para que estos sean elegidos por el usuario
     public function insert_cultivo_to_choose($cnombre,$luminosidadop,$humedadop,$temperaturaop,$tiempo_siembra,$primer_fecha_registro,$id_tipo){
         $sql= "insert into cultivo(nombre_cultivo,luminosidad_optima,humedad_optima,temperatura_optima,
@@ -183,7 +198,18 @@ class CultivoDAO extends Conectar{
 
         $resul=mysqli_query($this->con(),$sql);
 
-        return $resul;                                            
+        if($resul){
+            $rs = mysqli_query($this->con(), "SELECT MAX(id_condiciones) AS id FROM condiciones_ambientales");
+     
+            if ($row = mysqli_fetch_row($rs)) {
+                $id = trim($row[0]);
+            }
+
+        }else{
+            return 0;
+        }     
+        
+        return $id;                                
     }
 
     public function imagen_insert ($producto_img){
@@ -192,26 +218,35 @@ class CultivoDAO extends Conectar{
 
         $resul=mysqli_query($this->con(),$sql);
 
-        return $resul;
-
+        if($resul1){
+            $rs = mysqli_query($this->con(), "SELECT MAX(id_imagen) AS id FROM imagen");
+     
+            if ($row = mysqli_fetch_row($rs)) {
+                $id = trim($row[0]);
+            }
+        }else{
+            return 0;
+        }     
+        
+        return $id;     
     }
+    
     public function last_insert (){
         $rs = mysqli_query($this->con(), "SELECT MAX(id_imagen) AS id FROM imagen");
-            
+        
         if ($row = mysqli_fetch_row($rs)) {
             $id = trim($row[0]);
-
-            return $id;
+           
         }
+        return $id;
     }
     public function last_insert_amb (){
         $rs = mysqli_query($this->con(), "SELECT MAX(id_condiciones) AS id FROM condiciones_ambientales");
-            
+     
         if ($row = mysqli_fetch_row($rs)) {
             $id = trim($row[0]);
-
-            return $id;
         }
+        return $id;
     }
 
 

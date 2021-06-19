@@ -521,15 +521,20 @@ class facade{
 
     //Metodo que permite ingresar los datos de las condiciones climaticas de nuestro cultivo para la tabla cultivo_registro_u
     public function add_condiciones_ambientales ($idSiembra,$temperatura,$luminosidad,$humedad,$centimetros,$cantidad_hojas,
-                                                $producto_img,$img_crop,$comentarios){
+                                                $img_crop,$comentarios){
         
         $feedback='';
-        $fechaActual = date('d-m-Y H:i:s');
+        $fechaActual = date('Y-m-d H:i:s');
+        $image = $_FILES[$img_crop];
+        $feedback = $_FILES[$img_crop]['name'];
 
         if(!empty($idSiembra)){
-            if(!empty($producto_img) && !empty($_FILES[$img_crop]["name"])){
+            if( $_FILES[$img_crop]['name'] != null){
+                $name = $_FILES[$img_crop]["name"];
 
-                if($resul=$this->obj_cultivo->imagen_insert($producto_img)){
+                $resul1=$this->obj_cultivo->imagen_insert($name);
+
+                if($resul1 != 0){
                     $last_id=$this->obj_cultivo->last_insert();
 
                     $file_name = $_FILES[$img_crop]["name"];
@@ -538,7 +543,7 @@ class facade{
 
                     //comprobamos la extension del archivo
                     if(!in_array(strtolower($extension),$ext_formatos)){
-                        $feedback='ext';//error de estencion de archivo
+                        $feedback='ext';//error de extencion de archivo
                         return $feedback;
                     }
                     
@@ -571,22 +576,22 @@ class facade{
 
                     if(move_uploaded_file($_FILES[$img_crop]["tmp_name"],$add)){//validamos que se suba corectamente al server
 
-                        if($resul=$this->obj_cultivo->imagen_update($last_id,$db_url_img)){
+                        if($resul2=$this->obj_cultivo->imagen_update($last_id,$db_url_img)){
 
                             //Insertamos datos ambientales
-                            if($resul=$this->obj_cultivo->insert_datos_ambientales($temperatura,$luminosidad,$humedad) == true){
+                            if($resul3=$this->obj_cultivo->insert_datos_ambientales($temperatura,$luminosidad,$humedad) == true){
                                 $id_amb=last_insert_amb();
 
                                 
                             //Insertamos datos ambientales con id de imagen
-                            if($resul=$this->obj_cultivo->insert_registro_datos($idSiembra,$centimetros,$cantidad_hojas,$comentarios,$fechaActual,
-                                                                                $id_amb,$last_id) == true){
-                                $feedback='ok';
-                                return $feedback;
-                            }else{
-                                $feedback='bad';//Error al insertar registro de datos ambientales
-                                return $feedback;
-                            }
+                                if($resul4=$this->obj_cultivo->insert_registro_datos($idSiembra,$centimetros,$cantidad_hojas,$comentarios,$fechaActual,
+                                                                                    $id_amb,$last_id) == true){
+                                    $feedback='ok';
+                                    return $feedback;
+                                }else{
+                                    $feedback='bad';//Error al insertar registro de datos ambientales
+                                    return $feedback;
+                                }
                             }else{
                                 $feedback='amb_bad';//Error al insertar datos ambientales
                                 return $feedback;
@@ -600,7 +605,7 @@ class facade{
                         return $feedback;
                     }
                 }else{
-                    $feedback='img';//Error al insertar el nombre de la imagen
+                    $feedback= $_FILES[$img_crop]['name'];//Error al insertar el nombre de la imagen
                     return $feedback;
                 }
             }
@@ -608,12 +613,11 @@ class facade{
                 //generamos un insert sin la imagen
 
                 //Insertamos datos ambientales
-                if($resul=$this->obj_cultivo->insert_datos_ambientales($temperatura,$luminosidad,$humedad) == true){
-                    $id_amb=last_insert_amb();
-                    
+                $resul5=$this->obj_cultivo->insert_datos_ambientales($temperatura,$luminosidad,$humedad);
+                if($resul5 != 0){
                     //Insertamos datos ambientales sin id de imagen
-                    if($resul=$this->obj_cultivo->insert_registro_datosV2($idSiembra,$centimetros,$cantidad_hojas,$comentarios,$fechaActual,
-                                                                        $id_amb) == true){
+                    if($resul6=$this->obj_cultivo->insert_registro_datosV2($idSiembra,$centimetros,$cantidad_hojas,$comentarios,$fechaActual,
+                                                                        $resul5) == true){
                         $feedback='ok';
                         return $feedback;
                     }else{
@@ -626,9 +630,10 @@ class facade{
                 }
             }
         }else{
-            $feedback='isNull';
+            $feedback='isNull';//Id siembra es null
             return $feedback;
         }
+        return $feedback;
     }
 
      //Metodo que permite leer todos los registros de siembra que hay en el sistema
@@ -654,6 +659,26 @@ class facade{
     //Metodo que permite leer los cultivos de un usuario
     public function read_cultivos_user($idu){//ok
         $resul=$this->obj_cultivo->read_cultivos_user($idu);
+        return $resul;
+    }
+
+     //Metodo que permite validar si un usuario tiene cultivos 
+     public function validar_cultivos_user_active($idu){//ok
+        $feedback="";
+        $resul=$this->obj_cultivo->read_cultivos_user_active($idu);
+        $exist=count($resul);
+
+        if($exist==0){
+            $feedback="no_exist";
+        }else{
+            $feedback="exist";
+        }
+        return $feedback;
+    }
+
+     //Metodo que permite leer los cultivos activos de un usuario
+     public function read_cultivos_user_active($idu){//ok
+        $resul=$this->obj_cultivo->read_cultivos_user_active($idu);
         return $resul;
     }
 
