@@ -7,16 +7,31 @@ if($_SESSION['usuario']){
     //Y procedemos a instanciar el obj facade para iagregar cultivo nuevo
 if(isset($_POST['user_c']) && $_POST['user_c']=='CREAR_C' ){
     if(isset($_POST['cnombre']) &&  isset($_POST['fecha_registro']) && isset($_POST['idu'])
-    && isset($_POST['estado'])){
+    && isset($_POST['estado']) && isset($_POST['otro'])){
        $obj=new facade();
-       $resul=$obj->addcultivo($_POST['idu'],$_POST['cnombre'],$_POST['fecha_registro'],$_POST['estado']);
+       $resul=$obj->addcultivo($_POST['idu'],$_POST['cnombre'],$_POST['fecha_registro'],$_POST['estado'],
+                                $_POST['otro']);
 
-      if($resul=="ok")
-       header("Location: http://localhost/proyecto_grado/croptech/vista/cultivo-agregar.php?iderror=ok");
-       else
-       header("Location: http://localhost/proyecto_grado/croptech/vista/cultivo-agregar.php?iderror=bad");
+       header("Location: http://localhost/proyecto_grado/croptech/vista/cultivo-agregar.php?iderror=$resul");
+       
     }
 }
+//Validamos que llegue el POST de Crear Cultivo, generado por el admon
+if(isset($_POST['admon_c']) && $_POST['admon_c']=='CREAR_C' ){
+    if(isset($_POST['name']) &&  isset($_POST['tipo']) && isset($_POST['humedadmin']) && isset($_POST['humedadmax'])
+    && isset($_POST['luzmin']) && isset($_POST['luzmax']) && isset($_POST['temperaturamin'])
+    && isset($_POST['temperaturamax']) && isset($_POST['tiempo']) && isset($_POST['idu'])){
+
+       $obj=new facade();
+       $resul=$obj->addcultivo_new($_POST['name'],$_POST['tipo'],$_POST['humedadmin'],$_POST['humedadmax'],
+       $_POST['luzmin'],$_POST['luzmax'],$_POST['temperaturamin'],$_POST['temperaturamax'],$_POST['tiempo'],
+       $_POST['idu']);
+
+       header("Location: http://localhost/proyecto_grado/croptech/vista/admon_add_crop.php?iderror=$resul");
+       
+    }
+}
+
 //Validamos que llegue el id_c del registro del cultivo a desactivar
 if(isset($_GET['idc'])){
     $obj= new facade();
@@ -42,6 +57,12 @@ if(isset($_POST['cultivo_edit']) && $_POST['cultivo_edit']=='ADDCONAMBIENT' ){
        header("Location: http://localhost/proyecto_grado/croptech/vista/cultivo-historial.php?iderror=$resul");
     }
 }
+if(isset($_GET['idAccount'])){//ok
+    $obj= new facade();
+    $resul= $obj->atender_agregar_cultivo($_GET['idAccount']);
+
+  }
+
 
 }else{
     echo "<script type='text/javascript'>

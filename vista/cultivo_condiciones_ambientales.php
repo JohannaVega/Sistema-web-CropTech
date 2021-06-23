@@ -91,7 +91,7 @@ if($_SESSION['usuario']){
                                 <div class="form-group col-md-5">
                                     <p>Centimetros obtenidos: </p>
                                     <input type="number" id="centimetros" class="form-control" name="centimetros" 
-                                    placeholder="ejem: 7,7" step="any">
+                                    placeholder="Ejemplo: 7.2" step="any">
                                 </div>
                             </div> 
 
@@ -100,7 +100,7 @@ if($_SESSION['usuario']){
                                 <div class="form-group col-md-5">
                                     <p>Cantidad de hojas nuevas:</p>
                                     <input type="number" id="cantidad_hojas" class="form-control" name="cantidad_hojas"
-                                    placeholder="ejem: 10">
+                                    placeholder="Ejemplo: 10">
                                 </div>
                             </div> 
 
@@ -115,15 +115,19 @@ if($_SESSION['usuario']){
                                 <div class="form-group col-md-5">
                                     <p>Porcentaje de la humedad ambiental (%):</p>
                                     <input type="number" id="humedad" class="form-control" name="humedad" step="any" 
-                                    placeholder="ejem: 5,03" requiered>
+                                    placeholder="Ejemplo: 5.03" requiered>
                                 </div>
                             </div>
 
                             <div class="form-row row justify-content-center p-2">
                                 <div class="form-group col-md-5">
-                                    <p>Cantidad de luminosidad ambiental (lux):</p>
+                                    <p>Cantidad de horas luz diarias (horas)</p>
+                                    <div id="passwordHelpBlock" class="form-text">
+                                        Ingrese la cantidad de horas a las que expone a su cultivo a la 
+                                        luz solar por día.
+                                    </div>
                                     <input type="number" id="luminosidad" class="form-control" name="luminosidad" step="any" 
-                                    placeholder="ejem: 25,01" requiered>
+                                    placeholder="Ejemplo: 25.01" requiered>
                                 </div>
                             </div>
 
@@ -131,7 +135,7 @@ if($_SESSION['usuario']){
                                 <div class="form-group col-md-5">
                                     <p>Nivel de temperatura ambiental (grados Celsius (°C)):</p>
                                     <input type="number" id="temperatura" class="form-control" name="temperatura" step="any" 
-                                    placeholder="ejem: 16,5" requiered>
+                                    placeholder="Ejemplo: 16.5" requiered>
                                 </div>
                             </div>
 

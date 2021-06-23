@@ -39,9 +39,9 @@ if($_SESSION['usuario']){
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" aria-current="page" 
                     href="http://localhost/proyecto_grado/croptech/vista/admon_inicio.php">Inicio</a> </li>
-                    <li class="nav-item"><a class="nav-link active " 
+                    <li class="nav-item"><a class="nav-link" 
                     href="http://localhost/proyecto_grado/croptech/vista/admon_usuarios.php">Adminstrar usuarios</a></li>
-                    <li class="nav-item"><a class="nav-link " 
+                    <li class="nav-item"><a class="nav-link active" 
                     href="http://localhost/proyecto_grado/croptech/vista/admon_cultivo.php">Control cultivos</a></li>
                 </ul>
 
@@ -131,7 +131,7 @@ if($_SESSION['usuario']){
                         </thead>
                         <tbody>
                             <?php for($i=0;$i<count($resul);$i++){
-                                if($resul[$i]["id_tipo_solicitud"] == 1){
+                                if($resul[$i]["id_tipo_solicitud"] == 2){
                                 ?>
                                 <tr>
                                     <td><?php echo $resul[$i]['id_tipo_solicitud'];?></td>
@@ -182,10 +182,12 @@ if($_SESSION['usuario']){
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" 
         integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" 
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous">
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" 
        integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" 
-       crossorigin="anonymous"></script>
+       crossorigin="anonymous">
+    </script>
 
 </body>
 </html>

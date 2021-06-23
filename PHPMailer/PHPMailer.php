@@ -428,9 +428,11 @@ class PHPMailer
     public $Debugoutput = 'echo';
 
     /**
-     * Whether to keep SMTP connection open after each message.
-     * If this is set to true then to close the connection
-     * requires an explicit call to smtpClose().
+     * Whether to keep the SMTP connection open after each message.
+     * If this is set to true then the connection will remain open after a send,
+     * and closing the connection will require an explicit call to smtpClose().
+     * It's a good idea to use this if you are sending multiple messages as it reduces overhead.
+     * See the mailing list example for how to use it.
      *
      * @var bool
      */
@@ -748,7 +750,7 @@ class PHPMailer
      *
      * @var string
      */
-    const VERSION = '6.4.0';
+    const VERSION = '6.5.0';
 
     /**
      * Error severity: message only, continue processing.
@@ -1335,7 +1337,8 @@ class PHPMailer
         if (null === $patternselect) {
             $patternselect = static::$validator;
         }
-        if (is_callable($patternselect)) {
+        //Don't allow strings as callables, see SECURITY.md and CVE-2021-3603
+        if (is_callable($patternselect) && !is_string($patternselect)) {
             return call_user_func($patternselect, $address);
         }
         //Reject line breaks in addresses; it's valid RFC5322, but not RFC5321
@@ -1811,7 +1814,8 @@ class PHPMailer
      */
     protected static function isPermittedPath($path)
     {
-        return !preg_match('#^[a-z]+://#i', $path);
+        //Matches scheme definition from https://tools.ietf.org/html/rfc3986#section-3.1
+        return !preg_match('#^[a-z][a-z\d+.-]*://#i', $path);
     }
 
     /**
@@ -1823,12 +1827,15 @@ class PHPMailer
      */
     protected static function fileIsAccessible($path)
     {
+        if (!static::isPermittedPath($path)) {
+            return false;
+        }
         $readable = file_exists($path);
         //If not a UNC path (expected to start with \\), check read permission, see #2069
         if (strpos($path, '\\\\') !== 0) {
             $readable = $readable && is_readable($path);
         }
-        return static::isPermittedPath($path) && $readable;
+        return  $readable;
     }
 
     /**
@@ -2178,7 +2185,8 @@ class PHPMailer
      * The default language is English.
      *
      * @param string $langcode  ISO 639-1 2-character language code (e.g. French is "fr")
-     * @param string $lang_path Path to the language file directory, with trailing separator (slash)
+     * @param string $lang_path Path to the language file directory, with trailing separator (slash).D
+     *                          Do not set this from user input!
      *
      * @return bool
      */
@@ -2240,14 +2248,32 @@ class PHPMailer
             if (!static::fileIsAccessible($lang_file)) {
                 $foundlang = false;
             } else {
-                //Overwrite language-specific strings.
-                //This way we'll never have missing translation keys.
-                $foundlang = include $lang_file;
+                //$foundlang = include $lang_file;
+                $lines = file($lang_file);
+                foreach ($lines as $line) {
+                    //Translation file lines look like this:
+                    //$PHPMAILER_LANG['authenticate'] = 'SMTP-Fehler: Authentifizierung fehlgeschlagen.';
+                    //These files are parsed as text and not PHP so as to avoid the possibility of code injection
+                    //See https://blog.stevenlevithan.com/archives/match-quoted-string
+                    $matches = [];
+                    if (
+                        preg_match(
+                            '/^\$PHPMAILER_LANG\[\'([a-z\d_]+)\'\]\s*=\s*(["\'])(.+)*?\2;/',
+                            $line,
+                            $matches
+                        ) &&
+                        //Ignore unknown translation keys
+                        array_key_exists($matches[1], $PHPMAILER_LANG)
+                    ) {
+                        //Overwrite language-specific strings so we'll never have missing translation keys.
+                        $PHPMAILER_LANG[$matches[1]] = (string)$matches[3];
+                    }
+                }
             }
         }
         $this->language = $PHPMAILER_LANG;
 
-        return (bool) $foundlang; //Returns false if language not found
+        return $foundlang; //Returns false if language not found
     }
 
     /**
@@ -4053,7 +4079,7 @@ class PHPMailer
             list($name, $value) = explode(':', $name, 2);
         }
         $name = trim($name);
-        $value = trim($value);
+        $value = (null === $value) ? '' : trim($value);
         //Ensure name is not empty, and that neither name nor value contain line breaks
         if (empty($name) || strpbrk($name . $value, "\r\n") !== false) {
             if ($this->exceptions) {

@@ -309,7 +309,7 @@ if(isset($_POST['Sadmon']) && $_POST['Sadmon']=='EDITAR' && isset($_POST['idu'])
     }
   }
 
-  if(isset($_GET['idu']) && isset($_GET['ids'])){
+  if(isset($_GET['idu']) && isset($_GET['ids'])){//ok
     $obj= new facade();
     $resul= $obj->atender_desactivar_cuenta($_GET['idu'],$_GET['ids']);
 

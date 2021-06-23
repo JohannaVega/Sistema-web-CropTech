@@ -16,6 +16,15 @@ class AdmonDAO extends Conectar{
         }
         return $this->admons;
     }
+    //Metodo que permite leer solicitudes para desactivar cuenta
+    public function read_solicitudes_cuenta(){
+        $sql="select * from solicitud_admon where id_tipo_solicitud=1";
+        $resul=mysqli_query($this->con(),$sql);
+        while($row=mysqli_fetch_assoc($resul)){
+            $this->admons[]=$row;
+        }
+        return $this->admons;
+    }
     //Metodo que permite leer los tipos de solicitudes existentes
     public function read_tipo_solicitudes(){
         $sql="select * from solicitud";
@@ -35,7 +44,6 @@ class AdmonDAO extends Conectar{
         return $this->admons;
 
     }
-
 
 }
 

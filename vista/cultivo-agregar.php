@@ -71,68 +71,111 @@ if($_SESSION['usuario']){
             <!--FILA 1-->
             <div class="m-1 row justify-content-center">
                 <!--COLUMNA 1-->
-                <div class="col-auto p-5 text-center bg-light border border-success"> 
+                <div class="col-8 p-5 text-center bg-light border border-success"> 
                     <div class="jumbotron">
                         <h1 class="display-5 text-success text-shadow h1">Nuevo cultivo</h1>
                         <hr>
-                                <form action="../controlador/validar_cultivos.php" method="post">
-                                    <h6 class="text-left h1" >Información del cultivo:</h6>
-                                    <div class="form-row row justify-content-center p-2">
-                                    
-                                        <div class="form-row row justify-content-center p-2">
-                                            <div class="form-group col-md-4">
-                                                  <label>Nombre del cultivo:</label>
-                                                      <select class="form-select form-select mb-1" id="cnombre" name="cnombre" required>
-                                                        <option value="0">Seleccione una opción</option>
-                                                        <?php for($i=0; $i<count($cultivos); $i++){ ?>
-                                                        <option value="<?php echo $cultivos[$i]['id_cultivo']; ?>"><?php echo $cultivos[$i]['nombre_cultivo']; ?></option>
-                                                        <?php } ?>
-                                                      </select>
-                                            </div>
-                                        </div>
+                        <div  id="error">
+                            <?php 
+                            if(isset($_GET['iderror'])){
+                                if($_GET['iderror'] == 'ok'){
+                                ?>
+                                    <script>
+                                        alert("Cultivo nuevo registrado correctamente"); 
+                                    </script>
+                                    <p style="color:green;" >Cultivo nuevo registrado correctamente</p>
+                                <?php
+                                }else if($_GET['iderror'] == 'bad'){
+                                ?>
+                                    <script>
+                                        alert("Error en el sistema, vuelva a intentarlo más tarde"); 
+                                    </script>
+                                    <p style="color:red;" >Error en el sistema, vuelva a intentarlo más tarde</p>
+                                <?php
+                                }else if($_GET['iderror'] == 'vacio1'){
+                                ?>
+                                    <script>
+                                        alert("No seleccionó cultivo, vuelva a intentarlo"); 
+                                    </script>
+                                    <p style="color:red;" >No seleccionó cultivo, vuelva a intentarlo</p>
+                                <?php
+                                }else if($_GET['iderror'] == 'mensaje_ok'){
+                                ?>
+                                    <script>
+                                        alert("¡ Se genero solicitud de agregar cultivo !"); 
+                                    </script>
+                                    <p style="color:green;" >¡ Se generó solicitud de agregar cultivo ! En un plazo de 
+                                    24 horas tu solicitud sera atendida por nuestros técnicos y te informaremos por medio de un E-mail</p>
+                                <?php
+                                }else if($_GET['iderror'] == 'bad1'){
+                                    ?>
+                                        <script>
+                                            alert("Error al generar solicitud de agregar cultivo, vuelva a intentarlo más tarde"); 
+                                        </script>
+                                        <p style="color:red;" >Error al generar solicitud de agregar cultivo, vuelva a intentarlo más tarde</p>
+                                    <?php
+                                }else{
+                                    ?>
+                                        <script>
+                                            alert("¡ Tu solicitud ha sido resgistrada con exito !"); 
+                                        </script>
+                                        <p style="color:green;" ><?php echo $_GET['iderror']?></p>
+                                        <!--<p style="color:green;" >¡ Tu solicitud ha sido registrada con exito ! En un plazo de 
+                                        24 horas tu solicitud sera atendida por nuestros técnicos y te informaremos por medio de un E-mail</p>-->
+                                    <?php
+                                }   
+                                
+                                echo !extension_loaded('openssl')?"Not Available":"Available"; 
 
-                                        <div class="form-row row justify-content-center p-2">
-                                            <div class="form-group col-md-4">
-                                              <p>Fecha de registro del cultivo:</p>
-                                              <input type="date" id="fecha_registro" class="form-control" name="fecha_registro" required>
-                                            </div>
-                                        </div>
-                                    
-                                        <?php $idu=$_SESSION['usuario'] ?>
-                                        <input type="hidden" name="idu" value='<?php echo $idu;?>'>
-                                        <input type="hidden" name="estado" value='<?php echo "activo";?>'>
-                                        
-                                        <div  id="error">
-                                            <?php 
-                                            if(isset($_GET['iderror'])){
-                                                if($_GET['iderror'] == 'ok'){
-                                                ?>
-                                                <script>
-                                                alert("Cultivo nuevo registrado correctamente"); 
-                                                </script>
-                                                <p style="color:green;" >Cultivo nuevo registrado correctamente</p>
-                                                <?php
-                                                }
-                                                
-                                                if($_GET['iderror'] == 'bad'){
-                                                ?>
-                                                <script>
-                                                alert("Error en el sistema, vuelva a intentarlo mas tarde"); 
-                                                </script>
-                                                <p style="color:red;" >Error en el sistema, vuelva a intentarlo mas tarde</p>
-                                                <?php
-                                                }     
-                                            }
-                                            ?>
-                                        </div>
-                                        <div class="form-row row justify-content-center p-2">
-                                            <div class="form-group col-md-8">
-                                              <button type="submit" value="CREAR_C" name="user_c" class="btn btn-outline-secondary btn-lg" 
-                                              onclick="return validarInsertC();">Crear cultivo</button>
-                                            </div>
-                                        </div>
+                            }
+                            ?>
+                        </div>
+                        <form action="../controlador/validar_cultivos.php" method="post">
+                            <h6 class="text-left h1" >Información del cultivo:</h6>
+                            <div class="form-row row justify-content-center p-2">
+                            
+                                <div class="form-row row justify-content-center p-2">
+                                    <div class="form-group col-md-6">
+                                        <label>Nombre del cultivo:</label>
+                                            <select class="form-select form-select mb-1" id="cnombre" name="cnombre">
+                                                <option value="0">Seleccione una opción</option>
+                                                <?php for($i=0; $i<count($cultivos); $i++){ ?>
+                                                <option value="<?php echo $cultivos[$i]['id_cultivo']; ?>"><?php echo $cultivos[$i]['nombre_cultivo']; ?></option>
+                                                <?php } ?>
+                                            </select>
                                     </div>
-                                </form>
+                                </div>
+
+                                <div class="form-row row justify-content-center p-2">
+                                    <div class="form-group col-md-6">
+                                    <div id="passwordHelpBlock" class="form-text">
+                                        Si desea ingresar un cultivo diferente a las opciones presentadas,
+                                        puede ingresarlo a continuación. De lo contrario deja la opción vacia.
+                                    </div>
+                                        <p>Ingresa otro cultivo:</p>
+                                        <input type="text" id="otro" class="form-control" name="otro" >
+                                    </div>
+                                </div>
+
+                                <div class="form-row row justify-content-center p-2">
+                                    <div class="form-group col-md-6">
+                                        <p>Fecha de registro del cultivo:</p>
+                                        <input type="date" id="fecha_registro" class="form-control" name="fecha_registro" required>
+                                    </div>
+                                </div>
+                            
+                                <?php $idu=$_SESSION['usuario'] ?>
+                                <input type="hidden" name="idu" value='<?php echo $idu;?>'>
+                                <input type="hidden" name="estado" value='<?php echo "activo";?>'>
+                                
+                                <div class="form-row row justify-content-center p-2">
+                                    <div class="form-group col-md-8">
+                                        <button type="submit" value="CREAR_C" name="user_c" class="btn btn-outline-secondary btn-lg" 
+                                        onclick="return validarInsertC();">Crear cultivo</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>  
                 </div>
                 <!--FIN COLUMNA 1-->

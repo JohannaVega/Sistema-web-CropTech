@@ -41,7 +41,7 @@ if($_SESSION['usuario']){
                     <li class="nav-item"><a class="nav-link " 
                     href="http://localhost/proyecto_grado/croptech/vista/admon_usuarios.php">Adminstrar usuarios</a></li>
                     <li class="nav-item"><a class="nav-link " 
-                    href="#">Control cultivos</a></li>
+                    href="http://localhost/proyecto_grado/croptech/vista/admon_cultivo.php">Control cultivos</a></li>
                 </ul>
 
                 <form class="d-flex form-inline my-2 my-lg-0  navbar-right" >

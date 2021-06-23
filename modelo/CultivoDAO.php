@@ -27,7 +27,7 @@ class CultivoDAO extends Conectar{
     }
 
      //Leemos los datos de un registro de una siembra registrada
-     public function read_registro_c($registro_s){//read
+     public function read_registro_c($registro_s){
         $sql="select c.id_cultivo,c.nombre_cultivo, rs.fecha_siembra, rs.nro_registro_siembra,
                 rs.estado
                 from registro_siembra rs
@@ -42,7 +42,7 @@ class CultivoDAO extends Conectar{
     }
 
     //Cambiamos el estado activo/desactivo del registro de una siembra
-    public function change_estado($registro_s){
+    public function change_estado($registro_s){//ok
         $sql= "update registro_siembra set estado='Desactivo' where nro_registro_siembra=$registro_s";
         $resul=mysqli_query($this->con(),$sql);
         return $resul;
@@ -50,7 +50,7 @@ class CultivoDAO extends Conectar{
     }
 
     //Leemos los datos de cultivos por id de usuario
-    public function read_cultivos_user($idu){//read
+    public function read_cultivos_user($idu){//
         $sql="select c.id_cultivo,c.nombre_cultivo, rs.fecha_siembra, rs.nro_registro_siembra,
                 rs.estado
                 from registro_siembra rs
@@ -65,7 +65,7 @@ class CultivoDAO extends Conectar{
     }
 
     //Leemos los datos de cultivos activos por id de usuario
-    public function read_cultivos_user_active($idu){//read
+    public function read_cultivos_user_active($idu){//ok
         $sql="select c.id_cultivo,c.nombre_cultivo, rs.fecha_siembra, rs.nro_registro_siembra,
                 rs.estado
                 from registro_siembra rs
@@ -79,27 +79,38 @@ class CultivoDAO extends Conectar{
         return $this->cultivos;
     }
 
-    //ingresamos cultivos para que estos sean elegidos por el usuario
-    public function insert_cultivo_to_choose($cnombre,$luminosidadop,$humedadop,$temperaturaop,$tiempo_siembra,$primer_fecha_registro,$id_tipo){
-        $sql= "insert into cultivo(nombre_cultivo,luminosidad_optima,humedad_optima,temperatura_optima,
-            tiempo_siembra,primera_fecha_registro,id_tipo) values ('$cnombre','$luminosidadop','$humedadop',
-                                                                     '$temperaturaop','$tiempo_siembra','$primer_fecha_registro',
-                                                                     '$id_tipo')";
+    //Ingresamos cultivos para que estos sean elegidos por el usuario USAR
+    public function insert_cultivo_new($name,$tipo,$humedadmin,$humedadmax,$luzmin,$luzmax,
+    $temperaturamin,$temperaturamax,$tiempo,$idu){
+        
+        $sql= "insert into cultivo(nombre_cultivo,horas_luz_min,horas_luz_max,humedad_optima_min,humedad_optima_max,
+        temperatura_optima_min,temperatura_optima_max,tiempo_siembra,id_tipo) 
+        values ('$name','$luzmin','$luzmax','$humedadmin','$humedadmax','$temperaturamin','$temperaturamax','$tiempo','$tipo')";
+
         $resul=mysqli_query($this->con(),$sql);
-        return $resul;                                                                    
+
+        if($resul){
+            $rs = mysqli_query($this->con(), "SELECT MAX(id_cultivo) AS id FROM cultivo");
+        
+            $idc=0;
+            if ($row = mysqli_fetch_row($rs)) {
+                $idc = trim($row[0]);
+            }
+
+            $fecha = date('Y-m-d');
+
+            $sql1= "insert into registro_siembra (fecha_siembra,estado,id_usuario,id_cultivo) values 
+                    ('$fecha','Activo','$idu','$idc')";
+
+            $resul1=mysqli_query($this->con(),$sql1);
+
+            return $resul1;
+            
+        }                                            
      }
 
-    //Ingresamos detalles especificos para los cultivos que ya pertenecen a un cultivador
-    public function insert_especifications_cultivo(){
-        $sql="insert into registro_proveedor_u(id_imagen,cantidad_hojas_nuevas,centimetros_obtenidos,comentarios,fecha_registro,id_condiciones,nro_registro_siembra)
-                values ('$id_imagen','$cantidad_hojas_nuevas','$centimetros_obtenidos','$comentarios','$fecha_registro','$id_condiciones',
-                        '$nro_registro_siembra')";
-        $resul=mysqli_query($this->con(),$sql);
-        return $resul;                                                
-    }
-
     // LEEMOS TODOS LOS TIPOS DE CULTIVOS 
-    public function read_tipos_cultivo(){
+    public function read_tipos_cultivo(){ //OK
         $sql="select * from tipo_cultivo";
         $resul=mysqli_query($this->con(),$sql);
         while($row=mysqli_fetch_assoc($resul)){
@@ -156,15 +167,6 @@ class CultivoDAO extends Conectar{
         return $this->cultivos;
     }
 
-    //SE INGRESARAN LOS DATOS PARA LAS IMAGENES LAS CUALES INICIAN COMO TIPO BLOB Y SE CONVERTIRAN
-   //pendiente revisar<----
-   public function insert_datos_IMAGEN($id_imagen,$nombre_imagen,$imagen,$tipo){
-        $sql="insert into imagen(id_imagen,nombre_imagen,imagen,tipo)
-        values('$id_imagen','$nombre_imagen','$imagen','$tipo')";
-        $resul=mysqli_query($this->con(),$sql);
-           
-    return $resul;                                            
-    }
                      
     //INGRESAMOS LOS REGISTROS DE DATOS AMBIENTALES DE NUESTRO CULTIVO
     public function insert_registro_datos($idSiembra,$centimetros,$cantidad_hojas,$comentarios,$fechaActual,

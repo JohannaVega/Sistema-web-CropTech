@@ -437,16 +437,112 @@ class facade{
     //SECCION CULTIVOS
 
 
-   //Metodo que permite agregar un cultivo, retorna ok cuando
-   //se realizó el insert exitosamente
-   public function addcultivo($idu, $cnombre, $fecha_registro, $estado){
+   //Metodo que permite agregar un cultivo
+   public function addcultivo($idu, $cnombre, $fecha_registro, $estado, $otro){
         $feedback='';
-        if($resul=$this->obj_cultivo->insert($idu, $cnombre, $fecha_registro, $estado) == true){
-            $feedback='ok';
+
+        if(empty($otro)){
+            if($cnombre != 0 ){
+                if($resul=$this->obj_cultivo->insert($idu, $cnombre, $fecha_registro, $estado) == true){
+
+                    $feedback='ok';//Registro insertado 
+                    return $feedback;
+
+                }else{
+                $feedback='bad';//Error al insertar registro
+                return $feedback;
+                }
+            }else{
+                $feedback='vacio1';//No selecciono cultivo
+                return $feedback;
+            }
         }else{
-        $feedback='bad';
+            $fecha_solicitud = date('Y-m-d');
+            $resul_mail = $this->obj_user->read_user_login($idu);
+            $mail = '';
+            for($i=0; $i<1; $i++){
+                $mail = $resul_mail[$i]['correo'];
+            }
+
+            if($mail != ''){
+                $feedback = $this->solicitud_addcultivo($idu,$otro,$mail,$fecha_solicitud);
+                return $feedback;
+            }
+            
         }
-        return $feedback;
+       
+        
+   }
+
+    //Metodo que permite agregar un nuevo cultivo por el administrador
+   public function addcultivo_new($name,$tipo,$humedadmin,$humedadmax,$luzmin,$luzmax,
+                    $temperaturamin,$temperaturamax,$tiempo,$idu){
+    
+        $feedback='';
+
+        if($tipo != 0){
+            if($result = $this->obj_cultivo->insert_cultivo_new($name,$tipo,$humedadmin,$humedadmax,$luzmin,$luzmax,
+            $temperaturamin,$temperaturamax,$tiempo,$idu)){
+                $feedback='ok';
+            }else{
+                $feedback='bad';
+            }
+            
+        }else{
+            $feedback='no_type';
+        }
+    }
+
+   public function solicitud_addcultivo ($idu,$detalles, $mail_addAddress,$fecha_solicitud){
+
+        $tipo_solicitud = 2;
+                
+        //Guardamos la solicitud en la BD
+        $resul= $this->obj_user->save_solicitud($idu,$tipo_solicitud,$detalles,$fecha_solicitud);
+
+        //Leemos los tipos de solicitudes disponibles
+        $tipo = $this->obj_admon->read_tipo_solicitudes();
+        
+        //Si se guardo exitosamente la solicitud en la BD, generamos correo para el admon
+        if($resul){
+
+            /*Configuracion de variables para enviar el correo*/
+            $mail_username="croptech.admon@gmail.com";//Correo electronico saliente ejemplo: tucorreo@gmail.com
+            $mail_userpassword="505Crop *606";//Tu contraseña de gmail
+            
+        
+                            
+            /* Correo que envia el correo */
+            $mail_setFromEmail="croptech.admon@gmail.com";
+            $mail_setFromName="Croptech";
+
+            //------Asunto
+            for($i=0;$i<count($tipo);$i++){
+                if($tipo[$i]['id_solicitud']==$tipo_solicitud){
+                    $mail_subject=$tipo[$i]['tipo_solicitud']; 
+                }
+            }      
+
+            $txt_message=$detalles." ID USER: ".$idu; 
+            //Llamamos a la función que nos envia el correo, que nos devuelve el estado del evio del correo
+            $estado_correo=$this->sendemail($mail_username,$mail_userpassword,$mail_setFromEmail,$mail_setFromName,
+                                            $mail_addAddress,$txt_message,$mail_subject);
+            
+            if($estado_correo=="Tu mensaje ha sido enviado!"){
+
+                $feedback="mensaje_ok";//correo enviado, se inserto solicitud en la bd
+                return $feedback;
+
+            }else{
+
+                $feedback=$estado_correo;//Error en el envio del correo, se inserto solicitud en la bd
+                return $feedback;
+            }
+        }else{
+            $feedback="bad1";//Error al guardar solicitud en la bd
+            return $feedback;
+        }
+
    }
 
    //Metodo que me ermite leer los cultivos registrado en la Base de datos
@@ -860,11 +956,13 @@ class facade{
 
          //Server settings
         $mail->isSMTP();                            // Establecer el correo electrónico para utilizar SMTP
-        $mail->Host = 'smtp.gmail.com';             // Especificar el servidor de correo a utilizar 
+        $mail->Host = "ssl://smtp.gmail.com";        // Especificar el servidor de correo a utilizar 
         $mail->SMTPAuth = true;                     // Habilitar la autenticacion con SMTP
+        $mail->SMTPDebug = 2;  // debugging: 1 = errors and messages, 2 = messages only
         $mail->Username = $mail_username;          // Correo electronico saliente ejemplo: tucorreo@gmail.com
         $mail->Password = $mail_userpassword; 		// Tu contraseña de gmail
         $mail->SMTPSecure = 'tls';                  // Habilitar encriptacion, `ssl` es aceptada
+        $mail->SMTPAutoTLS = false;
         $mail->Port = 587;                          // Puerto TCP  para conectarse 
 
 
@@ -895,6 +993,13 @@ class facade{
         $mail->AltBody = '---';//Mensaje de sólo texto si el receptor no acepta HTML
         //$mail->Body = $body;
         //$mail->msgHTML($txt_message);
+        $mail->SMTPOptions = array(
+            'ssl' => array(
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+            'allow_self_signed' => true
+            )
+            );
  
         if(!$mail->send()) {
             $feedback="No se pudo enviar el mensaje.. ". $mail->ErrorInfo;
@@ -912,7 +1017,12 @@ class facade{
        $resul = $this->obj_admon->read_solicitudes();
        return $resul;
    }
-   //Funcion que permite leer una solicitud en espedifico para ser atendida
+
+   public function leer_solicitudes_cuenta(){//ok
+    $resul = $this->obj_admon->read_solicitudes_cuenta();
+    return $resul;
+}
+   //Funcion que permite leer una solicitud en especifico para ser atendida
    public function leer_solicitud_atender($id_solicitud){//ok
       $resul = $this->obj_admon->read_solicitud_atender($id_solicitud);
       return $resul;
@@ -968,6 +1078,25 @@ class facade{
     }
 
    }
+
+   //Función que permite atender las solucitudes de agregar cultivo
+   public function atender_agregar_cultivo($idu){
+
+    $resul1 = $this->obj_admon->read_solicitud_atender($ids);
+
+    $resul2 = $this->obj_user-> readOneFullById($idu);
+
+    $correo_user='';
+    $nombre_user='';
+
+    for($i=0; $i<1; $i++){
+        $correo_user= $resul2[$i]['correo'];
+        $nombre_user= $resul2[$i]['nombre'];
+    }
+    
+   
+
+    }
 
 }
 

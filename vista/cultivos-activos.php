@@ -152,7 +152,7 @@ if($_SESSION['usuario']){
                         ?>
                         <!--Tabla con los cultivos registrados-->
                         <div class="table-responsive">
-                            <table id="tmedicos" class="table table-striped table-light">
+                            <table id="tmedicos" class="table table-striped table-info">
                                 <thead>
                                     <tr>
                                     <th scope="col">Nombre cultivo</th>

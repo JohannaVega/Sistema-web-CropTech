@@ -91,30 +91,30 @@ if($_SESSION['usuario']){
                                 </div>
                             </div>
                             <?php 
-                        } else{
+                        } else if( $datos[$i]['id_tipo_solicitud'] == 2 ){
                             ?>
                             <p class="lead">Id tipo de solicitud: <?php echo $datos[$i]['id_tipo_solicitud']?> </p>
-                            <p class="lead">Detalle de solicitud: <?php echo $datos[$i]['detalle_solicitud']?> </p>
-                            <p class="lead">Id usuario: <?php echo $datos[$i]['id_usuario']?> </p>
+                            <p class="lead">Detalle de solicitud: <?php echo $nombre =$datos[$i]['detalle_solicitud']?> </p>
+                            <p class="lead">Id usuario: <?php echo $user=$datos[$i]['id_usuario']?> </p>
                             <p class="lead">Fecha de solicitud: <?php echo $datos[$i]['fecha_solicitud']?> </p>
                             <p class="lead">Estado de solicitud: <?php echo $datos[$i]['estado']?> </p>
 
                             <hr>
                             <div  class=" m-5" > 
                                 <div id="passwordHelpBlock" class="form-text">
-                                    ¿Deseas desactivar el cultivo?
+                                    ¿Deseas agregar el cultivo?
                                 </div>
                                 <div class="pd-4">
                                     <a 
-                                    href="http://localhost/proyecto_grado/croptech/controlador/validar_cultivos.php?idc=<?php echo $_GET['idc'];?>" 
+                                    href="http://localhost/proyecto_grado/croptech/vista/admon_add_crop.php?idAccount=<?php echo $user; ?>&idc=<?php echo $nombre; ?>" 
                                     class="btn btn-outline-danger">SI</a>
                                     
-                                    <a href="http://localhost/proyecto_grado/croptech/vista/cultivo-historial.php" 
+                                    <a href="http://localhost/proyecto_grado/croptech/vista/admon_cultivo.php" 
                                     class="btn btn-outline-warning">NO</a>
                                 </div>
                             </div>
 
-
+                         <?php
                         }
                         ?>
                         

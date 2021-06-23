@@ -192,9 +192,11 @@ if($_SESSION['usuario']){
                                         <option value="4">Es algo temporal. Regresaré</option>
                                         <option value="5">Otro (Proporciona más detalles)</option>
                                     </select>
+                                    <hr>
                                     <textarea  class="form-control"  rows="2" cols="5" 
                                         id="razon" name="razon" 
-                                        placeholder="Indica la razón por la que deseas desactivar tu cuenta" required> </textarea>
+                                        placeholder="Seleccionaste otro... Danos más detalles" required> 
+                                    </textarea>
                                 </div>
                             </div>
 
