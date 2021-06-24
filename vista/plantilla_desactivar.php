@@ -30,13 +30,13 @@
                 <div class="col-auto p-5 text-center bg-light border border-success"> 
                     <div class="jumbotron">
                         <p id="mensaje" class="display-5 text-success text-shadow h1"></p>
-
                         <br>
                         <br>
                         <br>
 
                         <p style='text-align: center; color: #3D4444; line-height: 21px; font-size: 18px;'>
-                            Inicia sesión en CropTech para ver solicitud
+                           Tu cuenta ha sido desactivada, cuando quieras volver a activarla envianos un correo 
+                            por medio de la sección contactanos, con tu correo electronico registrado.
                         </p>
                         <hr>
 
@@ -57,8 +57,8 @@
                         </h1>
                         <br>
                         <div style='font-weight: bold; text-align:center'> 
-                            <a href='http://localhost/proyecto_grado/croptech'
-                            class="btn btn-info">Ir a CropTech</a>
+                            <a href='http://localhost/proyecto_grado/croptech/contacto.php'
+                            class="btn btn-info">Ir a Contactanos</a>
                         </div>
                     </div>
                 </div>

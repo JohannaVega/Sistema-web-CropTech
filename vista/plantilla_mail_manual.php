@@ -36,7 +36,9 @@
                         <br>
 
                         <p style='text-align: center; color: #3D4444; line-height: 21px; font-size: 18px;'>
-                            Inicia sesión en CropTech para ver solicitud
+                        Tu cuenta no ha sido desactivada, debido a que tus motivos son:
+                        (No se como usar esta plataforma), en su lugar te invitamos a visitar nuestra plataforma y leer nuestro
+                        manual de usuario.
                         </p>
                         <hr>
 
@@ -57,8 +59,8 @@
                         </h1>
                         <br>
                         <div style='font-weight: bold; text-align:center'> 
-                            <a href='http://localhost/proyecto_grado/croptech'
-                            class="btn btn-info">Ir a CropTech</a>
+                            <a href='http://localhost/proyecto_grado/croptech/manual.php'
+                            class="btn btn-info">Ir a ver manual</a>
                         </div>
                     </div>
                 </div>

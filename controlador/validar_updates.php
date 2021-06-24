@@ -298,8 +298,10 @@ if(isset($_POST['Sadmon']) && $_POST['Sadmon']=='EDITAR' && isset($_POST['idu'])
 
   /*-------------------DESACTIVAR USUARIOS----------------*/
 
-  if(isset($_POST['user_edit']) && $_POST['user_edit']=='DESACTIVAR_USER' ){
-    if(isset($_POST['descripcion']) &&  isset($_POST['razon']) && !empty($_POST['idu']) && !empty($_POST['tipo']) ){
+  if(isset($_POST['user_edit']) && $_POST['user_edit']=='DESACTIVAR_USER' )
+  {
+    if(isset($_POST['descripcion']) &&  isset($_POST['razon']) && !empty($_POST['idu']) && !empty($_POST['tipo']))
+    {
 
     $obj=new facade();
     $resul=$obj->desactivar_usuario($_POST['idu'],$_POST['tipo'],$_POST['descripcion'],$_POST['razon']);
@@ -308,11 +310,13 @@ if(isset($_POST['Sadmon']) && $_POST['Sadmon']=='EDITAR' && isset($_POST['idu'])
 
     }
   }
-
-  if(isset($_GET['idu']) && isset($_GET['ids'])){//ok
+ //Validamos que lleguen los datos para que el admon procesa a desactivar cuenta del user
+  if(isset($_GET['idu']) && isset($_GET['ids']))//ok
+  {
     $obj= new facade();
     $resul= $obj->atender_desactivar_cuenta($_GET['idu'],$_GET['ids']);
 
+    header("Location: http://localhost/proyecto_grado/croptech/vista/admon_usuarios.php?iderror=$resul");
   }
 
    /*-------------------FIN DESACTIVAR USUARIOS----------------*/

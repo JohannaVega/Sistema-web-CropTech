@@ -254,7 +254,7 @@ class CultivoDAO extends Conectar{
 
     public function imagen_update($id,$db_url_img){
 
-        $sql = "UPDATE imagen SET $ruta = '$db_url_img' WHERE id_imagen = $id";
+        $sql = "UPDATE imagen SET 'ruta' = '$db_url_img' WHERE id_imagen = $id";
 
         $resul=mysqli_query($this->con(),$sql);
 

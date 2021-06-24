@@ -73,61 +73,6 @@ if($_SESSION['usuario']){
             <div class="jumbotron">
                 <h1 class="display-5 text-success text-shadow h1">Nuevo cultivo</h1>
                 <hr>
-                <div  id="error">
-                    <?php 
-                    if(isset($_GET['iderror'])){
-                        if($_GET['iderror'] == 'ok'){
-                        ?>
-                            <script>
-                                alert("Cultivo nuevo registrado correctamente"); 
-                            </script>
-                            <p style="color:green;" >Cultivo nuevo registrado correctamente</p>
-                        <?php
-                        }else if($_GET['iderror'] == 'bad'){
-                        ?>
-                            <script>
-                                alert("Error en el sistema, vuelva a intentarlo más tarde"); 
-                            </script>
-                            <p style="color:red;" >Error en el sistema, vuelva a intentarlo más tarde</p>
-                        <?php
-                        }else if($_GET['iderror'] == 'no_type'){
-                        ?>
-                            <script>
-                                alert("No seleccionó tipo de cultivo, vuelva a intentarlo"); 
-                            </script>
-                            <p style="color:red;" >No seleccionó tipo de cultivo, vuelva a intentarlo</p>
-                        <?php
-                        }else if($_GET['iderror'] == 'mensaje_ok'){
-                        ?>
-                            <script>
-                                alert("¡ Se genero solicitud de agregar cultivo !"); 
-                            </script>
-                            <p style="color:green;" >¡ Se generó solicitud de agregar cultivo ! En un plazo de 
-                            24 horas tu solicitud sera atendida por nuestros técnicos y te informaremos por medio de un E-mail</p>
-                        <?php
-                        }else if($_GET['iderror'] == 'bad1'){
-                            ?>
-                                <script>
-                                    alert("Error al generar solicitud de agregar cultivo, vuelva a intentarlo más tarde"); 
-                                </script>
-                                <p style="color:red;" >Error al generar solicitud de agregar cultivo, vuelva a intentarlo más tarde</p>
-                            <?php
-                        }else{
-                            ?>
-                                <script>
-                                    alert("¡ Tu solicitud ha sido resgistrada con exito !"); 
-                                </script>
-                                <p style="color:green;" ><?php echo $_GET['iderror']?></p>
-                                <!--<p style="color:green;" >¡ Tu solicitud ha sido registrada con exito ! En un plazo de 
-                                24 horas tu solicitud sera atendida por nuestros técnicos y te informaremos por medio de un E-mail</p>-->
-                            <?php
-                        }   
-                        
-                        //echo !extension_loaded('openssl')?"Not Available":"Available"; 
-
-                    }
-                    ?>
-                </div>
 
                 <form action="../controlador/validar_cultivos.php" method="post">
                     <h6 class="text-left h1" >Información del cultivo:</h6>
@@ -209,6 +154,7 @@ if($_SESSION['usuario']){
                     
                         
                         <input type="hidden" name="idu" value='<?php echo $_GET['idAccount']; ?>'>
+                        <input type="hidden" name="ids" value='<?php echo $_GET['ids']; ?>'>
                         <input type="hidden" name="name" value='<?php echo $name; ?>'>
 
                         <div class="form-row row justify-content-center p-2">

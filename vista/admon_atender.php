@@ -44,7 +44,7 @@ if($_SESSION['usuario']){
                     <li class="nav-item"><a class="nav-link active " 
                     href="http://localhost/proyecto_grado/croptech/vista/admon_usuarios.php">Adminstrar usuarios</a></li>
                     <li class="nav-item"><a class="nav-link " 
-                    href="#">Control cultivos</a></li>
+                    href="http://localhost/proyecto_grado/croptech/vista/admon_cultivo.php">Control cultivos</a></li>
                 </ul>
 
                 <form class="d-flex form-inline my-2 my-lg-0  navbar-right" >
@@ -65,18 +65,18 @@ if($_SESSION['usuario']){
                 <h1 class="display-5 text-success text-shadow h1">Solicitud a atender</h1>
                 <hr>
                 <?php
-                if(isset($_GET['ids'])){
-
+                if(isset($_GET['ids']))
+                {
                     require '../modelo/facade.php';
-                   
                     $obj=new facade();
                     $datos=$obj-> leer_solicitud_atender($_GET['ids']);
                     ?>
 
-        
                     <?php for($i=0;$i<1;$i++){
-                        if( $datos[$i]['id_tipo_solicitud'] == 1 ){
-                            ?> 
+                        //Desactivar cuenta
+                        if( $datos[$i]['id_tipo_solicitud'] == 1 && $datos[$i]['estado'] !='Atendido')
+                        {
+                            ?>
                             <p class="lead">Id tipo de solicitud: <?php echo $datos[$i]['id_tipo_solicitud']; ?> </p>
                             <p class="lead">Detalle de solicitud: <?php echo $datos[$i]['detalle_solicitud']; ?> </p>
                             <p class="lead">Id usuario: <?php echo $user=$datos[$i]['id_usuario']; ?> </p>
@@ -86,12 +86,14 @@ if($_SESSION['usuario']){
                             <hr>
                             <div  class=" m-5" > 
                                 <div class="pd-4">
-                                    <a href="http://localhost/proyecto_grado/croptech/controlador/validar_updates.php?idu=<?php echo $user; ?>&ids=<?php $datos[$i]['id_solicitud_admon']; ?>" 
+                                    <a href="http://localhost/proyecto_grado/croptech/controlador/validar_updates.php?idu=<?php echo $user; ?>&ids=<?php echo $_GET['ids']; ?>" 
                                     class="btn btn-outline-danger">DESACTIVAR</a>
                                 </div>
                             </div>
                             <?php 
-                        } else if( $datos[$i]['id_tipo_solicitud'] == 2 ){
+                        } //Agregar cultivo nuevo
+                        else if( $datos[$i]['id_tipo_solicitud'] == 2 && $datos[$i]['estado'] !='Atendido')
+                        {
                             ?>
                             <p class="lead">Id tipo de solicitud: <?php echo $datos[$i]['id_tipo_solicitud']?> </p>
                             <p class="lead">Detalle de solicitud: <?php echo $nombre =$datos[$i]['detalle_solicitud']?> </p>
@@ -101,12 +103,12 @@ if($_SESSION['usuario']){
 
                             <hr>
                             <div  class=" m-5" > 
-                                <div id="passwordHelpBlock" class="form-text">
+                                <div id="passwordHelpBlock" class="form-text">id_solicitud_admon
                                     ¿Deseas agregar el cultivo?
                                 </div>
                                 <div class="pd-4">
                                     <a 
-                                    href="http://localhost/proyecto_grado/croptech/vista/admon_add_crop.php?idAccount=<?php echo $user; ?>&idc=<?php echo $nombre; ?>" 
+                                    href="http://localhost/proyecto_grado/croptech/vista/admon_add_crop.php?idAccount=<?php echo $user; ?>&idc=<?php echo $nombre; ?>&ids=<?php echo $datos[$i]['id_solicitud_admon']; ?>" 
                                     class="btn btn-outline-danger">SI</a>
                                     
                                     <a href="http://localhost/proyecto_grado/croptech/vista/admon_cultivo.php" 
@@ -119,38 +121,17 @@ if($_SESSION['usuario']){
                         ?>
                         
                     <?php } ?>
-
                     
-                    <!--SECCION DE ERROR-->
-                    <?php
-                    }else if(isset($_GET['iderror'])){
-                        ?>
-                        <?php
-                        if(isset($_GET['iderror']) ){
-                            if( $_GET['iderror']=='bad'){
-                                ?>
-                                <p  style="color:red;" >Error al desactivar cultivo, intentalo más tarde</p>
-                                <?php
-                            }else{
-                                ?>
-                                <p  style="color:green;" >Cultivo desactivado correctamente</p>
-                                <div class="pd-4">
-                                    <a href="http://localhost/proyecto_grado/croptech/vista/cultivo-historial.php" 
-                                    class="btn btn-outline-success">Ir a mis cultivos</a>
-                                </div>
-                                <?php
-                            }
-                        }
-                    }
-                    else{
-                        echo "<script type='text/javascript'>
-                        alert('ERROR!! En el envio de datos, intentalo más tarde');
-                        window.location='cultivo-historial.php';
-                        </script>";
-                 
-                    }
-                    ?>
-                    <!--FIN SECCION DE ERROR-->
+                <?php
+                }
+                else{
+                    echo "<script type='text/javascript'>
+                    alert('ERROR!! En el envio de datos, intentalo más tarde');
+                    window.location='cultivo-historial.php';
+                    </script>";
+                
+                }
+                ?>
             </div>
             <!--FIN COLUMNA 1-->
 
@@ -158,13 +139,11 @@ if($_SESSION['usuario']){
             <div class="col ">
                 <div class="caja_trasera"> 
                     <div>
-                        <h1 id="name" class="text-center text-white text-shadow">CropTech - Cultivo</h1>
+                        <h1 id="name" class="text-center text-white text-shadow">CropTech - Atender</h1>
                         <hr>
                         <br>
-                        <h3  class="pt-5">Hola, </h3>
-                        <p >En esta sección puedes desactivar cultivos que ya dieron cosecha, de esta 
-                            manera nos permitirás gestionar tus cultivos, generando un análisis de los datos 
-                            obtenidos durante la siembra.</p>
+                        <h3  class="pt-5">Hola admon, </h3>
+                        <p>En esta sección puedes atender las solicitudes de tus usuarios seleccionadas.</p>
                     </div>
                 </div>
             </div>

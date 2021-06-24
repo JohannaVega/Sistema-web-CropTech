@@ -17,17 +17,19 @@ if(isset($_POST['user_c']) && $_POST['user_c']=='CREAR_C' ){
     }
 }
 //Validamos que llegue el POST de Crear Cultivo, generado por el admon
-if(isset($_POST['admon_c']) && $_POST['admon_c']=='CREAR_C' ){
+if(isset($_POST['admon_c']) && $_POST['admon_c']=='CREAR_C' )
+{
     if(isset($_POST['name']) &&  isset($_POST['tipo']) && isset($_POST['humedadmin']) && isset($_POST['humedadmax'])
     && isset($_POST['luzmin']) && isset($_POST['luzmax']) && isset($_POST['temperaturamin'])
-    && isset($_POST['temperaturamax']) && isset($_POST['tiempo']) && isset($_POST['idu'])){
+    && isset($_POST['temperaturamax']) && isset($_POST['tiempo']) && isset($_POST['idu']) && isset($_POST['ids']))
+    {
 
        $obj=new facade();
        $resul=$obj->addcultivo_new($_POST['name'],$_POST['tipo'],$_POST['humedadmin'],$_POST['humedadmax'],
        $_POST['luzmin'],$_POST['luzmax'],$_POST['temperaturamin'],$_POST['temperaturamax'],$_POST['tiempo'],
-       $_POST['idu']);
+       $_POST['idu'],$_POST['ids']);
 
-       header("Location: http://localhost/proyecto_grado/croptech/vista/admon_add_crop.php?iderror=$resul");
+       header("Location: http://localhost/proyecto_grado/croptech/vista/admon_cultivo.php?iderror=$resul");
        
     }
 }

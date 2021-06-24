@@ -64,6 +64,7 @@ if($_SESSION['usuario']){
         <div class="m-1 row justify-content-center">
             <div class="col-auto p-5 text-center bg-light border border-success">
                 <h3 class="display-5 text-success text-shadow h1">Solicitudes de cuentas</h3>
+                <?php  //echo ( extension_loaded ( 'openssl' )? 'SSL cargado' : 'SSL no cargado' ) ; ?>
                 <hr>
                 <a href="http://localhost/proyecto_grado/croptech/vista/admon_historial.php" 
                 class="btn btn-outline-success">VER HISTORIAL DE SOLICITUDES</a>
@@ -72,47 +73,28 @@ if($_SESSION['usuario']){
                 <div id="error">
                     <?php
                     if(isset($_GET['iderror'])){
-                    if($_GET['iderror'] == 'ok'){
-                                ?>
-                                <p style="color:green;" >Registro actualizado correctamente</p>
-                                <?php
-                                }
-                    if($_GET['iderror'] == 'tel'){
-                                    ?>
-                                    <p  style="color:red;" >Telefono ingresado al actualizar datos ya existe</p>
-                                    <?php
-                                    } 
-                    if($_GET['iderror'] == 'em'){
-                                    ?>
-                                    <p  style="color:red;" >Correo ingresado al actualizar datos ya existe</p>
-                                    <?php
-                                    }     
-                    if($_GET['iderror'] == 'bad'){
-                                ?>
-                                <p  style="color:red;" >Error al actualizar el registro, intentelo más tarde</p>
-                                <?php
-                                }
-                    if($_GET['iderror'] == 'ok1'){
-                                ?>
-                                <p align="center" style="color:green;" >Contraseña actualizada correctamente</p>
-                                <?php
-                                }
-                    if($_GET['iderror'] == '1' || $_GET['iderror'] == '2' || $_GET['iderror'] == '3'){
-                                ?>
-                                <p align="center" style="color:red;" >Las contraseñas ingresadas no son iguales y/o no contienen numeros y/o mayusculas</p>
-                                <?php
-                                }
-                    if($_GET['iderror'] == 'ok2'){
-                                ?>
-                                <p align="center" style="color:green;" >Registro eliminado correctamente</p>
-                                <?php
-                                }
-                    if($_GET['iderror'] == 'bad2'){
-                                ?>
-                                <p align="center" style="color:red;" >Error al eliminar el registro</p>
-                                <?php
-                                }
-                                }?>
+                        if($_GET['iderror'] == 'mensaje_ok'){
+                            ?>
+                            <p style="color:green;" >Se atendio solicitud correctamente, envio E-Mail</p>
+                            <?php
+                        }
+                        else if($_GET['iderror'] == 'error_up'){
+                            ?>
+                            <p  style="color:green;" >Se atendió solicitud, pero no se actualizo el estado de la solicitud </p>
+                            <?php
+                        } 
+                        else if($_GET['iderror'] == 'bad'){
+                            ?>
+                            <p  style="color:red;" >No se atendio solicitud correctamente, vuelva a intentarlo más tarde</p>
+                            <?php
+                        }     
+                        else{
+                            ?>
+                            <p  style="color:red;" ><?php echo $_GET['iderror']; ?></p>
+                            <?php
+                        }
+                    
+                    }?>
                 </div>
                 <div class="table-responsive">
             
@@ -131,7 +113,7 @@ if($_SESSION['usuario']){
                         </thead>
                         <tbody>
                             <?php for($i=0;$i<count($resul);$i++){
-                                if($resul[$i]["id_tipo_solicitud"] == 1){
+                                if($resul[$i]["id_tipo_solicitud"] == 1 && $resul[$i]["estado"] != 'Atendido'){
                                 ?>
                                 <tr>
                                     <td><?php echo $resul[$i]['id_tipo_solicitud'];?></td>
@@ -147,11 +129,7 @@ if($_SESSION['usuario']){
                                     <?php
                             }
                             ?>
-                                    <!--editar contraseña
-                                    <td><a href="http://localhost/proyecto_grado/croptech/vista/admon_editUD.php?idu=<?php echo $resul[$i]['id_usuario'];?>"
-                                    class="btn btn-outline-success">
-                                    <img src="http://localhost/proyecto_grado/croptech/assets/img/edit-d.png" alt="Editar" id="icono" height="30px" width="30px"></a></td>
-                            -->
+            
                             <?php } ?>
                             </tr>
                         

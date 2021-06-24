@@ -30,20 +30,20 @@
                 <div class="col-auto p-5 text-center bg-light border border-success"> 
                     <div class="jumbotron">
                         <p id="mensaje" class="display-5 text-success text-shadow h1"></p>
-
                         <br>
                         <br>
                         <br>
 
                         <p style='text-align: center; color: #3D4444; line-height: 21px; font-size: 18px;'>
-                            Inicia sesión en CropTech para ver solicitud
+                            Tu cuenta ha sido desactivada temporalmente, cuando lo desees, puedes
+                            volver a iniciar sesión.
                         </p>
                         <hr>
 
                         <br>
                         <br>
                         <br>
-                        <br>
+                        <br> 
 
                         <div style='font-weight: bold; text-align:center'> 
                             <img src='cid:imagen' height='150' width='150'>

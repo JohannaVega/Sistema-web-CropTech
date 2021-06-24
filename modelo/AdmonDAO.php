@@ -44,6 +44,25 @@ class AdmonDAO extends Conectar{
         return $this->admons;
 
     }
+    //Metodo que permite actualizar el estado de una solicitud atendida
+    public function update_solicitud($id_solicitud){
+        $estado = "Atendido";
+        $sql = "UPDATE solicitud_admon SET estado = '$estado' WHERE id_solicitud_admon = $id_solicitud";
+
+        $resul = mysqli_query($this->con(),$sql);
+
+        return $resul;
+    }
+
+     //Metodo que permite actualizar el estado de un usuario a desactivo
+     public function update_estado_user($id_usuario,$estado){
+         
+        $sql = "UPDATE usuario SET estado = '$estado' WHERE id_usuario = $id_usuario";
+
+        $resul = mysqli_query($this->con(),$sql);
+
+        return $resul;
+    }
 
 }
 

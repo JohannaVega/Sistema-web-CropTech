@@ -6,11 +6,18 @@ include 'ProveedorDAO.php';
 
 
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
+
+
 require '../PHPMailer/Exception.php';
-require '../PHPMailer/PHPMailer.php';
 require '../PHPMailer/SMTP.php';
+require '../PHPMailer/PHPMailer.php';
+
+//Instantiation and passing `true` enables exceptions
+$mail = new PHPMailer(true);
+
 
 class facade{
     //instanciando objetos DAO
@@ -476,21 +483,72 @@ class facade{
 
     //Metodo que permite agregar un nuevo cultivo por el administrador
    public function addcultivo_new($name,$tipo,$humedadmin,$humedadmax,$luzmin,$luzmax,
-                    $temperaturamin,$temperaturamax,$tiempo,$idu){
+                    $temperaturamin,$temperaturamax,$tiempo,$idu,$ids){
     
         $feedback='';
 
         if($tipo != 0){
             if($result = $this->obj_cultivo->insert_cultivo_new($name,$tipo,$humedadmin,$humedadmax,$luzmin,$luzmax,
             $temperaturamin,$temperaturamax,$tiempo,$idu)){
-                $feedback='ok';
+
+                if($result1 = $this->obj_admon->update_solicitud($ids)){
+                    $feedback='ok';
+                }else{
+                    $feedback='bad_s';
+                    return $feedback;
+                }
+                //Configurando envio de correo
+                $resul2 = $this->obj_user-> readOneFullById($idu);
+
+                $correo_user='';
+                $nombre_user='';
+
+                for($i=0; $i<1; $i++)
+                {
+                    $correo_user= $resul2[$i]['correo'];
+                    $nombre_user= $resul2[$i]['nombre'];
+                }
+
+                /*Configuracion de variables para enviar el correo*/
+                $mail_username="croptech.admon@gmail.com";//Correo electronico saliente ejemplo: tucorreo@gmail.com
+                $mail_userpassword="505Crop *606";//Tu contraseña de gmail
+                $mail_addAddress=$correo_user;//correo electronico que recibira el mensaje
+            
+                                
+                /* Correo que envia el correo */
+                $mail_setFromEmail="croptech.admon@gmail.com";
+                $mail_setFromName="Croptech";
+
+                //------Asunto
+                $mail_subject="Respuesta solicitud: AGREGAR NUEVO CULTIVO"; 
+                
+                $txt_message="Hola!, ".$nombre_user." Tu solicitud de agregar un cultivo nuevo, ha sido atendida con exito, el cultivo
+                ya quedó registrado en tu cuenta, ya puedes gestionar las variables de tu cultivo.
+                ¡Inicia sesión en CropTech!"; 
+                //Llamamos a la función que nos envia el correo, que nos devuelve el estado del evio del correo
+                $estado_correo=$this->sendmail_crop($mail_username,$mail_userpassword,$mail_setFromEmail,$mail_setFromName,$mail_addAddress,$txt_message,$mail_subject);
+                
+                if($estado_correo=="Tu mensaje ha sido enviado!")
+                {
+                    $feedback="mensaje_ok";
+                    return $feedback;
+                } 
+                else
+                {
+                    $feedback=$estado_correo;
+                    return $feedback;
+                }
+                
             }else{
                 $feedback='bad';
+                return $feedback;
             }
             
         }else{
             $feedback='no_type';
+            return $feedback;
         }
+        return $feedback;
     }
 
    public function solicitud_addcultivo ($idu,$detalles, $mail_addAddress,$fecha_solicitud){
@@ -904,7 +962,7 @@ class facade{
             if( $feedback != "no_razon"){
 
                 //Guardamos la solicitud en la BD
-                $resul= $this->obj_user->save_solicitud($idu,$tipo_solicitud,$detalles,$fecha_solicitud);
+                $resul= $this->obj_user->save_solicitud($idu,$tipo_solicitud,$detallesf,$fecha_solicitud);
 
                 //Leemos los tipos de solicitudes disponibles
                 $tipo = $this->obj_admon->read_tipo_solicitudes();
@@ -947,23 +1005,88 @@ class facade{
         return $feedback;
    }
 
-    //Funcion que me permite enviar correos de solicitudes al administrador
-   private function sendemail($mail_username,$mail_userpassword,$mail_setFromEmail,$mail_setFromName,$mail_addAddress,$txt_message,$mail_subject){
+    //Funcion que me permite enviar correos de confirmación: Agregar nuevo cultivo
+    private function sendmail_crop($mail_username,$mail_userpassword,$mail_setFromEmail,$mail_setFromName,$mail_addAddress,$txt_message,$mail_subject){
         $feedback="";
 
         $mail = new PHPMailer;
         date_default_timezone_set('Etc/UTC');
 
          //Server settings
-        $mail->isSMTP();                            // Establecer el correo electrónico para utilizar SMTP
-        $mail->Host = "ssl://smtp.gmail.com";        // Especificar el servidor de correo a utilizar 
-        $mail->SMTPAuth = true;                     // Habilitar la autenticacion con SMTP
-        $mail->SMTPDebug = 2;  // debugging: 1 = errors and messages, 2 = messages only
-        $mail->Username = $mail_username;          // Correo electronico saliente ejemplo: tucorreo@gmail.com
-        $mail->Password = $mail_userpassword; 		// Tu contraseña de gmail
-        $mail->SMTPSecure = 'tls';                  // Habilitar encriptacion, `ssl` es aceptada
-        $mail->SMTPAutoTLS = false;
-        $mail->Port = 587;                          // Puerto TCP  para conectarse 
+         //$mail->SMTPDebug = 2;   // debugging: 1 = errors and messages, 2 = messages only
+         $mail->isSMTP();                            // Establecer el correo electrónico para utilizar SMTP
+         $mail->Host = "smtp.gmail.com";        // Especificar el servidor de correo a utilizar 
+         $mail->SMTPAuth = true;                     // Habilitar la autenticacion con SMTP
+         $mail->Username = $mail_username;          // Correo electronico saliente ejemplo: tucorreo@gmail.com
+         $mail->Password = $mail_userpassword; 		// Tu contraseña de gmail
+         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;   // Habilitar encriptacion, `ssl` es aceptada
+         $mail->SMTPAutoTLS = false;
+         $mail->Port = 587;                          // Puerto TCP  para conectarse 
+
+
+        $mail->setFrom($mail_setFromEmail, $mail_setFromName);//Quien envia el mensaje
+        $mail->addAddress($mail_addAddress);   // Receptor del mail
+
+        //$body = file_get_contents('http://localhost/proyecto_grado/croptech/vista/plantilla_mail.php');
+        
+        //contenido
+        $mail->isHTML(true);  // Establecer el formato de correo electrónico en HTML
+        $mail->Subject = $mail_subject;
+
+        /*----MENSAJE HTML---*/
+        //incrustar imagen para cuerpo de mensaje(no confundir con Adjuntar)
+        $mail->AddEmbeddedImage('../assets/img/logo.png', 'imagen'); //ruta de archivo de imagen
+        
+        //cargar archivo css para cuerpo de mensaje
+        $rcss = '../assets/css/estilos.css';//ruta de archivo css
+        $fcss = fopen ($rcss, "r");//abrir archivo css
+        $scss = fread ($fcss, filesize ($rcss));//leer contenido de css
+        fclose ($fcss);//cerrar archivo css
+        //Cargar archivo html   
+        $shtml = file_get_contents('../vista/plantilla_mail_crop.php');
+        //reemplazar sección de plantilla html con el css cargado y mensaje creado
+        $incss  = str_replace('<style id="estilo"></style>',"<style>$scss</style>",$shtml);
+        $cuerpo = str_replace('<p id="mensaje"></p>',$txt_message,$incss);
+        $mail->Body = $cuerpo; //cuerpo del mensaje
+        $mail->AltBody = '---';//Mensaje de sólo texto si el receptor no acepta HTML
+        //$mail->Body = $body;
+        //$mail->msgHTML($txt_message);
+        $mail->SMTPOptions = array(
+            'ssl' => array(
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+            'allow_self_signed' => true
+            )
+            );
+ 
+        if(!$mail->send()) {
+            $feedback="No se pudo enviar el mensaje.. ". $mail->ErrorInfo;
+            /*echo '<p style="color:red">No se pudo enviar el mensaje..';
+            echo 'Error de correo: ' . $mail->ErrorInfo;
+            echo "</p>";*/
+        } else {
+            $feedback="Tu mensaje ha sido enviado!";
+        }
+        return $feedback;
+    }
+
+    //Funcion que me permite enviar correos de confirmación: desactivar cuenta
+    private function sendmail_desactivar($mail_username,$mail_userpassword,$mail_setFromEmail,$mail_setFromName,$mail_addAddress,$txt_message,$mail_subject){
+        $feedback="";
+
+        $mail = new PHPMailer;
+        date_default_timezone_set('Etc/UTC');
+
+         //Server settings
+        // $mail->SMTPDebug = 2;   // debugging: 1 = errors and messages, 2 = messages only
+         $mail->isSMTP();                            // Establecer el correo electrónico para utilizar SMTP
+         $mail->Host = "smtp.gmail.com";        // Especificar el servidor de correo a utilizar 
+         $mail->SMTPAuth = true;                     // Habilitar la autenticacion con SMTP
+         $mail->Username = $mail_username;          // Correo electronico saliente ejemplo: tucorreo@gmail.com
+         $mail->Password = $mail_userpassword; 		// Tu contraseña de gmail
+         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;   // Habilitar encriptacion, `ssl` es aceptada
+         $mail->SMTPAutoTLS = false;
+         $mail->Port = 587;                          // Puerto TCP  para conectarse 
 
 
         $mail->setFrom($mail_setFromEmail, $mail_setFromName);//Quien envia el mensaje
@@ -980,7 +1103,202 @@ class facade{
         $mail->AddEmbeddedImage('../assets/img/logo.png', 'imagen'); //ruta de archivo de imagen
 
         //cargar archivo css para cuerpo de mensaje
-        $rcss = "../assets/css/estilo.css";//ruta de archivo css
+        $rcss = '../assets/css/estilos.css';//ruta de archivo css
+        $fcss = fopen ($rcss, "r");//abrir archivo css
+        $scss = fread ($fcss, filesize ($rcss));//leer contenido de css
+        fclose ($fcss);//cerrar archivo css
+        //Cargar archivo html   
+        $shtml = file_get_contents('../vista/plantilla_desactivar.php');
+        //reemplazar sección de plantilla html con el css cargado y mensaje creado
+        $incss  = str_replace('<style id="estilo"></style>',"<style>$scss</style>",$shtml);
+        $cuerpo = str_replace('<p id="mensaje"></p>',$txt_message,$incss);
+        $mail->Body = $cuerpo; //cuerpo del mensaje
+        $mail->AltBody = '---';//Mensaje de sólo texto si el receptor no acepta HTML
+        //$mail->Body = $body;
+        //$mail->msgHTML($txt_message);
+        $mail->SMTPOptions = array(
+            'ssl' => array(
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+            'allow_self_signed' => true
+            )
+            );
+ 
+        if(!$mail->send()) {
+            $feedback="No se pudo enviar el mensaje.. ". $mail->ErrorInfo;
+            /*echo '<p style="color:red">No se pudo enviar el mensaje..';
+            echo 'Error de correo: ' . $mail->ErrorInfo;
+            echo "</p>";*/
+        } else {
+            $feedback="Tu mensaje ha sido enviado!";
+        }
+        return $feedback;
+    }
+
+    //Funcion que me permite enviar correos de confirmación: desactivar cuenta
+    private function sendmail_manual($mail_username,$mail_userpassword,$mail_setFromEmail,$mail_setFromName,$mail_addAddress,$txt_message,$mail_subject){
+        $feedback="";
+
+        $mail = new PHPMailer;
+        date_default_timezone_set('Etc/UTC');
+
+         //Server settings
+         //$mail->SMTPDebug = 2;   // debugging: 1 = errors and messages, 2 = messages only
+         $mail->isSMTP();                            // Establecer el correo electrónico para utilizar SMTP
+         $mail->Host = "smtp.gmail.com";        // Especificar el servidor de correo a utilizar 
+         $mail->SMTPAuth = true;                     // Habilitar la autenticacion con SMTP
+         $mail->Username = $mail_username;          // Correo electronico saliente ejemplo: tucorreo@gmail.com
+         $mail->Password = $mail_userpassword; 		// Tu contraseña de gmail
+         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;   // Habilitar encriptacion, `ssl` es aceptada
+         $mail->SMTPAutoTLS = false;
+         $mail->Port = 587;                          // Puerto TCP  para conectarse 
+
+
+        $mail->setFrom($mail_setFromEmail, $mail_setFromName);//Quien envia el mensaje
+        $mail->addAddress($mail_addAddress);   // Receptor del mail
+
+        //$body = file_get_contents('http://localhost/proyecto_grado/croptech/vista/plantilla_mail.php');
+        
+        //contenido
+        $mail->isHTML(true);  // Establecer el formato de correo electrónico en HTML
+        $mail->Subject = $mail_subject;
+
+        /*----MENSAJE HTML---*/
+        //incrustar imagen para cuerpo de mensaje(no confundir con Adjuntar)
+        $mail->AddEmbeddedImage('../assets/img/logo.png', 'imagen'); //ruta de archivo de imagen
+        
+        //cargar archivo css para cuerpo de mensaje
+        $rcss = '../assets/css/estilos.css';//ruta de archivo css
+        $fcss = fopen ($rcss, "r");//abrir archivo css
+        $scss = fread ($fcss, filesize ($rcss));//leer contenido de css
+        fclose ($fcss);//cerrar archivo css
+        //Cargar archivo html   
+        $shtml = file_get_contents('../vista/plantilla_mail_manual.php');
+        //reemplazar sección de plantilla html con el css cargado y mensaje creado
+        $incss  = str_replace('<style id="estilo"></style>',"<style>$scss</style>",$shtml);
+        $cuerpo = str_replace('<p id="mensaje"></p>',$txt_message,$incss);
+        $mail->Body = $cuerpo; //cuerpo del mensaje
+        $mail->AltBody = '---';//Mensaje de sólo texto si el receptor no acepta HTML
+        //$mail->Body = $body;
+        //$mail->msgHTML($txt_message);
+        $mail->SMTPOptions = array(
+            'ssl' => array(
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+            'allow_self_signed' => true
+            )
+            );
+ 
+        if(!$mail->send()) {
+            $feedback="No se pudo enviar el mensaje.. ". $mail->ErrorInfo;
+            /*echo '<p style="color:red">No se pudo enviar el mensaje..';
+            echo 'Error de correo: ' . $mail->ErrorInfo;
+            echo "</p>";*/
+        } else {
+            $feedback="Tu mensaje ha sido enviado!";
+        }
+        return $feedback;
+    }
+
+    //Funcion que me permite enviar correos de confirmación: desactivar cuenta temporalmente
+    private function sendmail_desactivar2($mail_username,$mail_userpassword,$mail_setFromEmail,$mail_setFromName,$mail_addAddress,$txt_message,$mail_subject){
+        $feedback="";
+
+        $mail = new PHPMailer;
+        date_default_timezone_set('Etc/UTC');
+
+         //Server settings
+         //$mail->SMTPDebug = 2;   // debugging: 1 = errors and messages, 2 = messages only
+         $mail->isSMTP();                            // Establecer el correo electrónico para utilizar SMTP
+         $mail->Host = "smtp.gmail.com";        // Especificar el servidor de correo a utilizar 
+         $mail->SMTPAuth = true;                     // Habilitar la autenticacion con SMTP
+         $mail->Username = $mail_username;          // Correo electronico saliente ejemplo: tucorreo@gmail.com
+         $mail->Password = $mail_userpassword; 		// Tu contraseña de gmail
+         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;   // Habilitar encriptacion, `ssl` es aceptada
+         $mail->SMTPAutoTLS = false;
+         $mail->Port = 587;                          // Puerto TCP  para conectarse 
+
+
+        $mail->setFrom($mail_setFromEmail, $mail_setFromName);//Quien envia el mensaje
+        $mail->addAddress($mail_addAddress);   // Receptor del mail
+
+        //$body = file_get_contents('http://localhost/proyecto_grado/croptech/vista/plantilla_mail.php');
+        
+        //contenido
+        $mail->isHTML(true);  // Establecer el formato de correo electrónico en HTML
+        $mail->Subject = $mail_subject;
+
+        /*----MENSAJE HTML---*/
+        //incrustar imagen para cuerpo de mensaje(no confundir con Adjuntar)
+        $mail->AddEmbeddedImage('../assets/img/logo.png', 'imagen'); //ruta de archivo de imagen
+
+        //cargar archivo css para cuerpo de mensaje
+        $rcss = '../assets/css/estilos.css';//ruta de archivo css
+        $fcss = fopen ($rcss, "r");//abrir archivo css
+        $scss = fread ($fcss, filesize ($rcss));//leer contenido de css
+        fclose ($fcss);//cerrar archivo css
+        //Cargar archivo html   
+        $shtml = file_get_contents('../vista/plantilla_desactivar2.php');
+        //reemplazar sección de plantilla html con el css cargado y mensaje creado
+        $incss  = str_replace('<style id="estilo"></style>',"<style>$scss</style>",$shtml);
+        $cuerpo = str_replace('<p id="mensaje"></p>',$txt_message,$incss);
+        $mail->Body = $cuerpo; //cuerpo del mensaje
+        $mail->AltBody = '---';//Mensaje de sólo texto si el receptor no acepta HTML
+        //$mail->Body = $body;
+        //$mail->msgHTML($txt_message);
+        $mail->SMTPOptions = array(
+            'ssl' => array(
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+            'allow_self_signed' => true
+            )
+            );
+ 
+        if(!$mail->send()) {
+            $feedback="No se pudo enviar el mensaje.. ". $mail->ErrorInfo;
+            /*echo '<p style="color:red">No se pudo enviar el mensaje..';
+            echo 'Error de correo: ' . $mail->ErrorInfo;
+            echo "</p>";*/
+        } else {
+            $feedback="Tu mensaje ha sido enviado!";
+        }
+        return $feedback;
+    }
+
+    //Funcion que me permite enviar correos de solicitudes al administrador
+   private function sendemail($mail_username,$mail_userpassword,$mail_setFromEmail,$mail_setFromName,$mail_addAddress,$txt_message,$mail_subject){
+        $feedback="";
+
+        $mail = new PHPMailer;
+        date_default_timezone_set('Etc/UTC');
+
+         //Server settings
+         //$mail->SMTPDebug = 2;  // debugging: 1 = errors and messages, 2 = messages only
+         $mail->isSMTP();                            // Establecer el correo electrónico para utilizar SMTP
+         $mail->Host = "smtp.gmail.com";        // Especificar el servidor de correo a utilizar 
+         $mail->SMTPAuth = true;                     // Habilitar la autenticacion con SMTP
+         $mail->Username = $mail_username;          // Correo electronico saliente ejemplo: tucorreo@gmail.com
+         $mail->Password = $mail_userpassword; 		// Tu contraseña de gmail
+         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;   // Habilitar encriptacion, `ssl` es aceptada
+         $mail->SMTPAutoTLS = false;
+         $mail->Port = 587;                          // Puerto TCP  para conectarse 
+
+
+        $mail->setFrom($mail_setFromEmail, $mail_setFromName);//Quien envia el mensaje
+        $mail->addAddress($mail_addAddress);   // Receptor del mail
+
+        //$body = file_get_contents('http://localhost/proyecto_grado/croptech/vista/plantilla_mail.php');
+        
+        //contenido
+        $mail->isHTML(true);  // Establecer el formato de correo electrónico en HTML
+        $mail->Subject = $mail_subject;
+
+        /*----MENSAJE HTML---*/
+        //incrustar imagen para cuerpo de mensaje(no confundir con Adjuntar)
+        $mail->AddEmbeddedImage('../assets/img/logo.png', 'imagen'); //ruta de archivo de imagen
+
+        //cargar archivo css para cuerpo de mensaje
+        $rcss = '../assets/css/estilos.css';//ruta de archivo css
         $fcss = fopen ($rcss, "r");//abrir archivo css
         $scss = fread ($fcss, filesize ($rcss));//leer contenido de css
         fclose ($fcss);//cerrar archivo css
@@ -1018,10 +1336,17 @@ class facade{
        return $resul;
    }
 
-   public function leer_solicitudes_cuenta(){//ok
-    $resul = $this->obj_admon->read_solicitudes_cuenta();
-    return $resul;
-}
+   //Funcion que permite actualizar las solicitudes atendidas
+   public function update_solicitud($id_solicitud){//ok
+        $resul = $this->obj_admon->update_solicitud($id_solicitud);
+        return $resul;
+    }
+
+   
+    public function leer_solicitudes_cuenta(){//ok
+        $resul = $this->obj_admon->read_solicitudes_cuenta();
+        return $resul;
+    }
    //Funcion que permite leer una solicitud en especifico para ser atendida
    public function leer_solicitud_atender($id_solicitud){//ok
       $resul = $this->obj_admon->read_solicitud_atender($id_solicitud);
@@ -1031,52 +1356,134 @@ class facade{
    //Función que permite atender las solucitudes de desactivar cuenta
    public function atender_desactivar_cuenta($idu,$ids){
 
-    $resul1 = $this->obj_admon->read_solicitud_atender($ids);
+        $resul1 = $this->obj_admon->read_solicitud_atender($ids);
 
-    $resul2 = $this->obj_user-> readOneFullById($idu);
+        $resul2 = $this->obj_user-> readOneFullById($idu);
 
-    $correo_user='';
-    $nombre_user='';
+        $correo_user='';
+        $nombre_user='';
+        $feedback="Vacio";
 
-    for($i=0; $i<1; $i++){
-        $correo_user= $resul2[$i]['correo'];
-        $nombre_user= $resul2[$i]['nombre'];
-    }
-    
-    for($i=0; $i<count($resul1); $i++){
-        if($resul1[$i]['detalle_solicitud']=='No me parece útil esta plataforma'){
+        for($i=0; $i<1; $i++){
+            $correo_user= $resul2[$i]['correo'];
+            $nombre_user= $resul2[$i]['nombre'];
+        }
+        if(count($resul1)>0){
+            $feedback="read_solicitud_no_vacia";
+        }else{
+            $feedback="read_solicitud_vacia";
+        }
+        for($i=0; $i<count($resul1); $i++)
+        {
+            if($resul1[$i]['detalle_solicitud']=='No me parece útil esta plataforma' || $resul1[$i]['detalle_solicitud']=='Ya tengo otra cuenta')
+            {
+                
+                 $estado = "desactivo";
 
-            /*Configuracion de variables para enviar el correo*/
-            $mail_username="croptech.admon@gmail.com";//Correo electronico saliente ejemplo: tucorreo@gmail.com
-            $mail_userpassword="505Crop *606";//Tu contraseña de gmail
-            $mail_addAddress=$correo_user;//correo electronico que recibira el mensaje
-        
-                            
-            /* Correo que envia el correo */
-            $mail_setFromEmail="croptech.admon@gmail.com";
-            $mail_setFromName="Croptech";
+                if($this->obj_admon->update_estado_user($idu, $estado)){
+                    $flag_solicitud= false;
+                    if($this->update_solicitud($ids)){
+                        $flag_solicitud= true;
+                    }else{
+                        $feedback="error_up";//error al actualizar el estado de la solicitud
+                    }
+                         /*Configuracion de variables para enviar el correo*/
+                         $mail_username="croptech.admon@gmail.com";//Correo electronico saliente ejemplo: tucorreo@gmail.com
+                         $mail_userpassword="505Crop *606";//Tu contraseña de gmail
+                         $mail_addAddress=$correo_user;//correo electronico que recibira el mensaje
+                     
+                                         
+                         /* Correo que envia el correo */
+                         $mail_setFromEmail="croptech.admon@gmail.com";
+                         $mail_setFromName="Croptech";
+ 
+                         //------Asunto
+                         $mail_subject="Respuesta solicitud: DESACTIVAR CUENTA"; 
+                         
+                         $txt_message="Hola!, ".$nombre_user." Tu cuenta ha sido desactivada, cuando quieras volver a activarla envianos un correo 
+                         por medio de la sección contactanos, con tu correo electronico registrado"; 
+                         //Llamamos a la función que nos envia el correo, que nos devuelve el estado del evio del correo
+                         $estado_correo=$this->sendmail_desactivar($mail_username,$mail_userpassword,$mail_setFromEmail,$mail_setFromName,$mail_addAddress,$txt_message,$mail_subject);
+                         
+                         if($estado_correo=="Tu mensaje ha sido enviado!")
+                             $feedback="mensaje_ok";
+                         else
+                             $feedback=$estado_correo;
+                    
+                }else{
+                    $feedback="bad";
+                }
 
-            //------Asunto
-            $mail_subject="Respuesta solicitud: DESACTIVAR CUENTA"; 
-             
-            $txt_message="Hola!, ".$nombre_user." Tu cuenta ha sido desactivada, cuando quieras volver a activarla solo inicia sesión"; 
-            //Llamamos a la función que nos envia el correo, que nos devuelve el estado del evio del correo
-            $estado_correo=$this->sendemail($mail_username,$mail_userpassword,$mail_setFromEmail,$mail_setFromName,$mail_addAddress,$txt_message,$mail_subject);
+            } 
+            else if ($resul1[$i]['detalle_solicitud']=='No se como usar esta plataforma')
+            {
+                /*Configuracion de variables para enviar el correo*/
+                $mail_username="croptech.admon@gmail.com";//Correo electronico saliente ejemplo: tucorreo@gmail.com
+                $mail_userpassword="505Crop *606";//Tu contraseña de gmail
+                $mail_addAddress=$correo_user;//correo electronico que recibira el mensaje
             
-            if($estado_correo=="Tu mensaje ha sido enviado!")
-                $feedback="mensaje_ok";
-            else
-                $feedback=$estado_correo;
+                                
+                /* Correo que envia el correo */
+                $mail_setFromEmail="croptech.admon@gmail.com";
+                $mail_setFromName="Croptech";
 
+                //------Asunto
+                $mail_subject="Respuesta solicitud: DESACTIVAR CUENTA"; 
+                
+                $txt_message="Hola!, ".$nombre_user." Tu cuenta no ha sido desactivada, debido a que tus motivos son:
+                (No se como usar esta plataforma), en su lugar te invitamos a visitar nuestra plataforma y leer nuestro
+                manual de usuario"; 
+                //Llamamos a la función que nos envia el correo, que nos devuelve el estado del evio del correo
+                $estado_correo=$this->sendmail_manual($mail_username,$mail_userpassword,$mail_setFromEmail,$mail_setFromName,$mail_addAddress,$txt_message,$mail_subject);
+                
+                if($estado_correo=="Tu mensaje ha sido enviado!")
+                    $feedback="mensaje_ok";
+                else
+                    $feedback=$estado_correo;
 
+            } 
+            else if($resul1[$i]['detalle_solicitud']=='Es algo temporal. Regresaré')
+            {
+                $estado = "receso";
 
-        } 
-        if($resul1[$i]['detalle_solicitud']=='No se como usar esta plataforma'){
+                if($this->obj_admon->update_estado_user($idu, $estado)){
+                    $flag_solicitud= false;
+                    if($this->update_solicitud($ids)){
+                        $flag_solicitud= true;
+                    }else{
+                        $feedback="error_up";//error al actualizar el estado de la solicitud
+                    }
+                        /*Configuracion de variables para enviar el correo*/
+                        $mail_username="croptech.admon@gmail.com";//Correo electronico saliente ejemplo: tucorreo@gmail.com
+                        $mail_userpassword="505Crop *606";//Tu contraseña de gmail
+                        $mail_addAddress=$correo_user;//correo electronico que recibira el mensaje
+                    
+                                        
+                        /* Correo que envia el correo */
+                        $mail_setFromEmail="croptech.admon@gmail.com";
+                        $mail_setFromName="Croptech";
+
+                        //------Asunto
+                        $mail_subject="Respuesta solicitud: DESACTIVAR CUENTA"; 
+                        
+                        $txt_message="Hola!, ".$nombre_user." Tu cuenta ha sido desactivada temporalmente, cuando lo desees, puedes
+                        volver a iniciar sesión para activar tu cuenta."; 
+                        //Llamamos a la función que nos envia el correo, que nos devuelve el estado del evio del correo
+                        $estado_correo=$this->sendmail_desactivar2($mail_username,$mail_userpassword,$mail_setFromEmail,$mail_setFromName,$mail_addAddress,$txt_message,$mail_subject);
+                        
+                        if($estado_correo=="Tu mensaje ha sido enviado!")
+                            $feedback="mensaje_ok";
+                        else
+                            $feedback=$estado_correo;
+
+                }else{
+                    $feedback="bad";//Error al guardar info en la bd
+                }
+
+            }
 
         }
-
-    }
-
+        return $feedback;
    }
 
    //Función que permite atender las solucitudes de agregar cultivo
