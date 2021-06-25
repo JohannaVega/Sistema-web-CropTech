@@ -8,7 +8,7 @@ if($_SESSION['usuario']){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar nuevo cultivo - CropTech</title>
+    <title>Editar cultivo - CropTech</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
@@ -42,9 +42,9 @@ if($_SESSION['usuario']){
                     href="http://localhost/proyecto_grado/croptech/vista/admon_inicio.php">Inicio</a> </li>
                 <li class="nav-item"><a class="nav-link " 
                     href="http://localhost/proyecto_grado/croptech/vista/admon_usuarios.php">Adminstrar usuarios</a></li>
-                <li class="nav-item"><a class="nav-link active" 
+                <li class="nav-item"><a class="nav-link" 
                     href="http://localhost/proyecto_grado/croptech/vista/admon_cultivo.php">Control cultivos</a></li>
-                <li class="nav-item"><a class="nav-link " 
+                <li class="nav-item"><a class="nav-link active " 
                     href="http://localhost/proyecto_grado/croptech/vista/admon_cultivosBD.php">Listar cultivos</a></li>
             </ul>
 
@@ -57,13 +57,14 @@ if($_SESSION['usuario']){
 </nav>
 <!--FIN NAVBAR-->
 <?php
-//if(isset($_GET['idAccount']) && isset($_GET['idc'])){
+if(isset($_GET['idCrop'])){
 
     //TRAIGO LOS DATOS DE TIENDAS
     $id=$_SESSION['usuario']; 
     require '../modelo/facade.php';
-    $fac=new facade();
-    $tipos_crop=$fac->read_tiposcultivo();
+
+    $fac1=new facade();
+    $resul= $fac1->read_cultivo_byid($_GET['idCrop']);
     ?>
 
 
@@ -73,7 +74,7 @@ if($_SESSION['usuario']){
         <!--COLUMNA 1-->
         <div class="col-8 p-5 text-center bg-light border border-success"> 
             <div class="jumbotron">
-                <h1 class="display-5 text-success text-shadow h1">Nuevo cultivo</h1>
+                <h1 class="display-5 text-success text-shadow h1">Editar datos de cultivo</h1>
                 <hr>
 
                 <form action="../controlador/validar_cultivos.php" method="post">
@@ -82,19 +83,7 @@ if($_SESSION['usuario']){
                     
                         <div class="form-row row justify-content-center p-2">
                             <div class="form-group col-md-6">
-                                <p class="lead">Nombre del cultivo: <?php echo $name=$_GET['idc'] ?> </p>
-                            </div>
-                        </div>
-
-                        <div class="form-row row justify-content-center p-2">
-                            <div class="form-group col-md-6">
-                                <p>Seleccione tipo de cultivo:</p>
-                                <select class="form-select form-select mb-1" id="tipo" name="tipo">
-                                    <option value="0">Seleccione una opción</option>
-                                    <?php for($i=0; $i<count($tipos_crop); $i++){ ?>
-                                    <option value="<?php echo $tipos_crop[$i]['id_tipo']; ?>"><?php echo $tipos_crop[$i]['tipo_cultivo']; ?></option>
-                                    <?php } ?>
-                                </select>
+                                <p class="lead">Nombre del cultivo: <?php echo $resul[0]['nombre_cultivo']; ?> </p>
                             </div>
                         </div>
 
@@ -102,7 +91,7 @@ if($_SESSION['usuario']){
                             <div class="form-group col-md-6">
                                 <p>Porcentaje de la humedad relativa ambiental min (%):</p>
                                 <input type="number" id="humedadmin" class="form-control" name="humedadmin" step="any" 
-                                placeholder="Ejemplo: 5.03" requiered>
+                                placeholder="Ejemplo: 5.03" value='<?php echo $resul[0]['humedad_optima_min'];?>' requiered>
                             </div>
                         </div>
 
@@ -110,7 +99,7 @@ if($_SESSION['usuario']){
                             <div class="form-group col-md-6">
                                 <p>Porcentaje de la humedad relativa ambiental max (%):</p>
                                 <input type="number" id="humedadmax" class="form-control" name="humedadmax" step="any" 
-                                placeholder="Ejemplo: 5.03" requiered>
+                                placeholder="Ejemplo: 5.03" value='<?php echo $resul[0]['humedad_optima_max'];?>' requiered>
                             </div>
                         </div>
 
@@ -118,7 +107,7 @@ if($_SESSION['usuario']){
                             <div class="form-group col-md-6">
                                 <p>Cantidad de horas luz diarias min (horas):</p>
                                 <input type="number" id="luzmin" class="form-control" name="luzmin" 
-                                placeholder="Ejemplo: 10" requiered>
+                                placeholder="Ejemplo: 10" value='<?php echo $resul[0]['horas_luz_min'];?>' requiered>
                             </div>
                         </div>
 
@@ -126,7 +115,7 @@ if($_SESSION['usuario']){
                             <div class="form-group col-md-6">
                                 <p>Cantidad de horas luz diarias max (horas):</p>
                                 <input type="number" id="luzmax" class="form-control" name="luzmax"
-                                placeholder="Ejemplo: 10" requiered>
+                                placeholder="Ejemplo: 10" value='<?php echo $resul[0]['horas_luz_max'];?>' requiered>
                             </div>
                         </div>
 
@@ -134,7 +123,7 @@ if($_SESSION['usuario']){
                             <div class="form-group col-md-6">
                                 <p>Nivel de temperatura ambiental min (grados Celsius (°C)):</p>
                                 <input type="number" id="temperaturamin" class="form-control" name="temperaturamin" step="any" 
-                                placeholder="Ejemplo: 16.5" requiered>
+                                placeholder="Ejemplo: 16.5" value='<?php echo $resul[0]['temperatura_optima_min'];?>' requiered>
                             </div>
                         </div>
 
@@ -142,7 +131,7 @@ if($_SESSION['usuario']){
                             <div class="form-group col-md-6">
                                 <p>Nivel de temperatura ambiental max (grados Celsius (°C)):</p>
                                 <input type="number" id="temperaturamax" class="form-control" name="temperaturamax" step="any" 
-                                placeholder="Ejemplo: 16.5" requiered>
+                                placeholder="Ejemplo: 16.5" value='<?php echo $resul[0]['temperatura_optima_max'];?>' requiered>
                             </div>
                         </div>
 
@@ -150,19 +139,16 @@ if($_SESSION['usuario']){
                             <div class="form-group col-md-6">
                                 <p>Tiempo de siembra (meses):</p>
                                 <input type="number" id="tiempo" class="form-control" name="tiempo" 
-                                placeholder="Ejemplo: 3" requiered>
+                                placeholder="Ejemplo: 3" value='<?php echo $resul[0]['tiempo_siembra'];?>' requiered>
                             </div>
                         </div>
                     
-                        
-                        <input type="hidden" name="idu" value='<?php echo $_GET['idAccount']; ?>'>
-                        <input type="hidden" name="ids" value='<?php echo $_GET['ids']; ?>'>
-                        <input type="hidden" name="name" value='<?php echo $name; ?>'>
+                        <input type="hidden" name="id_cultivo" value='<?php echo $_GET['idCrop']; ?>'>
 
                         <div class="form-row row justify-content-center p-2">
                             <div class="form-group col-md-8">
-                                <button type="submit" value="CREAR_C" name="admon_c" class="btn btn-outline-secondary btn-lg" 
-                                onclick="return validarInsertC();">Añadir cultivo</button>
+                                <button type="submit" value="EDIT_C" name="admon_c" class="btn btn-outline-secondary btn-lg" 
+                                onclick="return validarInsertC();">Actualizar cultivo</button>
                             </div>
                         </div>
                     </div>
@@ -179,8 +165,7 @@ if($_SESSION['usuario']){
                     <hr>
                     <br>
                     <h3 class="pt-5">Hola, </h3>
-                    <p >En esta sección debes agregar el nuevo cultivo solicitado, con las especificaciones
-                    tecnicas solicitadas, para poner a disposición de los usuarios nuevas opciones de cultivos </p>
+                    <p >En esta sección puedes editar los datos ambientales de los cultivos que asi lo requieran</p>
                 <div>
             </div>
         </div>
@@ -193,12 +178,12 @@ if($_SESSION['usuario']){
 
 
 <?php
-/*}else{
+}else{
     echo "<script type='text/javascript'>
     alert('ERROR!! en el envio de datos');
-    window.location='admon_cultivo.php';
+    window.location='admon_cultivosBD.php';
     </script>";
-}*/
+}
 ?>
 <hr>
 <!--SECCIÓN SEPARADOR RIBON-->

@@ -40,11 +40,13 @@ if($_SESSION['usuario']){
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" aria-current="page" 
-                    href="http://localhost/proyecto_grado/croptech/vista/admon_inicio.php">Inicio</a> </li>
+                        href="http://localhost/proyecto_grado/croptech/vista/admon_inicio.php">Inicio</a> </li>
                     <li class="nav-item"><a class="nav-link active " 
-                    href="http://localhost/proyecto_grado/croptech/vista/admon_usuarios.php">Adminstrar usuarios</a></li>
+                        href="http://localhost/proyecto_grado/croptech/vista/admon_usuarios.php">Adminstrar usuarios</a></li>
                     <li class="nav-item"><a class="nav-link " 
-                    href="http://localhost/proyecto_grado/croptech/vista/admon_cultivo.php">Control cultivos</a></li>
+                        href="http://localhost/proyecto_grado/croptech/vista/admon_cultivo.php">Control cultivos</a></li>
+                    <li class="nav-item"><a class="nav-link " 
+                        href="http://localhost/proyecto_grado/croptech/vista/admon_cultivosBD.php">Listar cultivos</a></li>
                 </ul>
 
                 <form class="d-flex form-inline my-2 my-lg-0  navbar-right" >
@@ -111,7 +113,7 @@ if($_SESSION['usuario']){
                                     href="http://localhost/proyecto_grado/croptech/vista/admon_add_crop.php?idAccount=<?php echo $user; ?>&idc=<?php echo $nombre; ?>&ids=<?php echo $datos[$i]['id_solicitud_admon']; ?>" 
                                     class="btn btn-outline-danger">SI</a>
                                     
-                                    <a href="http://localhost/proyecto_grado/croptech/vista/admon_cultivo.php" 
+                                    <a href="http://localhost/proyecto_grado/croptech/controlador/validar_cultivos.php?id_user=<?php echo $user; ?>&ids=<?php echo $datos[$i]['id_solicitud_admon']; ?>" 
                                     class="btn btn-outline-warning">NO</a>
                                 </div>
                             </div>

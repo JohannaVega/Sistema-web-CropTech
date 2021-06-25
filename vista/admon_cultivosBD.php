@@ -7,7 +7,7 @@ if($_SESSION['usuario']){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notificaciones - croptech</title>
+    <title>Cultivos - croptech</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
@@ -38,13 +38,13 @@ if($_SESSION['usuario']){
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" aria-current="page" 
-                        href="http://localhost/proyecto_grado/croptech/vista/admon_inicio.php">Inicio</a> </li>
+                    href="http://localhost/proyecto_grado/croptech/vista/admon_inicio.php">Inicio</a> </li>
                     <li class="nav-item"><a class="nav-link" 
-                        href="http://localhost/proyecto_grado/croptech/vista/admon_usuarios.php">Adminstrar usuarios</a></li>
+                    href="http://localhost/proyecto_grado/croptech/vista/admon_usuarios.php">Adminstrar usuarios</a></li>
+                    <li class="nav-item"><a class="nav-link" 
+                    href="http://localhost/proyecto_grado/croptech/vista/admon_cultivo.php">Control cultivos</a></li>
                     <li class="nav-item"><a class="nav-link active" 
-                        href="http://localhost/proyecto_grado/croptech/vista/admon_cultivo.php">Control cultivos</a></li>
-                    <li class="nav-item"><a class="nav-link " 
-                        href="http://localhost/proyecto_grado/croptech/vista/admon_cultivosBD.php">Listar cultivos</a></li>
+                    href="http://localhost/proyecto_grado/croptech/vista/admon_cultivosBD.php">Listar cultivos</a></li>
                 </ul>
 
                 <form class="d-flex form-inline my-2 my-lg-0  navbar-right" >
@@ -58,17 +58,16 @@ if($_SESSION['usuario']){
 
     <?php require '../modelo/facade.php';
         $obj=new facade();
-        $resul=$obj->leer_solicitudes();
+        $resul=$obj->read_all_cultivos();
     ?>
     <br>
     <div class="container"> 
         <!--FILA 1-->
         <div class="m-1 row justify-content-center">
             <div class="col-auto p-5 text-center bg-light border border-success">
-                <h3 class="display-5 text-success text-shadow h1">Solicitudes de cuentas</h3>
+                <h3 class="display-5 text-success text-shadow h1">Lista de cultivos</h3>
                 <hr>
-                <a href="http://localhost/proyecto_grado/croptech/vista/admon_historial.php" 
-                class="btn btn-outline-success">VER HISTORIAL DE SOLICITUDES</a>
+                
                 <br>
                 <br>
                 
@@ -78,37 +77,13 @@ if($_SESSION['usuario']){
                     {
                         if($_GET['iderror'] == 'ok'){
                         ?>
-                            <p style="color:green;" >Cultivo nuevo registrado correctamente, sin evio de correo</p>
+                            <p style="color:green;" >Cultivo actualizado correctamente</p>
                         <?php
                         }else if($_GET['iderror'] == 'bad'){
                         ?>
                             <p style="color:red;" >Error en el sistema, vuelva a intentarlo más tarde</p>
                         <?php
-                        }else if($_GET['iderror'] == 'no_type'){
-                        ?>
-                            <p style="color:red;" >No seleccionó tipo de cultivo, vuelva a intentarlo</p>
-                        <?php
-                        }else if($_GET['iderror'] == 'mensaje_ok'){
-                        ?>
-                            <p style="color:green;" >Se agrego nuevo cultivo, con envío de E-mail exitoso</p>
-                        <?php
-                        }else if($_GET['iderror'] == 'bad_s'){
-                            ?>
-                                <p style="color:green;" >Se agrego nuevo cultivo, sin la actualización del estado de la solicitud</p>
-                            <?php
-                        }else if($_GET['iderror'] == 'correo'){
-                            ?>
-                                <p style="color:green;">Se informo con exito al usuario el estado de su solicitud</p>
-                            <?php
-                        }else if($_GET['iderror'] == 'error'){
-                            ?>
-                                <p style="color:green;">Error al actualizar el estado se la solicitud</p>
-                            <?php
-                        }else{
-                            ?>
-                                <p style="color:red;" ><?php echo $_GET['iderror']?></p>
-                            <?php
-                        }   
+                        }
                         //echo !extension_loaded('openssl')?"Not Available":"Available"; 
                     }
                     ?>
@@ -119,11 +94,14 @@ if($_SESSION['usuario']){
                     <table id="tmedicos" class="table table-bordered table-success">
                         <thead>
                             <tr class="text-success">
-                            <th scope="col">Id solicitud</th>
-                            <th scope="col">Detalle de solicitud</th>
-                            <th scope="col">Id usuario</th>
-                            <th scope="col">Fecha de solicitud</th>
-                            <th scope="col">Estado de solicitud</th>
+                            <th scope="col">Nombre cultivo</th>
+                            <th scope="col">Horas luz min (Día)</th>
+                            <th scope="col">Horas luz max (Día)</th>
+                            <th scope="col">Humedad relativa min (%)</th>
+                            <th scope="col">Humedad relativa max (%)</th>
+                            <th scope="col">Temperatura optima min (C°)</th>
+                            <th scope="col">Temperatura optima max (C°)</th>
+                            <th scope="col">Tiempo de siembra (Meses)</th>
                            
                             <th scope="col"></th>
                             
@@ -131,27 +109,22 @@ if($_SESSION['usuario']){
                         </thead>
                         <tbody>
                             <?php for($i=0;$i<count($resul);$i++){
-                                if($resul[$i]["id_tipo_solicitud"] == 2 && $resul[$i]["estado"] != 'Atendido'){
                                 ?>
                                 <tr>
-                                    <td><?php echo $resul[$i]['id_tipo_solicitud'];?></td>
-                                    <td><?php echo $resul[$i]['detalle_solicitud'];?></td>
-                                    <td><?php echo $resul[$i]['id_usuario'];?></td>
-                                    <td><?php echo $resul[$i]['fecha_solicitud'];?></td>
-                                    <td><?php echo $resul[$i]['estado'];?></td>
+                                    <td><?php echo $resul[$i]['nombre_cultivo'];?></td>
+                                    <td><?php echo $resul[$i]['horas_luz_min'];?></td>
+                                    <td><?php echo $resul[$i]['horas_luz_max'];?></td>
+                                    <td><?php echo $resul[$i]['humedad_optima_min'];?></td>
+                                    <td><?php echo $resul[$i]['humedad_optima_max'];?></td>
+                                    <td><?php echo $resul[$i]['temperatura_optima_min'];?></td>
+                                    <td><?php echo $resul[$i]['temperatura_optima_max'];?></td>
+                                    <td><?php echo $resul[$i]['tiempo_siembra'];?></td>
 
                                     <!--editar datos-->
-                                    <td> <a href="http://localhost/proyecto_grado/croptech/vista/admon_atender.php?ids=<?php echo $resul[$i]['id_solicitud_admon'];?>"
+                                    <td> <a href="http://localhost/proyecto_grado/croptech/vista/admon_editCrop.php?idCrop=<?php echo $resul[$i]['id_cultivo'];?>"
                                     class="btn btn-outline-success">
-                                    ATENDER</a></td>
-                                    <?php
-                            }
-                            ?>
-                                    <!--editar contraseña
-                                    <td><a href="http://localhost/proyecto_grado/croptech/vista/admon_editUD.php?idu=<?php echo $resul[$i]['id_usuario'];?>"
-                                    class="btn btn-outline-success">
-                                    <img src="http://localhost/proyecto_grado/croptech/assets/img/edit-d.png" alt="Editar" id="icono" height="30px" width="30px"></a></td>
-                            -->
+                                    EDITAR</a></td>
+                            
                             <?php } ?>
                             </tr>
                         
@@ -160,7 +133,6 @@ if($_SESSION['usuario']){
             
                 <br><br>
                 </div>
-
                 <div class="jumbotron bg-transparent">
                     </div>
 

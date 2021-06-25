@@ -17,7 +17,7 @@ class CultivoDAO extends Conectar{
     }
 
     //Leemos todos los cultivos registrados en el sistema
-    public function read_all(){//read 
+    public function read_all(){//ok
        $sql="select * from cultivo";
        $resul=mysqli_query($this->con(),$sql);
         while($row=mysqli_fetch_assoc($resul)){
@@ -79,9 +79,35 @@ class CultivoDAO extends Conectar{
         return $this->cultivos;
     }
 
+    //Leemos los datos de un cultivo por su Id
+    public function read_cultivo_byId($id){
+        $sql="select * from cultivo where id_cultivo=$id";   
+
+        $resul=mysqli_query($this->con(),$sql);
+        while($row=mysqli_fetch_assoc($resul)){
+            $this->cultivos[]=$row;
+        }
+        return $this->cultivos;
+
+
+    }
+    
+     //actualizamos datos de un cultivo por su Id
+     public function edit_cultivo_byId($humedadmin,$humedadmax,$luzmin,$luzmax,$temperaturamin,
+     $temperaturamax,$tiempo,$id_cultivo){
+         
+        $sql="update cultivo set horas_luz_min='$luzmin',horas_luz_max='$luzmax',humedad_optima_min='$humedadmin',
+        humedad_optima_max='$humedadmax',temperatura_optima_min='$temperaturamin',temperatura_optima_max='$temperaturamax', 
+        tiempo_siembra='$tiempo' where id_cultivo=$id_cultivo";
+
+        $resul1=mysqli_query($this->con(),$sql);
+       
+        return $resul1;
+    }
     //Ingresamos cultivos para que estos sean elegidos por el usuario USAR
     public function insert_cultivo_new($name,$tipo,$humedadmin,$humedadmax,$luzmin,$luzmax,
-    $temperaturamin,$temperaturamax,$tiempo,$idu){
+    $temperaturamin,$temperaturamax,$tiempo,$idu)
+    {
         
         $sql= "insert into cultivo(nombre_cultivo,horas_luz_min,horas_luz_max,humedad_optima_min,humedad_optima_max,
         temperatura_optima_min,temperatura_optima_max,tiempo_siembra,id_tipo) 
@@ -109,8 +135,10 @@ class CultivoDAO extends Conectar{
         }                                            
      }
 
-    // LEEMOS TODOS LOS TIPOS DE CULTIVOS 
-    public function read_tipos_cultivo(){ //OK
+    
+     // LEEMOS TODOS LOS TIPOS DE CULTIVOS 
+    public function read_tipos_cultivo()
+    { //OK
         $sql="select * from tipo_cultivo";
         $resul=mysqli_query($this->con(),$sql);
         while($row=mysqli_fetch_assoc($resul)){

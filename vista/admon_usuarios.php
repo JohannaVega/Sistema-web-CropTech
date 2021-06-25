@@ -41,8 +41,10 @@ if($_SESSION['usuario']){
                     href="http://localhost/proyecto_grado/croptech/vista/admon_inicio.php">Inicio</a> </li>
                     <li class="nav-item"><a class="nav-link active " 
                     href="http://localhost/proyecto_grado/croptech/vista/admon_usuarios.php">Adminstrar usuarios</a></li>
-                    <li class="nav-item"><a class="nav-link " 
+                    <li class="nav-item"><a class="nav-link" 
                     href="http://localhost/proyecto_grado/croptech/vista/admon_cultivo.php">Control cultivos</a></li>
+                    <li class="nav-item"><a class="nav-link" 
+                    href="http://localhost/proyecto_grado/croptech/vista/admon_cultivosBD.php">Listar cultivos</a></li>
                 </ul>
 
                 <form class="d-flex form-inline my-2 my-lg-0  navbar-right" >
@@ -98,7 +100,7 @@ if($_SESSION['usuario']){
                 </div>
                 <div class="table-responsive">
             
-                    <table id="tmedicos" class="table table-striped table-info">
+                    <table id="tmedicos" class="table table-bordered table-success">
                         <thead>
                             <tr class="text-success">
                             <th scope="col">Id solicitud</th>

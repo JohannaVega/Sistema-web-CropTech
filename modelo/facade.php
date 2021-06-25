@@ -603,11 +603,34 @@ class facade{
 
    }
 
-   //Metodo que me ermite leer los cultivos registrado en la Base de datos
+   //Metodo que permite leer los cultivos registrado en la Base de datos
    public function read_all_cultivos(){ //ok
         $resul=$this->obj_cultivo->read_all();
         return $resul;
    }
+
+   //Metodo que permite leer un cultivo por id
+   public function read_cultivo_byid($id){//ok
+
+        $resul=$this->obj_cultivo->read_cultivo_byId($id);
+        return $resul;
+   }
+   
+   public function edit_cultivo($humedadmin,$humedadmax,$luzmin,$luzmax,$temperaturamin,
+        $temperaturamax,$tiempo,$id_cultivo)
+    {
+        $feedback="";
+
+        if($resul=$this->obj_cultivo->edit_cultivo_byId($humedadmin,$humedadmax,$luzmin,$luzmax,$temperaturamin,
+        $temperaturamax,$tiempo,$id_cultivo)==true)
+        {
+            $feedback="ok";
+
+        }else{
+            $feedback="bad";
+        }
+        return $feedback;
+    }
 
     //Metodo que permite buscar los cultivos seleccionados de un usuario mediante su id
     public function read_cultivos_byuser($idu){
@@ -644,10 +667,10 @@ class facade{
     }
 
     //Metodo que permite leer el mediante el id de cultivo cual es su tipo
-    public function read_typeof_cultivo($id_culti){
+    /*public function read_typeof_cultivo($id_culti){
         $resul=$this->obj_cultivo->read_tipo_byidcultivo($id_culti);
         return $resul;
-    }
+    }*/
 
     //Metodo que permite leer todos los registros de seguimiento de un cultivo
     public function read_historialbynoregistro($nro_registro_siembra){
@@ -675,7 +698,7 @@ class facade{
 
     //Metodo que permite ingresar los datos de las condiciones climaticas de nuestro cultivo para la tabla cultivo_registro_u
     public function add_condiciones_ambientales ($idSiembra,$temperatura,$luminosidad,$humedad,$centimetros,$cantidad_hojas,
-                                                $img_crop,$comentarios){
+                                                $img_crop,$comentarios){//ok
         
         $feedback='';
         $fechaActual = date('Y-m-d H:i:s');
@@ -929,7 +952,7 @@ class facade{
    }
 
    public function ver_tiendas(){//ok
-       $resul= $this->obj_proveedor->read_alltiendas();
+       $resul= $this->obj_proveedor->tiendas();
        return $resul;
    }
 
@@ -1004,6 +1027,72 @@ class facade{
         //Retornamos el feedback
         return $feedback;
    }
+
+   //Funcion que me permite enviar correos de confirmación: Agregar nuevo cultivo
+   private function sendmail_cropNo($mail_username,$mail_userpassword,$mail_setFromEmail,$mail_setFromName,$mail_addAddress,$txt_message,$mail_subject)
+   {
+        $feedback="";
+
+        $mail = new PHPMailer;
+        date_default_timezone_set('Etc/UTC');
+
+            //Server settings
+            //$mail->SMTPDebug = 2;   // debugging: 1 = errors and messages, 2 = messages only
+            $mail->isSMTP();                            // Establecer el correo electrónico para utilizar SMTP
+            $mail->Host = "smtp.gmail.com";        // Especificar el servidor de correo a utilizar 
+            $mail->SMTPAuth = true;                     // Habilitar la autenticacion con SMTP
+            $mail->Username = $mail_username;          // Correo electronico saliente ejemplo: tucorreo@gmail.com
+            $mail->Password = $mail_userpassword; 		// Tu contraseña de gmail
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;   // Habilitar encriptacion, `ssl` es aceptada
+            $mail->SMTPAutoTLS = false;
+            $mail->Port = 587;                          // Puerto TCP  para conectarse 
+
+
+        $mail->setFrom($mail_setFromEmail, $mail_setFromName);//Quien envia el mensaje
+        $mail->addAddress($mail_addAddress);   // Receptor del mail
+
+        //$body = file_get_contents('http://localhost/proyecto_grado/croptech/vista/plantilla_mail.php');
+
+        //contenido
+        $mail->isHTML(true);  // Establecer el formato de correo electrónico en HTML
+        $mail->Subject = $mail_subject;
+
+        /*----MENSAJE HTML---*/
+        //incrustar imagen para cuerpo de mensaje(no confundir con Adjuntar)
+        $mail->AddEmbeddedImage('../assets/img/logo.png', 'imagen'); //ruta de archivo de imagen
+
+        //cargar archivo css para cuerpo de mensaje
+        $rcss = '../assets/css/estilos.css';//ruta de archivo css
+        $fcss = fopen ($rcss, "r");//abrir archivo css
+        $scss = fread ($fcss, filesize ($rcss));//leer contenido de css
+        fclose ($fcss);//cerrar archivo css
+        //Cargar archivo html   
+        $shtml = file_get_contents('../vista/plantilla_mail_cropNo.php');
+        //reemplazar sección de plantilla html con el css cargado y mensaje creado
+        $incss  = str_replace('<style id="estilo"></style>',"<style>$scss</style>",$shtml);
+        $cuerpo = str_replace('<p id="mensaje"></p>',$txt_message,$incss);
+        $mail->Body = $cuerpo; //cuerpo del mensaje
+        $mail->AltBody = '---';//Mensaje de sólo texto si el receptor no acepta HTML
+        //$mail->Body = $body;
+        //$mail->msgHTML($txt_message);
+        $mail->SMTPOptions = array(
+            'ssl' => array(
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+            'allow_self_signed' => true
+            )
+            );
+
+        if(!$mail->send()) {
+            $feedback="No se pudo enviar el mensaje.. ". $mail->ErrorInfo;
+            /*echo '<p style="color:red">No se pudo enviar el mensaje..';
+            echo 'Error de correo: ' . $mail->ErrorInfo;
+            echo "</p>";*/
+        } else {
+            $feedback="Tu mensaje ha sido enviado!";
+        }
+        return $feedback;
+    }
 
     //Funcion que me permite enviar correos de confirmación: Agregar nuevo cultivo
     private function sendmail_crop($mail_username,$mail_userpassword,$mail_setFromEmail,$mail_setFromName,$mail_addAddress,$txt_message,$mail_subject){
@@ -1264,7 +1353,7 @@ class facade{
         }
         return $feedback;
     }
-
+    
     //Funcion que me permite enviar correos de solicitudes al administrador
    private function sendemail($mail_username,$mail_userpassword,$mail_setFromEmail,$mail_setFromName,$mail_addAddress,$txt_message,$mail_subject){
         $feedback="";
@@ -1486,24 +1575,48 @@ class facade{
         return $feedback;
    }
 
-   //Función que permite atender las solucitudes de agregar cultivo
-   public function atender_agregar_cultivo($idu){
+   //Función que permite atender la solicitud de agregar cultivo, (No se agrega)
+   public function informar_user($id_user,$ids)
+   {
+        $resul2 = $this->obj_user-> readOneFullById($id_user);
 
-    $resul1 = $this->obj_admon->read_solicitud_atender($ids);
+        $correo_user='';
+        $nombre_user='';
+        $feedback="Vacio";
 
-    $resul2 = $this->obj_user-> readOneFullById($idu);
+        for($i=0; $i<1; $i++){
+            $correo_user= $resul2[$i]['correo'];
+            $nombre_user= $resul2[$i]['nombre'];
+        }
 
-    $correo_user='';
-    $nombre_user='';
+        if($this->update_solicitud($ids)){
+            /*Configuracion de variables para enviar el correo*/
+            $mail_username="croptech.admon@gmail.com";//Correo electronico saliente ejemplo: tucorreo@gmail.com
+            $mail_userpassword="505Crop *606";//Tu contraseña de gmail
+            $mail_addAddress=$correo_user;//correo electronico que recibira el mensaje
+        
+                            
+            /* Correo que envia el correo */
+            $mail_setFromEmail="croptech.admon@gmail.com";
+            $mail_setFromName="Croptech";
 
-    for($i=0; $i<1; $i++){
-        $correo_user= $resul2[$i]['correo'];
-        $nombre_user= $resul2[$i]['nombre'];
-    }
-    
-   
-
-    }
+            //------Asunto
+            $mail_subject="Respuesta solicitud: AGREGAR CULTIVO"; 
+            
+            $txt_message="Hola!, ".$nombre_user." El cultivo no fue registrado en el sistema debido a que no cumple con las condiciones
+            para ser un cultivo valido a agregar. Para más información comunicate con nuestros asesores: +573205678567"; 
+            //Llamamos a la función que nos envia el correo, que nos devuelve el estado del evio del correo
+            $estado_correo=$this->sendmail_cropNo($mail_username,$mail_userpassword,$mail_setFromEmail,$mail_setFromName,$mail_addAddress,$txt_message,$mail_subject);
+            
+            if($estado_correo=="Tu mensaje ha sido enviado!")
+                $feedback="correo";
+            else
+                $feedback=$estado_correo;
+        }else{
+            $feedback="error";//error al actualizar el estado de la solicitud
+        }
+        return $feedback;
+   }
 
 }
 
