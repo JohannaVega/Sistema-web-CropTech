@@ -72,8 +72,7 @@ if(isset($_POST['cultivo_edit']) && $_POST['cultivo_edit']=='ADDCONAMBIENT' ){
 
       
        $resul=$obj->add_condiciones_ambientales ($_POST['idSiembra'],$_POST['temperatura'],$_POST['luminosidad'],$_POST['humedad'],
-                                                $_POST['centimetros'],$_POST['cantidad_hojas'],
-                                                $_FILES['img_crop'],$_POST['comentarios']);
+                                                $_POST['centimetros'],$_POST['cantidad_hojas'],$_POST['comentarios']);
     
        header("Location: http://localhost/proyecto_grado/croptech/vista/cultivo-historial.php?iderror=$resul");
     }
@@ -93,6 +92,41 @@ if(isset($_GET['id_user']) && isset($_GET['ids'])){//ok
     header("Location: http://localhost/proyecto_grado/croptech/vista/admon_cultivo.php?iderror=$resul");
 }
 
+//Validamos POST en donde se solicita graficar datos
+if(isset($_POST['ver_datos']) && $_POST['ver_datos']=='TEMP' ){
+    if(isset($_POST['fecha_inicio']) &&  isset($_POST['fecha_fin'])  &&  isset($_POST['id_siembra'])){
+
+       $obj=new facade();
+      
+       $resul=$obj->get_temperatura ($_POST['fecha_inicio'],$_POST['fecha_fin'],$_POST['id_siembra']);
+    
+       header("Location: http://localhost/proyecto_grado/croptech/vista/cultivo_ver.php?datos=$resul");
+    }
+}
+
+//Validamos POST en donde se solicita graficar datos
+if(isset($_POST['ver_datos']) && $_POST['ver_datos']=='HUM' ){
+    if(isset($_POST['fecha_inicio']) &&  isset($_POST['fecha_fin'])  &&  isset($_POST['id_siembra'])){
+
+       $obj=new facade();
+      
+       $resul=$obj->get_humedad ($_POST['fecha_inicio'],$_POST['fecha_fin'],$_POST['id_siembra']);
+    
+       header("Location: http://localhost/proyecto_grado/croptech/vista/cultivo_ver.php?datos=$resul");
+    }
+}
+
+//Validamos POST en donde se solicita graficar datos
+if(isset($_POST['ver_datos']) && $_POST['ver_datos']=='LUZ' ){
+    if(isset($_POST['fecha_inicio']) &&  isset($_POST['fecha_fin'])  &&  isset($_POST['id_siembra'])){
+
+       $obj=new facade();
+      
+       $resul=$obj->get_luz ($_POST['fecha_inicio'],$_POST['fecha_fin'],$_POST['id_siembra']);
+    
+       header("Location: http://localhost/proyecto_grado/croptech/vista/cultivo_ver.php?datos=$resul");
+    }
+}
 
 }else{
     echo "<script type='text/javascript'>

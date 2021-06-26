@@ -140,21 +140,6 @@ if($_SESSION['usuario']){
                             </div>
 
                             <div class="form-row row justify-content-center p-2">
-                                <div class="form-group col-md-5">
-                                    <p>Adjunta tu imagen:</p> 
-                                </div>
-                            </div>
-                            <div class="form-row row justify-content-center p-2">
-                                <div class="form-group col-md-6">
-                                    <input type='file' id='img_crop' class='form-control' name="uploadedfile">
-                                </div>
-
-                                <div id="passwordHelpBlock" class="form-text">
-                                    Si lo desea puede ingresar una imagen del estado de su cultivo.
-                                </div>
-                            </div>
-
-                            <div class="form-row row justify-content-center p-2">
                                 <div class="form-group col-md-12" >
                                     <label>Comentarios adicionales:</label>
                                     <textarea  class="form-control"  rows="3" cols="2" 

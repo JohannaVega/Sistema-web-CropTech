@@ -171,12 +171,30 @@ class CultivoDAO extends Conectar{
         return $this->cultivos;
     } 
 
-    //Leemos todos los registros de seguimiento de nuestro cultivo
+    //Validamos si un registro siembra x existe en la tabla registro_cultivo_u
+    public function validar_exist_registro($nro_registro_siembra){
+
+        $sql="SELECT IF (EXISTS (SELECT 1 from registro_cultivo_u rcu 
+        left join condiciones_ambientales ch on rcu.id_condiciones = ch.id_condiciones 
+        where rcu.nro_registro_siembra='$nro_registro_siembra'),1,0)";
+
+        $resul=mysqli_query($this->con(),$sql);
+
+        if ($row = mysqli_fetch_row($resul)) {
+            $id = trim($row[0]);
+        }
+       
+        return $id;
+
+    }
+
+    //Leemos los datos del ultimo registro de un cultivo y usuario en espedifico
     public function readallbynroregistro($nro_registro_siembra){
-        $sql="select *
-            from registro_cultivo_u rcu
-            left join rs  on rcu.nro_registro_siembra = rs.nro_registro_siembra
-            where rs.nro_registro_siembra=$nro_registro_siembra";
+        $sql="select * from registro_cultivo_u rcu 
+        left join condiciones_ambientales ch on rcu.id_condiciones = ch.id_condiciones 
+        where rcu.nro_registro_siembra='$nro_registro_siembra'
+        ORDER  BY  fecha_registro DESC";
+
         $resul=mysqli_query($this->con(),$sql);
         while($row=mysqli_fetch_assoc($resul)){
             $this->cultivos[]=$row;
@@ -198,11 +216,11 @@ class CultivoDAO extends Conectar{
                      
     //INGRESAMOS LOS REGISTROS DE DATOS AMBIENTALES DE NUESTRO CULTIVO
     public function insert_registro_datos($idSiembra,$centimetros,$cantidad_hojas,$comentarios,$fechaActual,
-    $id_amb,$last_id){
+    $id_amb){
 
         $sql="insert into registro_cultivo_u(cantidad_hojas_nuevas,centimetros_obtenidos,comentarios,fecha_registro,id_condiciones,
                 nro_registro_siembra,id_imagen)
-        values('$cantidad_hojas','$centimetros','$comentarios','$fechaActual','$id_amb','$idSiembra','$last_id')";
+        values('$cantidad_hojas','$centimetros','$comentarios','$fechaActual','$id_amb','$idSiembra')";
         $resul=mysqli_query($this->con(),$sql);
 
         return $resul;                                            
@@ -242,6 +260,54 @@ class CultivoDAO extends Conectar{
         return $id;                                
     }
 
+    //Traemos los datos de humedad de un registro de cultivo en especifico
+    public function get_humedad($date1, $date2, $idr)
+    {
+        $sql="SELECT h.cantidad_humedad 
+              FROM condiciones_ambientales h
+               LEFT JOIN registro_cultivo_u r ON r.id_condiciones = h.id_condiciones
+               LEFT JOIN registro_siembra rc ON rc.nro_registro_siembra = r.nro_registro_siembra
+                WHERE rc.nro_registro_siembra =$idr AND r.fecha_registro BETWEEN '$date1' AND '$date2'";
+        
+        $resul=mysqli_query($this->con(),$sql);
+        while($row=mysqli_fetch_assoc($resul)){
+            $this->cultivos[]=$row;
+        }
+        return $this->cultivos;
+    }
+
+    //Traemos los datos de temperatura de un registro de cultivo en especifico
+    public function get_temperatura($date1, $date2, $idr)
+    {
+        $sql="SELECT h.nivel_temperatura 
+              FROM condiciones_ambientales h
+               LEFT JOIN registro_cultivo_u r ON r.id_condiciones = h.id_condiciones
+               LEFT JOIN registro_siembra rc ON rc.nro_registro_siembra = r.nro_registro_siembra
+                WHERE rc.nro_registro_siembra =$idr AND r.fecha_registro BETWEEN '$date1' AND '$date2'";
+        
+        $resul=mysqli_query($this->con(),$sql);
+        while($row=mysqli_fetch_assoc($resul)){
+            $this->cultivos[]=$row;
+        }
+        return $this->cultivos;
+    }
+
+    //Traemos los datos de luminosidad de un registro de cultivo en especifico
+    public function get_luz($date1, $date2, $idr)
+    {
+        $sql="SELECT h.cantidad_luminosidad 
+              FROM condiciones_ambientales h
+               LEFT JOIN registro_cultivo_u r ON r.id_condiciones = h.id_condiciones
+               LEFT JOIN registro_siembra rc ON rc.nro_registro_siembra = r.nro_registro_siembra
+                WHERE rc.nro_registro_siembra =$idr AND r.fecha_registro BETWEEN '$date1' AND '$date2'";
+        
+        $resul=mysqli_query($this->con(),$sql);
+        while($row=mysqli_fetch_assoc($resul)){
+            $this->cultivos[]=$row;
+        }
+        return $this->cultivos;
+    }
+
     public function imagen_insert ($producto_img){
 
         $sql1 = "insert into imagen (nombre_imagen) values ('$producto_img')";
@@ -278,7 +344,6 @@ class CultivoDAO extends Conectar{
         }
         return $id;
     }
-
 
     public function imagen_update($id,$db_url_img){
 

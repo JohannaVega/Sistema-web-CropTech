@@ -173,7 +173,7 @@ if($_SESSION['usuario']){
                                 <td><?php echo $resul[$i]['estado'];?></td>
 
                                
-                                <td> <a href="http://localhost/proyecto_grado/croptech/vista/admon_editUP.php?idSiembra=<?php echo $resul[$i]['nro_registro_siembra'];?>"
+                                <td> <a href="http://localhost/proyecto_grado/croptech/vista/cultivo_ver.php?idSiembra=<?php echo $resul[$i]['nro_registro_siembra'];?>"
                                 class="btn btn-outline-success"  title="Ver datos del cultivo">
                                 <img src="http://localhost/proyecto_grado/croptech/assets/img/ver.png" alt="Editar" id="icono" height="30px" width="30px"></a></td>
                                 <?php
@@ -220,7 +220,7 @@ if($_SESSION['usuario']){
                             </div>
                         </div>
                     </div>
-                    <?php } ?>
+                <?php } ?>
                     </div>
                 </div>
             </div>

@@ -27,23 +27,18 @@ if($_SESSION['usuario']){
         crossorigin="anonymous">
    
     </head>
-
     <body>
         <!--NAVBAR-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="#"> 
-                            <img src="../assets/img/logo.png" alt="" width="100">
-                        </a>
+                        <img src="../assets/img/logo.png" alt="" width="100">
+                    </a>
                 </div>
-
-                
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
-                <!--La clase colapsa los elementos del nav-->
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link " aria-current="page" 
@@ -173,7 +168,7 @@ if($_SESSION['usuario']){
                                     <td><?php echo $resul[$i]['estado'];?></td>
 
                                     
-                                    <td> <a href="http://localhost/proyecto_grado/croptech/vista/admon_editUP.php?idSiembra=<?php echo $resul[$i]['nro_registro_siembra'];?>"
+                                    <td> <a href="http://localhost/proyecto_grado/croptech/vista/cultivo_ver.php?idSiembra=<?php echo $resul[$i]['nro_registro_siembra'];?>"
                                     class="btn btn-outline-success"  title="Ver datos del cultivo">
                                     <img src="http://localhost/proyecto_grado/croptech/assets/img/ver.png" alt="Editar" id="icono" height="30px" width="30px"></a></td>
                                 
