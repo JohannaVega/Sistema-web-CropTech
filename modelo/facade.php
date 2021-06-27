@@ -818,10 +818,12 @@ class facade{
 
         $datos = $this->obj_cultivo->get_humedad($date1, $date2, $idregisto);
 
+        
         for($i=0; $i<count($datos); $i++)
         {
             $objGrafica = new Grafica();
-            $objGrafica->variables = $datos[$i]['cantidad_humedad'];
+            $objGrafica->valor= $datos[$i]['cantidad_humedad'];
+            $objGrafica->fecha= $datos[$i]['fecha_registro'];
             $rawData[$i] = $objGrafica;
 
         }
@@ -839,7 +841,8 @@ class facade{
         for($i=0; $i<count($datos); $i++)
         {
             $objGrafica = new Grafica();
-            $objGrafica->variables = $datos[$i]['nivel_temperatura'];
+            $objGrafica->valor= $datos[$i]['cantidad_humedad'];
+            $objGrafica->fecha= $datos[$i]['fecha_registro'];
             $rawData[$i] = $objGrafica;
         }
         $jDatos= json_encode($rawData);
@@ -856,7 +859,8 @@ class facade{
         for($i=0; $i<count($datos); $i++)
         {
             $objGrafica = new Grafica();
-            $objGrafica->variables = $datos[$i]['cantidad_luminosidad'];
+            $objGrafica->valor= $datos[$i]['cantidad_humedad'];
+            $objGrafica->fecha= $datos[$i]['fecha_registro'];
             $rawData[$i] = $objGrafica;
         }
         $jDatos= json_encode($rawData);
@@ -1606,7 +1610,8 @@ class facade{
 
 class Grafica
 {
-    public $variables = 0;
+    public $valor = 0;
+    public $fecha = 0;
 
 }
 

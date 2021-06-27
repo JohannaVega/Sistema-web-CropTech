@@ -137,7 +137,7 @@ if(isset($_GET['idSiembra']))
                 <div class="form-row row align-items-center p-2 " >
                 
                     <div class="col-9 p-5 text-center  border border-secondary ">
-                        <form action="../controlador/validar_cultivos.php" method="post">
+                        <!--<form action="../controlador/validar_cultivos.php" method="post">-->
                             <div class="form-row row justify-content-md-center p-2">
                                 <div class="form-group col ">
                                     <p>Fecha inicio:</p>
@@ -150,23 +150,26 @@ if(isset($_GET['idSiembra']))
                                 </div>
                             </div>
 
-                            <input type="hidden" class="form-control" name="id_siembra" value='<?php echo $id_siembra; ?>' required>
+                            <input type="hidden" class="form-control" id="id_siembra" name="id_siembra" value='<?php echo $id_siembra; ?>' required>
                             
                             <div class="form-row row justify-content-md-center p-2">
                                 <div class="form-group col ">
-                                    <button type="submit" value="TEMP" name="ver_datos" class="btn btn-info">
+                                    <button type="submit" value="2" id="ver_datost" name="req" class="btn btn-info"
+                                    onclick=" get_temperatura();">
                                     Graficar Temperatura</button>
                                 </div>
                                 <div class="form-group col">
-                                    <button type="submit" value="HUM" name="ver_datos" class="btn btn-info">
+                                    <button type="submit" value="1" id="ver_datosh" name="req" class="btn btn-info"
+                                    onclick="return get_humedad();">
                                     Graficar Humedad</button>
                                 </div>
                                 <div class="form-group col ">
-                                    <button type="submit" value="LUZ" name="ver_datos" class="btn btn-info">
+                                    <button type="submit" value="3" id="ver_datosl" name="req" class="btn btn-info"
+                                    onclick="get_luz();">
                                     Graficar Luminosidad</button>
                                 </div>
                             </div>
-                        </form>
+                        <!--</form>-->
 
 
                         <div class="form-row row justify-content-md-center p-2">
@@ -232,15 +235,22 @@ if(isset($_GET['idSiembra']))
         <!--FILA GRAFICAS-->
         <div class="row my-3">
             <div class="col-md-12 text-center">
-                <h2>Reporte de ventas</h2>
-                <canvas id="idGrafica" class="grafica"></canvas>
+                <h2>Reporte % humedad</h2>
+                <canvas id="idHumedad" class="grafica"></canvas>
             </div>
         </div>
 
         <div class="row my-3">
             <div class="col-md-12 text-center">
-                <h2>Reporte de ventas</h2>
-                <canvas id="idContTabla"></canvas>
+                <h2>Reporte temperatura</h2>
+                <canvas id="idTemperatura"></canvas>
+            </div>
+        </div>
+
+        <div class="row my-3">
+            <div class="col-md-12 text-center">
+                <h2>Reporte luminosidad</h2>
+                <canvas id="idLuz"></canvas>
             </div>
         </div>
         <!--FIN FILA GRAFICAS-->
@@ -288,6 +298,7 @@ if(isset($_GET['idSiembra']))
 
 <?php require '../footer.php';?>
 
+<script src="../assets/js/graf.js"></script>
 <!--COMPLEMENTOS BOOSTRAP-->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" 
     integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" 
@@ -297,7 +308,9 @@ if(isset($_GET['idSiembra']))
     integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" 
     crossorigin="anonymous">
 </script>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="../assets/js/jquery.min.js"></script>
 <!--FIN COMPLEMENTOS BOOSTRAP-->
 </body>
 </html>

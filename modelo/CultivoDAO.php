@@ -263,7 +263,7 @@ class CultivoDAO extends Conectar{
     //Traemos los datos de humedad de un registro de cultivo en especifico
     public function get_humedad($date1, $date2, $idr)
     {
-        $sql="SELECT h.cantidad_humedad 
+        $sql="SELECT h.cantidad_humedad, r.fecha_registro
               FROM condiciones_ambientales h
                LEFT JOIN registro_cultivo_u r ON r.id_condiciones = h.id_condiciones
                LEFT JOIN registro_siembra rc ON rc.nro_registro_siembra = r.nro_registro_siembra
@@ -279,7 +279,7 @@ class CultivoDAO extends Conectar{
     //Traemos los datos de temperatura de un registro de cultivo en especifico
     public function get_temperatura($date1, $date2, $idr)
     {
-        $sql="SELECT h.nivel_temperatura 
+        $sql="SELECT h.nivel_temperatura, r.fecha_registro
               FROM condiciones_ambientales h
                LEFT JOIN registro_cultivo_u r ON r.id_condiciones = h.id_condiciones
                LEFT JOIN registro_siembra rc ON rc.nro_registro_siembra = r.nro_registro_siembra
@@ -295,7 +295,7 @@ class CultivoDAO extends Conectar{
     //Traemos los datos de luminosidad de un registro de cultivo en especifico
     public function get_luz($date1, $date2, $idr)
     {
-        $sql="SELECT h.cantidad_luminosidad 
+        $sql="SELECT h.cantidad_luminosidad, r.fecha_registro
               FROM condiciones_ambientales h
                LEFT JOIN registro_cultivo_u r ON r.id_condiciones = h.id_condiciones
                LEFT JOIN registro_siembra rc ON rc.nro_registro_siembra = r.nro_registro_siembra
